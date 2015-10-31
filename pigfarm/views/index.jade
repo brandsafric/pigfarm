@@ -1,320 +1,408 @@
 extends layout
 
 block content
-  .page-container
-    // top navbar
-    nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
-      .navbar-header
-        button.navbar-toggle(type="button", data-toggle="offcanvas", data-target=".sidebar-nav")
-          span.icon-bar
-          span.icon-bar
-          span.icon-bar
-        a.navbar-brand(href="#") Bootstrap Holo
-    .container-fluid
-      .row.row-offcanvas.row-offcanvas-left
-        // sidebar
-        #sidebar.col-xs-6.col-sm-3.sidebar-offcanvas(role="navigation")
-          div(data-spy="affix", data-offset-top="45", data-offset-bottom="90")
-            ul#sidebar-nav.nav
-              li
-                a(href="#") Home
-              li
-                a(href="#section1") Section 1
-              li
-                a(href="#section2") Section 2
-              li
-                a(href="#section3") Section 3
-              li
-                a(href="#") Holo Theme
-        // /sidebar
-        // /main
-        .col-xs-12.col-sm-9(data-spy="scroll", data-target="#sidebar-nav")
-          .row
-            .col-sm-6
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 Newest Items
-                .panel-body
-                  .list-group
-                    a.list-group-item.active(href="#") Active item
-                    a.list-group-item(href="#") Second item
-                    a.list-group-item(href="#") Third item
-                    a.list-group-item(href="#") Another item
-                    a.list-group-item(href="#") Another item
-                    a.list-group-item(href="#") Another item
-                    a.list-group-item(href="#") Another item
-                    a.list-group-item(href="#") Another item
-                    a.list-group-item(href="#") Another item
-                // /panel-body
-              // /panel
-              .well
-                form.form-horizontal(role="form")
-                  h4 What"s New
-                  .form-group(style="padding:14px;")
-                    textarea.form-control(placeholder="Update your status")
-                  button.btn.btn-success.pull-right(type="button") Post
-                  ul.list-inline
-                    li
-                      a(href="#")
-                        i.glyphicon.glyphicon-align-left
-                    li
-                      a(href="#")
-                        i.glyphicon.glyphicon-align-center
-                    li
-                      a(href="#")
-                        i.glyphicon.glyphicon-align-right
-              // /well
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 Responsive Design
-                .panel-body
-                  p
-                    img.img-circle.pull-right(src="//placehold.it/100")
-                    a(href="#") Bootstrap Playground
-                  .clearfix
-                  hr
-                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                  | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                  | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                  | Aliquam in felis sit amet augue.
-                  hr
-                  .btn-group.pull-right.btn-toggle
-                    button.btn.btn-default ON
-                    button.btn.btn-primary.active OFF
-                // /panel-body
-              // /panel
-            // /col
-            .col-sm-6
-              .well
-                form.form
-                  h4 Sign-up
-                  .input-group.text-center
-                    input.form-control.input-lg(type="text", title="Don't worry. We hate spam, and will not share your email with anyone.", placeholder="Enter your email address")
-                    span.input-group-btn
-                      button.btn.btn-lg.btn-primary(type="button") OK
-              // /well
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 People You May Know
-                .panel-body
-                  p
-                    img.img-circle.pull-right(src="//placehold.it/100")
-                    a(href="#") Bootstrap Playground
-                  .clearfix
-                  hr
-                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                  | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                  | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                  | Aliquam in felis sit amet augue.
-                  hr
-                  .btn-group.pull-right.btn-toggle
-                    button.btn.btn-default ON
-                    button.btn.btn-primary.active OFF
-                // /panel-body
-              // /panel
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 Portlet Heading
-                .panel-body
-                  ul.list-group
-                    li.list-group-item
-                      span.btn-group.btn-toggle.pull-right(href="#")
-                        button.btn.btn-xs.btn-default On
-                        button.btn.btn-xs.btn-primary.active Off
-                      | Bootply
-                    li.list-group-item
-                      span.btn-group.btn-toggle.pull-right(href="#")
-                        button.btn.btn-xs.btn-primary.active On
-                        button.btn.btn-xs.btn-default Off
-                      | Templates
-                    li.list-group-item
-                      span.btn-group.btn-toggle.pull-right(href="#")
-                        button.btn.btn-xs.btn-default On
-                        button.btn.btn-xs.btn-primary.active Off
-                      | Snippets
-                // /panel-body
-              // /panel
-            // /col
-          // /row
-          h1#section1 Section 1
-          .panel.panel-default
-            .panel-heading
-              a.pull-right(href="#") View all
-              h4 Newest Items
-            .panel-body
-              .list-group
-                a.list-group-item.active(href="#") Active item
-                a.list-group-item(href="#") Second item
-                a.list-group-item(href="#") Third item
-          // /panel
-          p
-            | Vestibulum porttitor massa eget pellentesque eleifend. Suspendisse tempor, nisi eu placerat auctor,
-            | est erat tempus neque, pellentesque venenatis eros lorem vel quam. Nulla luctus malesuada porttitor.
-            | Fusce risus mi, luctus scelerisque hendrerit feugiat, volutpat gravida nisi. Quisque facilisis risus
-            | in lacus sagittis malesuada. Suspendisse non purus diam. Nunc commodo felis sit amet tortor
-            | adipiscing varius. Fusce commodo nulla quis fermentum hendrerit. Donec vulputate, tellus sed
-            | venenatis sodales, purus nibh ullamcorper quam, sit amet tristique justo velit molestie lorem.
-          h1#section2 Section 2
-          p
-            | Fusce sollicitudin lacus lacinia mi tincidunt ullamcorper. Aenean velit ipsum, vestibulum nec
-            | tincidunt eu, lobortis vitae erat. Nullam ultricies fringilla ultricies. Sed euismod nibh quis
-            | tincidunt dapibus. Nulla quam velit, porta sit amet felis eu, auctor fringilla elit. Donec
-            | convallis tincidunt nibh, quis pellentesque sapien condimentum a. Phasellus purus dui, rhoncus
-            | id suscipit id, ornare et sem. Duis aliquet posuere arcu a ornare. Pellentesque consequat libero
-            | id massa accumsan volutpat. Fusce a hendrerit lacus. Nam elementum ac eros eu porttitor.
-            | Phasellus enim mi, auctor sit amet luctus a, commodo fermentum arcu. In volutpat scelerisque
-            | quam, nec lacinia libero.
-          hr
-          button.btn.btn-primary View
-          button.btn.btn-primary Download
-          h1#section3 Section 3
-          p
-            | Aliquam a lacinia orci, iaculis porttitor neque. Nullam cursus dolor tempus mauris posuere, eu
-            | scelerisque sem tincidunt. Praesent blandit sapien at sem pulvinar, vel egestas orci varius.
-            | Praesent vitae purus at ante aliquet luctus vel quis nibh. Mauris id nulla vitae est lacinia
-            | rhoncus a vel justo. Donec iaculis quis sapien vel molestie. Aliquam sed elementum orci.
-            | Vestibulum tristique tempor risus et malesuada. Sed eget ligula sed quam placerat dapibus.
-            | Integer accumsan ac massa at tempus.
-          hr
-          h1#section3 Elements
-          .row
-            .col-md-12
-              .alert.alert-info.alert-dismissable
-                button.close(type="button", data-dismiss="alert", aria-hidden="true") &#215;
-                strong Heads up!
-                | This alert needs your attention, but it"s not super important.
-            .col-sm-6
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 Buttons &#38; Labels
-                .panel-body
-                  .row
-                    .col-xs-4
-                      a.btn.btn-default.center-block(href="#") Button
-                    .col-xs-4
-                      a.btn.btn-primary.center-block(href="#") Primary
-                    .col-xs-4
-                      a.btn.btn-danger.center-block(href="#") Danger
-                  br
-                  .row
-                    .col-xs-4
-                      a.btn.btn-warning.center-block(href="#") Warning
-                    .col-xs-4
-                      a.btn.btn-info.center-block(href="#") Info
-                    .col-xs-4
-                      a.btn.btn-success.center-block(href="#") Success
-                  hr
-                  .btn-group.btn-group-sm
-                    button.btn.btn-default 1
-                    button.btn.btn-default 2
-                    button.btn.btn-default 3
-                  hr
-                  .row
-                    .col-md-4
-                      span.label.label-default Label
-                      span.label.label-success Success
-                    .col-md-4
-                      span.label.label-warning Warning
-                      span.label.label-info Info
-                    .col-md-4
-                      span.label.label-danger Danger
-                      span.label.label-primary Primary
-                  // /row
-                // /panel-body
-              // /panel
-            // /col-6
-            .col-sm-6
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 Progress Bars
-                .panel-body
-                  .progress
-                    .progress-bar.progress-bar-info(style="width: 20%")
-                  .progress
-                    .progress-bar.progress-bar-success(style="width: 40%")
-                  .progress
-                    .progress-bar.progress-bar-warning(style="width: 80%")
-                  .progress
-                    .progress-bar.progress-bar-danger(style="width: 50%")
-                // /panel-body
-              // /panel
-            // /col-6
-            .col-sm-6
-              .panel.panel-default
-                .panel-heading
-                  a.pull-right(href="#") View all
-                  h4 Tabs
-                .panel-body
-                  ul.nav.nav-tabs
-                    li.active
-                      a(href="#A", data-toggle="tab") Section 1
-                    li
-                      a(href="#B", data-toggle="tab") Section 2
-                    li
-                      a(href="#C", data-toggle="tab") Section 3
-                  .tabbable
-                    .tab-content
-                      #A.tab-pane.active
-                        .well.well-sm I"m in Section A.
-                      #B.tab-pane
-                        .well.well-sm Howdy, I"m in Section B.
-                      #C.tab-pane
-                        .well.well-sm I"ve decided that I like wells.
-                  // /tabbable
-                  .col-sm-12.text-center
-                    ul.pagination.center-block(style="display:inline-block;")
+    section#content
+      section.main.padder
+        .row
+          .col-lg-12
+            section.toolbar.clearfix.m-t-large.m-b
+              a.btn.btn-white.btn-circle(href="mail.html")
+                i.fa.fa-envelope-o
+                | Inbox
+                b.badge.bg-white 5
+              a.btn.btn-primary.btn-circle.active(href="#")
+                i.fa.fa-lightbulb-o
+                | Projects
+              a.btn.btn-success.btn-circle(href="#")
+                i.fa.fa-check
+                | Tasks
+              a.btn.btn-info.btn-circle.active(href="#")
+                i.fa.fa-clock-o
+                | Timeline
+                b.badge.bg-info
+                  i.fa.fa-plus
+              a.btn.btn-inverse.btn-circle(href="#")
+                i.fa.fa-bar-chart-o
+                | Stats
+              a.btn.btn-warning.btn-circle(href="calendar.html")
+                i.fa.fa-calendar-o
+                | Calendar
+              a.btn.btn-danger.btn-circle(href="#")
+                i.fa.fa-group
+                | Groups
+              a.btn.btn-circle(href="#")
+                i.fa.fa-plus
+                | More
+          .col-lg-6
+            .row
+              // easypiechart
+              .col-xs-6
+                section.panel
+                  header.panel-heading.bg-white
+                    .text-center.h5 Play/Pause pie
+                  .panel-body.pull-in.text-center
+                    .inline
+                      .easypiechart(data-percent="55", data-loop="true")
+                        span.h2(style="margin-left:10px;margin-top:10px;display:inline-block") 55
+                        | %
+                        .easypie-text
+                          button.btn.btn-link.m-t-n-small(data-toggle="class:pie")
+                            i.fa.fa-play.text-active.text-muted
+                            i.fa.fa-pause.text.text-muted
+              .col-xs-6
+                section.panel
+                  header.panel-heading.bg-white
+                    .text-center.h5
+                      | Total:
+                      strong 5,000
+                  .panel-body.pull-in.text-center
+                    .inline
+                      .easypiechart(data-percent="75", data-bar-color="#576879")
+                        span.h2(style="margin-left:10px;margin-top:10px;display:inline-block") 75
+                        | %
+                        .easypie-text.text-muted new visits
+              // easypiechart end
+            section.panel
+              .panel-body.text-muted.l-h-2x
+                span.badge 3,3121
+                span.m-r-small Orders
+                span.badge.bg-success 25,129
+                span.m-r-small Selling Items
+                span.badge 59,973
+                span.m-r-small Items
+                span.badge 3,141
+                | Customers
+          .col-lg-6
+            // sparkline stats
+            section.panel
+              header.panel-heading
+                ul.nav.nav-pills.pull-right
+                  li
+                    a(href="#", data-loading-text="loading...")
+                      i.fa.fa-retweet
+                  li.dropdown
+                    a.dropdown-toggle(data-toggle="dropdown", href="#")
+                      span.text Day
+                      span.caret
+                    ul.dropdown-menu.pull-right
+                      li.active
+                        a(href="#") Day
                       li
-                        a(href="#") &#171;
+                        a(href="#") Week
                       li
-                        a(href="#") 1
-                      li
-                        a(href="#") 2
-                      li
-                        a(href="#") 3
-                      li
-                        a(href="#") 4
-                      li
-                        a(href="#") 5
-                      li
-                        a(href="#") &#187;
-                // /panel-body
-              // /panel
-            // /col-6
-            .clearfix
-            hr
-            h4
-              a(href="http://www.bootply.com/ToV8Bzv4GQ") Holo Theme from Bootply
-            hr
-          // /.col-xs-12
-        // /.row
-    // /.container
-  // /.page-container
-  footer
-    // footer
-    .container
-      .row
-        ul.list-unstyled.text-right
-          li.col-sm-4.col-xs-6
-            a(href="#") About
-          li.col-sm-4.col-xs-6
-            a(href="#") Services
-          li.col-sm-4.col-xs-6
-            a(href="#") Studies
-          li.col-sm-4.col-xs-6
-            a(href="#") References
-          li.col-sm-4.col-xs-6
-            a(href="#") Login
-          li.col-sm-4.col-xs-6
-            a(href="#") Press
-          li.col-sm-4.col-xs-6
-            a(href="#") Contact
-          li.col-sm-4.col-xs-6
-            a(href="#") Impressum
-      // /row
-    // /container
+                        a(href="#") Month
+                span Snapshot
+              ul.list-group
+                li.list-group-item
+                  .media
+                    .pull-left.text-center.media-large
+                      .h4.m-t-mini
+                        strong 890
+                      small.text-muted Total views
+                    .pull-right.hidden-sm.text-right.m-t
+                      b.badge.bg-info(data-toggle="tooltip", data-title="New") 250
+                    .media-body
+                      .sparkline(data-type="bar", data-bar-color="#8e98a9", data-bar-width="10", data-height="28")
+                        // 20,10,15,21,12,5,21,30,24,15,8,19
+                      ul.list-inline.text-muted.axis
+                        li
+                          | 12
+                          br
+                          | a
+                        li 2
+                        li 4
+                        li 6
+                        li 8
+                        li 10
+                        li
+                          | 12
+                          br
+                          | p
+                        li 2
+                        li 4
+                        li 6
+                        li 8
+                        li 10
+                li.list-group-item
+                  .media
+                    .pull-left.text-center.media-large
+                      .h4.m-t-mini
+                        strong $4,800
+                      small.text-muted Revenue
+                    .pull-right.hidden-sm.text-right.m-t
+                      b.badge.bg-success(data-toggle="tooltip", data-title="Captured") $4,000
+                    .media-body
+                      .sparkline(data-type="bar", data-bar-color="#13c4a5", data-bar-width="10", data-height="28")
+                        // 200,400,500,100,90,1200,1500,1000,800,500,80,50
+                      ul.list-inline.text-muted.axis
+                        li
+                          | 12
+                          br
+                          | a
+                        li 2
+                        li 4
+                        li 6
+                        li 8
+                        li 10
+                        li
+                          | 12
+                          br
+                          | p
+                        li 2
+                        li 4
+                        li 6
+                        li 8
+                        li 10
+                li.list-group-item
+                  .media
+                    .pull-left.text-center.media-large
+                      .h4.m-t-mini
+                        strong 595
+                      small.text-muted Orders
+                    .pull-right.hidden-sm.text-right.m-t
+                      b.badge(data-toggle="tooltip", data-title="Awaiting")
+                        | 120
+                        i.fa.fa-plane
+                    .media-body
+                      .sparkline(data-type="bar", data-bar-color="#61a1e1", data-bar-width="10", data-height="28")
+                        // 15,21,30,24,15,8,19,20,10,15,21,12
+                      ul.list-inline.text-muted.axis
+                        li
+                          | 12
+                          br
+                          | a
+                        li 2
+                        li 4
+                        li 6
+                        li 8
+                        li 10
+                        li
+                          | 12
+                          br
+                          | p
+                        li 2
+                        li 4
+                        li 6
+                        li 8
+                        li 10
+            // sparkline stats end
+        .row
+          .col-lg-6
+            // scrollable inbox widget
+            section.panel
+              header.panel-heading
+                ul.nav.nav-pills.pull-right
+                  li
+                    a.panel-toggle.text-muted(href="#")
+                      i.fa.fa-caret-down.fa-lg.text-active
+                      i.fa.fa-caret-up.fa-lg.text
+                span.label.label-large.bg-default 15
+                | Inbox
+              section.panel-body.scrollbar.scroll-y.m-b(style="height:210px")
+                article.media
+                  span.pull-left.thumb-small
+                    img.img-circle(src="images/avatar.jpg", alt="John said")
+                  .media-body
+                    .pull-right.media-mini.text-center.text-muted
+                      strong.h4 12:18
+                      br
+                      small.label.bg-light pm
+                    a.h4(href="#") Bootstrap 3.0 is comming
+                    small.block
+                      a(href="#") John Smith
+                      span.label.label-success Circle
+                    small.block
+                      | Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.
+                .line.pull-in
+                article.media
+                  span.pull-left.thumb-small
+                    i.fa.fa-user.fa.fa-2x.text-muted
+                  .media-body
+                    .pull-right.media-mini.text-center.text-muted
+                      strong.h4 17
+                      br
+                      small.label.bg-light feb
+                    a.h4(href="#") Bootstrap documents
+                    small.block
+                      a(href="#") John Smith
+                      span.label.label-info Friends
+                    small.block
+                      | There are a few easy ways to quickly get started with Bootstrap, each one appealing to a different skill level and use case. Read through to see what suits your particular needs.
+                .line.pull-in
+                article.media
+                  .media-body
+                    .pull-right.media-mini.text-center.text-muted
+                      strong.h4 09
+                      br
+                      small.label.bg-light jan
+                    a.h4.text-success(href="#") Mobile first html/css framework
+                    small.block Bootstrap, Ratchet
+            // / scrollable inbox widget
+          .col-lg-6
+            // task
+            section.panel
+              header.panel-heading
+                | Tasks
+              ul.list-group
+                li.list-group-item(data-toggle="class:active", data-target="#todo-1")
+                  .media
+                    span.pull-left.thumb-small.m-t-mini
+                      i.fa.fa-code.fa-lg.text-default
+                    #todo-1.pull-right.text-primary.m-t-small
+                      i.fa.fa-circle.fa-lg.text.text-default
+                      i.fa.fa-check.fa-lg.text-active.text-primary
+                    .media-body
+                      div
+                        a.h5(href="#") Coding on app
+                      small.text-muted 9:30 am every day
+                li.list-group-item.bg(data-toggle="class:active", data-target="#todo-2")
+                  .media
+                    span.pull-left.thumb-small.m-t-mini
+                      i.fa.fa-reply.fa-lg.text-default
+                    #todo-2.pull-right.text-primary.m-t-small
+                      i.fa.fa-circle.fa-lg.text.text-default
+                      i.fa.fa-check.fa-lg.text-active.text-primary
+                    .media-body
+                      div
+                        a.h5(href="#") Reply email
+                      small.text-muted Check Gmail and reply
+                li.list-group-item(data-toggle="class:active", data-target="#todo-3")
+                  .media
+                    span.pull-left.thumb-small.m-t-mini
+                      i.fa.fa-coffee.fa-lg.text-default
+                    #todo-3.pull-right.text-primary.m-t-small
+                      i.fa.fa-circle.fa-lg.text.text-default
+                      i.fa.fa-check.fa-lg.text-active.text-primary
+                    .media-body
+                      div
+                        a.h5(href="#") Coffee time
+                      small.text-muted Freetime as you want
+                li.list-group-item.bg(data-toggle="class:active", data-target="#todo-4")
+                  .media
+                    span.pull-left.thumb-small.m-t-mini
+                      i.fa.fa-music.fa-lg.text-default
+                    #todo-4.pull-right.text-primary.m-t-small
+                      i.fa.fa-circle.fa-lg.text.text-default
+                      i.fa.fa-check.fa-lg.text-active.text-primary
+                    .media-body
+                      div
+                        a.h5(href="#") Listen music
+                      small.text-muted Listening and finding
+            // / task
+        .row
+          .col-lg-12
+            // .comment-list
+            section.comment-list.block
+              article#comment-id-1.comment-item.media.arrow.arrow-left
+                a.pull-left.thumb-small.avatar
+                  img.img-circle(src="images/avatar.jpg")
+                section.media-body.panel
+                  header.panel-heading.clearfix
+                    a(href="#") John smith
+                    label.label.bg-info.m-l-mini Editor
+                    span.text-muted.m-l-small.pull-right
+                      i.fa.fa-clock-o
+                      | 24 minutes ago
+                  .panel-body
+                    div
+                      | Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                    .comment-action.m-t-small
+                      a.btn.btn-white.btn-xs.active(href="#", data-toggle="class")
+                        i.fa.fa-star-o.text-muted.text
+                        i.fa.fa-star.text-danger.text-active
+                        | Like
+                      a.btn.btn-white.btn-xs(href="#comment-form")
+                        i.fa.fa-mail-reply.text-muted
+                        | Reply
+              // .comment-reply
+              article#comment-id-2.comment-item.comment-reply.media.arrow.arrow-left
+                a.pull-left.thumb-small
+                  span.btn.btn-circle.btn-white.btn-xs
+                    i.fa.fa-user
+                section.media-body.panel.text-small
+                  .panel-body
+                    a(href="#") Mika Sam
+                    label.label.bg-inverse.m-l-mini Admin
+                    | Report this comment is helpful
+                    span.text-muted.m-l-small.pull-right
+                      i.fa.fa-clock-o
+                      | 10 minutes ago
+              // / .comment-reply
+              article#comment-id-3.comment-item.media.arrow.arrow-left
+                a.pull-left.thumb-small.avatar
+                  img.img-circle(src="images/avatar.jpg")
+                section.media-body.panel
+                  header.panel-heading.clearfix
+                    a(href="#") By me
+                    label.label.bg-default.m-l-mini User
+                    span.text-muted.m-l-small.pull-right
+                      i.fa.fa-clock-o
+                      | about 1 hour ago
+                  .panel-body
+                    div This comment was posted by you.
+                    .comment-action.m-t-small
+                      a.btn.btn-white.btn-xs(href="#comment-id-3", data-dismiss="alert")
+                        i.fa.fa-trash-o.text-muted
+                        | Remove
+              article#comment-id-4.comment-item.media.arrow.arrow-left
+                a.pull-left.thumb-small.avatar
+                  img.img-circle(src="images/avatar.jpg")
+                section.media-body.panel
+                  header.panel-heading.clearfix
+                    a(href="#") Peter
+                    label.label.bg-primary.m-l-mini Vip
+                    span.text-muted.m-l-small.pull-right
+                      i.fa.fa-clock-o
+                      | 2 hours ago
+                  .panel-body
+                    blockquote
+                      p
+                        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+                      small
+                        | Someone famous in
+                        cite(title="Source Title") Source Title
+                    div Lorem ipsum dolor sit amet, consecteter adipiscing elit...
+                    .comment-action.m-t-small
+                      a.btn.btn-white.btn-xs(href="#", data-toggle="class")
+                        i.fa.fa-star-o.text-muted.text
+                        i.fa.fa-star.text-danger.text-active
+                        | Like
+                      a.btn.btn-white.btn-xs(href="#comment-form")
+                        i.fa.fa-mail-reply.text-muted
+                        | Reply
+              // comment form
+              article#comment-form.comment-item.media
+                a.pull-left.thumb-small.avatar
+                  img.img-circle(src="images/avatar.jpg")
+                section.media-body
+                  form.m-b-none(action="")
+                    .input-group
+                      input.form-control(type="text", placeholder="Input your comment here")
+                      span.input-group-btn
+                        button.btn.btn-primary(type="button") POST
+            // / .comment-list
+    // .modal
+    #modal.modal.fade
+      form.m-b-none
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close(type="button", data-dismiss="modal")
+                i.fa.fa-times
+              h4#myModalLabel.modal-title Post your first idea
+            .modal-body
+              .block
+                label.control-label Title
+                input.form-control(type="text", placeholder="Post title")
+              .block
+                label.control-label Content
+                textarea.form-control(placeholder="Content", rows="5")
+              .checkbox
+                label
+                  input(type="checkbox")
+                  | Share with all memebers of first
+            .modal-footer
+              button.btn.btn-sm.btn-default(type="button", data-dismiss="modal") Save
+              button.btn.btn-sm.btn-primary(type="button", data-loading-text="Publishing...") Publish
+          // /.modal-content
+    // / .modal

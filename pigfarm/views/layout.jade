@@ -1,22 +1,207 @@
 doctype html
-html
+html(lang="en")
   head
-    meta(http-equiv="content-type", content="text/html; charset=UTF-8")
     meta(charset="utf-8")
-    meta(name="generator", content="Bootply")
+    title Mobile first web app theme | first
+    meta(name="description", content="mobile first, app, web app, responsive, admin dashboard, flat, flat ui")
     meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
-
-    title= title
-
-    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/bootstrap/css/styles.css')
-    
-    
-    
-
+    link(rel="stylesheet", href="css/bootstrap.css")
+    link(rel="stylesheet", href="css/font-awesome.min.css")
+    link(rel="stylesheet", href="css/font.css")
+    link(rel="stylesheet", href="css/style.css")
+    link(rel="stylesheet", href="css/plugin.css")
   body
+    // header
+    header#header.navbar
+      ul.nav.navbar-nav.navbar-avatar.pull-right
+        li.dropdown
+          a.dropdown-toggle(href="#", data-toggle="dropdown")
+            span.hidden-xs-only Mika Sokeil
+            span.thumb-small.avatar.inline
+              img.img-circle(src="images/avatar.jpg", alt="Mika Sokeil")
+            b.caret.hidden-xs-only
+          ul.dropdown-menu.pull-right
+            li
+              a(href="#") Settings
+            li
+              a(href="#") Profile
+            li
+              a(href="#")
+                span.badge.bg-danger.pull-right 3
+                | Notifications
+            li.divider
+            li
+              a(href="docs.html") Help
+            li
+              a(href="signin.html") Logout
+      a.navbar-brand(href="#") first
+      button.btn.btn-link.pull-left.nav-toggle.visible-xs(type="button", data-toggle="class:slide-nav slide-nav-left", data-target="body")
+        i.fa.fa-bars.fa-lg.text-default
+      ul.nav.navbar-nav.hidden-xs
+        li
+          #panel-notifications.m-t.m-b-small
+            a.dropdown-toggle(href="#", data-toggle="dropdown")
+              i.fa.fa-comment-o.fa-fw.fa-lg.text-default
+              b.badge.badge-notes.bg-danger.count-n 2
+            section.dropdown-menu.m-l-small.m-t-mini
+              section.panel.panel-large.arrow.arrow-top
+                header.panel-heading.bg-white
+                  span.h5
+                    strong
+                      | You have
+                      span.count-n 2
+                      | notifications
+                .list-group
+                  a.media.list-group-item(href="#")
+                    span.pull-left.thumb-small
+                      img.img-circle(src="images/avatar.jpg", alt="John said")
+                    span.media-body.block.m-b-none
+                      | Moved to Bootstrap 3.0
+                      br
+                      small.text-muted 23 June 13
+                  a.media.list-group-item(href="#")
+                    span.media-body.block.m-b-none
+                      | first v.1 (Bootstrap 2.3 based) released
+                      br
+                      small.text-muted 19 June 13
+                footer.panel-footer.text-small
+                  a.pull-right(href="#")
+                    i.fa.fa-cog
+                  a(href="#") See all the notifications
+        li
+          .m-t-small
+            a.btn.btn-sm.btn-info(data-toggle="modal", href="#modal")
+              i.fa.fa-fw.fa-plus
+              | POST
+        li.dropdown.shift(data-toggle="shift:appendTo", data-target=".nav-primary .nav")
+          a.dropdown-toggle(href="#", data-toggle="dropdown")
+            i.fa.fa-cog.fa-lg.visible-xs.visible-xs-inline
+            | Settings
+            b.caret.hidden-sm-only
+          ul.dropdown-menu
+            li
+              a(href="#", data-toggle="class:navbar-fixed", data-target="body")
+                | Navbar
+                span.text-active auto
+                span.text fixed
+            li.hidden-xs
+              a(href="#", data-toggle="class:nav-vertical", data-target="#nav")
+                | Nav
+                span.text-active vertical
+                span.text horizontal
+            li.divider.hidden-xs
+            li.dropdown-header Colors
+            li
+              a(href="#", data-toggle="class:bg bg-black", data-target=".navbar")
+                | Navbar
+                span.text-active white
+                span.text inverse
+            li
+              a(href="#", data-toggle="class:bg-light", data-target="#nav")
+                | Nav
+                span.text-active inverse
+                span.text light
+      form.navbar-form.pull-left.shift(action="", data-toggle="shift:prependTo", data-target=".nav-primary")
+        i.fa.fa-search.text-muted
+        input.input-sm.form-control(type="text", placeholder="Search")
+    // / header
+    // nav
+    nav#nav.nav-primary.hidden-xs.nav-vertical
+      ul.nav(data-spy="affix", data-offset-top="50")
+        li.active
+          a(href="index.html")
+            i.fa.fa-dashboard.fa-lg
+            span Dashboard
+        li.dropdown-submenu
+          a(href="#")
+            i.fa.fa-th.fa-lg
+            span Elements
+          ul.dropdown-menu
+            li
+              a(href="buttons.html") Buttons
+            li
+              a(href="icons.html")
+                b.badge.pull-right 302
+                | Icons
+            li
+              a(href="grid.html") Grid
+            li
+              a(href="widgets.html")
+                b.badge.bg-primary.pull-right 8
+                | Widgets
+            li
+              a(href="components.html")
+                b.badge.pull-right 18
+                | Components
+            li
+              a(href="portlet.html") Portlet
+        li.dropdown-submenu
+          a(href="#")
+            i.fa.fa-list.fa-lg
+            span Lists
+          ul.dropdown-menu
+            li
+              a(href="list.html") List groups
+            li
+              a(href="table.html") Table
+        li
+          a(href="form.html")
+            i.fa.fa-edit.fa-lg
+            span Form
+        li
+          a(href="chart.html")
+            i.fa.fa-signal.fa-lg
+            span Chart
+        li.dropdown-submenu
+          a(href="#")
+            i.fa.fa-link.fa-lg
+            span Others
+          ul.dropdown-menu
+            li
+              a(href="mail.html") Mail
+            li
+              a(href="calendar.html") Fullcalendar
+            li
+              a(href="timeline.html") Timeline
+            li
+              a(href="profile.html") Profile
+            li
+              a(href="gallery.html") Gallery
+            li
+              a(href="maps.html") Maps
+            li
+              a(href="invoice.html") Invoice
+            li
+              a(href="signin.html") Signin page
+            li
+              a(href="signup.html") Signup page
+            li
+              a(href="404.html") 404 page
+    // / nav
     block content
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
-    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')
-    script(src='/bootstrap/js/scripts.js')
-    
+    // footer
+    footer#footer
+      .text-center.padder.clearfix
+        p
+          small &#169; first 2013, Mobile first web app framework base on Bootstrap
+          br
+          br
+          a.btn.btn-xs.btn-circle.btn-twitter(href="#")
+            i.fa.fa-twitter
+          a.btn.btn-xs.btn-circle.btn-facebook(href="#")
+            i.fa.fa-facebook
+          a.btn.btn-xs.btn-circle.btn-gplus(href="#")
+            i.fa.fa-google-plus
+    a.hide.slide-nav-block(href="#", data-toggle="class:slide-nav slide-nav-left", data-target="body")
+    // / footer
+    script(src="js/jquery.min.js")
+    // Bootstrap
+    script(src="js/bootstrap.js")
+    // app
+    script(src="js/app.js")
+    script(src="js/app.plugin.js")
+    script(src="js/app.data.js")
+    // Sparkline Chart
+    script(src="js/charts/sparkline/jquery.sparkline.min.js")
+    // Easy Pie Chart
+    script(src="js/charts/easypiechart/jquery.easy-pie-chart.js")

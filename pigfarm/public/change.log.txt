@@ -1,0 +1,8 @@
+v 4.0.0
+
+1: Upgrade to Bootstrap v3.3.5
+   css/bootstrap.css
+   js/bootstrap.js
+
+2: Upgrade prettyPhoto to v3.1.6
+   js/prettyphoto/jquery.prettyPhoto.js
