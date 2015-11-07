@@ -1,5 +1,8 @@
-cd /home/android
-source .bash_profile
+#!/bin/bash
+
+cd /home/ubuntu
+#source .bash_profile
+source .profile # aws
 
 cd pigfarm
 cd pigfarm && npm install
