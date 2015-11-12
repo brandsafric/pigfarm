@@ -1,0 +1,384 @@
+extends layout
+
+block content
+    section#content
+      section.main.padder
+        .clearfix
+          h4
+            i.fa.fa-table
+            | Table
+        .row
+          .col-lg-6
+            section.panel
+              header.panel-heading
+                span.label.bg-danger.pull-right 4 left
+                |               Tasks
+              div
+                table.table.table-striped.m-b-none.text-small
+                  thead
+                    tr
+                      th Progress
+                      th Item
+                      th(width='70')
+                  tbody
+                    tr
+                      td
+                        .progress.progress-small.progress-striped.active.m-t-mini.m-b-none
+                          .progress-bar.progress-bar-success(data-toggle='tooltip', data-original-title='80%', style='width: 80%')
+                      td App prototype design
+                      td.text-right
+                        .btn-group
+                          a.dropdown-toggle(href='#', data-toggle='dropdown')
+                            i.fa.fa-pencil
+                          ul.dropdown-menu.pull-right
+                            li
+                              a(href='#') Action
+                            li
+                              a(href='#') Another action
+                            li
+                              a(href='#') Something else here
+                            li.divider
+                            li
+                              a(href='#') Separated link
+                    tr
+                      td
+                        .progress.progress-mini.m-t-mini.m-b-none
+                          .progress-bar.progress-bar-info(data-toggle='tooltip', data-original-title='40%', style='width: 40%')
+                      td Design documents
+                      td.text-right
+                        .btn-group
+                          a.dropdown-toggle(href='#', data-toggle='dropdown')
+                            i.fa.fa-pencil
+                          ul.dropdown-menu.pull-right
+                            li
+                              a(href='#') Action
+                            li
+                              a(href='#') Another action
+                            li
+                              a(href='#') Something else here
+                            li.divider
+                            li
+                              a(href='#') Separated link
+                    tr
+                      td
+                        .progress.progress-mini.m-t-mini.m-b-none
+                          .progress-bar.progress-bar-warning(data-toggle='tooltip', data-original-title='20%', style='width: 20%')
+                      td UI toolkit
+                      td.text-right
+                        .btn-group
+                          a.dropdown-toggle(href='#', data-toggle='dropdown')
+                            i.fa.fa-pencil
+                          ul.dropdown-menu.pull-right
+                            li
+                              a(href='#') Action
+                            li
+                              a(href='#') Another action
+                            li
+                              a(href='#') Something else here
+                            li.divider
+                            li
+                              a(href='#') Separated link
+                    tr
+                      td
+                        .progress.progress-mini.m-t-mini.m-b-none
+                          .progress-bar.progress-bar-danger(data-toggle='tooltip', data-original-title='15%', style='width: 15%')
+                      td Testing
+                      td.text-right
+                        .btn-group
+                          a.dropdown-toggle(href='#', data-toggle='dropdown')
+                            i.fa.fa-pencil
+                          ul.dropdown-menu.pull-right
+                            li
+                              a(href='#') Action
+                            li
+                              a(href='#') Another action
+                            li
+                              a(href='#') Something else here
+                            li.divider
+                            li
+                              a(href='#') Separated link
+          .col-lg-6
+            section.panel
+              header.panel-heading Stats
+              div
+                table.table.table-striped.m-b-none.text-small
+                  thead
+                    tr
+                      th Graph
+                      th Item
+                      th(width='70')
+                  tbody
+                    tr
+                      td
+                        .sparkline(data-bar-color='#5cb85c', data-type='bar', data-height='19')
+                          // 20,10,15,21,12,5,21,30,24,15,8,19
+                      td App downloads
+                      td.text-success
+                        i.fa.fa-level-up
+                        |  40%
+                    tr
+                      td
+                        .sparkline(data-bar-color='#61a1e1', data-type='bar', data-height='19')
+                          // ,5,21,30,24,15,8,19,20,10,15,21,12
+                      td Social connection
+                      td.text-success
+                        i.fa.fa-level-up
+                        |  20%
+                    tr
+                      td
+                        .sparkline(data-bar-color='#999900', data-type='bar', data-height='19')
+                          // 200,400,500,100,90,1200,1500,1000,800,500,80,50
+                      td Revenue
+                      td.text-warning
+                        i.fa.fa-level-down
+                        |  5%
+                    tr
+                      td
+                        .sparkline(data-bar-color='#ff5f5f', data-type='bar', data-height='19')
+                          // 15,21,30,24,15,8,19,20,10,15,21,12
+                      td Customer increase
+                      td.text-danger
+                        i.fa.fa-level-down
+                        |  20%
+        .row
+          .col-lg-12
+            section.panel
+              header.panel-heading
+                | Static Table
+              .panel-body
+                .row.text-small
+                  .col-sm-4.m-b-mini
+                    select.input-sm.inline.form-control(style='width:130px')
+                      option(value='0') Bulk action
+                      option(value='1') Delete selected
+                      option(value='2') Bulk edit
+                      option(value='3') Export
+                    button.btn.btn-sm.btn-white Apply
+                  .col-sm-4.m-b-mini
+                    .btn-group(data-toggle='buttons')
+                      label.btn.btn-sm.btn-white.active
+                        input#option1(type='radio', name='options')
+                        |  Day
+                      label.btn.btn-sm.btn-white
+                        input#option2(type='radio', name='options')
+                        |  Week
+                      label.btn.btn-sm.btn-white
+                        input#option2(type='radio', name='options')
+                        |  Month
+                  .col-sm-4
+                    .input-group
+                      input.input-sm.form-control(type='text', placeholder='Search')
+                      span.input-group-btn
+                        button.btn.btn-sm.btn-white(type='button') Go!
+              .table-responsive
+                table.table.table-striped.b-t.text-small
+                  thead
+                    tr
+                      th(width='20')
+                        input(type='checkbox')
+                      th.th-sortable(data-toggle='class')
+                        | Project
+                        span.th-sort
+                          i.fa.fa-sort-down.text
+                          i.fa.fa-sort-up.text-active
+                          i.fa.fa-sort
+                      th Task
+                      th Date
+                      th(width='30')
+                  tbody
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='2')
+                      td Idrawfast
+                      td 4c
+                      td Jul 25, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='3')
+                      td Formasa
+                      td 8c
+                      td Jul 22, 2013
+                      td
+                        a(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='4')
+                      td Avatar system
+                      td 15c
+                      td Jul 15, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='4')
+                      td Throwdown
+                      td 4c
+                      td Jul 11, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='5')
+                      td Idrawfast
+                      td 4c
+                      td Jul 7, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='6')
+                      td Formasa
+                      td 8c
+                      td Jul 3, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='7')
+                      td Avatar system 
+                      td 15c
+                      td Jul 2, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+                    tr
+                      td
+                        input(type='checkbox', name='post[]', value='8')
+                      td Videodown
+                      td 4c
+                      td Jul 1, 2013
+                      td
+                        a.active(href='#', data-toggle='class')
+                          i.fa.fa-check.fa-lg.text-success.text-active
+                          i.fa.fa-times.fa-lg.text-danger.text
+              footer.panel-footer
+                .row
+                  .col-sm-4.hidden-xs
+                    select.input-sm.inline.form-control(style='width:130px')
+                      option(value='0') Bulk action
+                      option(value='1') Delete selected
+                      option(value='2') Bulk edit
+                      option(value='3') Export
+                    button.btn.btn-sm.btn-white Apply
+                  .col-sm-3.text-center
+                    small.text-muted.inline.m-t-small.m-b-small showing 20-30 of 50 items
+                  .col-sm-5.text-right.text-center-sm
+                    ul.pagination.pagination-small.m-t-none.m-b-none
+                      li
+                        a(href='#')
+                          i.fa.fa-chevron-left
+                      li
+                        a(href='#') 1
+                      li
+                        a(href='#') 2
+                      li
+                        a(href='#') 3
+                      li
+                        a(href='#') 4
+                      li
+                        a(href='#') 5
+                      li
+                        a(href='#')
+                          i.fa.fa-chevron-right
+          .col-lg-12
+            section.panel
+              header.panel-heading
+                | DataGrid 
+                i.fa.fa-info-sign.text-muted(data-toggle='popover', data-html='true', data-placement='top', data-content='The datagrid use ajax to load the data. please put this file on a server to preview.', title='', data-trigger='hover', data-original-title='Help')
+              .table-responsive
+                table#MyStretchGrid.table.table-striped.datagrid.m-b-small
+                  thead
+                    tr
+                      th
+                        .row
+                          .col-sm-8
+                            .select.filter.m-b-small.m-t-small(data-resize='auto')
+                              button.btn.btn-sm.btn-white.dropdown-toggle(data-toggle='dropdown')
+                                span.dropdown-label
+                                span.caret
+                              ul.dropdown-menu
+                                li(data-value='all', data-selected='true')
+                                  a(href='#') All
+                                li(data-value='lt5m')
+                                  a(href='#') Population < 5M
+                                li(data-value='gte5m')
+                                  a(href='#') Population >= 5M
+                          .col-sm-4
+                            .input-group.search.datagrid-search.m-t-small
+                              input.input-sm.form-control(type='text', placeholder='Search')
+                              .input-group-btn
+                                button.btn.btn-white.btn-sm
+                                  i.fa.fa-search
+                  tfoot
+                    tr
+                      th.row
+                        .datagrid-footer-left.col-sm-6.text-center-sm.m-l-n(style='display:none;')
+                          .grid-controls.m-t-small
+                            span
+                              span.grid-start
+                              |  -
+                              span.grid-end
+                              |  of
+                              span.grid-count
+                            .select.grid-pagesize.dropup(data-resize='auto')
+                              button.btn.btn-sm.btn-white.dropdown-toggle(data-toggle='dropdown')
+                                span.dropdown-label
+                                span.caret
+                              ul.dropdown-menu
+                                li(data-value='5', data-selected='true')
+                                  a(href='#') 5
+                                li(data-value='10')
+                                  a(href='#') 10
+                                li(data-value='20')
+                                  a(href='#') 20
+                                li(data-value='50')
+                                  a(href='#') 50
+                                li(data-value='100')
+                                  a(href='#') 100
+                            span Per Page
+                        .datagrid-footer-right.col-sm-6.text-right.text-center-sm.m-r-n(style='display:none;')
+                          .grid-pager
+                            button.btn.btn-sm.btn-white.grid-prevpage(type='button')
+                              i.fa.fa-chevron-left
+                            span Page
+                            .inline
+                              .input-group.dropdown.combobox
+                                input.input-sm.form-control(type='text')
+                                .input-group-btn.dropup
+                                  button.btn.btn-sm.btn-white(data-toggle='dropdown')
+                                    i.caret
+                                  ul.dropdown-menu.pull-right
+                            span
+                              | of 
+                              span.grid-pages
+                            button.btn.btn-sm.btn-white.grid-nextpage(type='button')
+                              i.fa.fa-chevron-right
+            section.panel
+              header.panel-heading
+                | DataTables 
+                i.fa.fa-info-sign.text-muted(data-toggle='popover', data-html='true', data-placement='top', data-content='The datatables use ajax to load the data. please put this file on a server to preview.', title='', data-trigger='hover', data-original-title='Help')
+              .table-responsive
+                table.table.table-striped.m-b-none(data-ride='datatables')
+                  thead
+                    tr
+                      th(width='20%') Rendering engine
+                      th(width='25%') Browser
+                      th(width='25%') Platform(s)
+                      th(width='15%') Engine version
+                      th(width='15%') CSS grade
+                  tbody

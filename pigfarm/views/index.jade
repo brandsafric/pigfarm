@@ -1,5 +1,15 @@
 extends layout
 
+block navi-content
+  li.active
+    a(href="/")
+      i.fa.fa-dashboard.fa-lg
+      span 전체 현황
+  li
+    a(href="work")
+      i.fa.fa-edit.fa-lg
+      span 작업 입력
+
 block content
     section#content
       section.main.padder
