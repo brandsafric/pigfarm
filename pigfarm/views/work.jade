@@ -10,10 +10,18 @@ block navi-content
 			i.fa.fa-edit.fa-lg
 			span 작업 입력
 
-mixin row-sample1(name)
+mixin row-sample1(num, id, motherStatus, batch, daysSinceStopBreastFeed, injection1, injection2, injection3, injector, status)
 	tr
-		block
-		td #{name}
+		td #{num}
+		td #{id}
+		td #{motherStatus}
+		td #{batch}
+		td #{daysSinceStopBreastFeed}
+		td #{injection1}
+		td #{injection2}
+		td #{injection3}
+		td #{injector}
+		td #{status}
 		td.text-right
 			.btn-group
 				a.dropdown-toggle(href='#', data-toggle='dropdown')
@@ -36,6 +44,20 @@ mixin row-sample2-up(name, percentage)
 		td.text-success
 			i.fa.fa-level-up
 			|	#{percentage}
+		td.text-right
+			.btn-group
+				a.dropdown-toggle(href='#', data-toggle='dropdown')
+					i.fa.fa-pencil
+				ul.dropdown-menu.pull-right
+					li
+						a(href='#') Action
+					li
+						a(href='#') Another action
+					li
+						a(href='#') Something else here
+					li.divider
+					li
+						a(href='#') Separated link
 
 mixin row-sample2-down(name, percentage)
 	tr
@@ -44,6 +66,20 @@ mixin row-sample2-down(name, percentage)
 		td.text-warning
 			i.fa.fa-level-down
 			|	#{percentage}
+		td.text-right
+			.btn-group
+				a.dropdown-toggle(href='#', data-toggle='dropdown')
+					i.fa.fa-pencil
+				ul.dropdown-menu.pull-right
+					li
+						a(href='#') Action
+					li
+						a(href='#') Another action
+					li
+						a(href='#') Something else here
+					li.divider
+					li
+						a(href='#') Separated link
 
 block content
 		section#content
@@ -52,51 +88,69 @@ block content
 					h4
 						i.fa.fa-table
 						| Table
+				//
+					.row
+						.col-lg-6
+							section.panel
+								header.panel-heading
+									span.label.bg-danger.pull-right 4 left
+									|							 Stats
+								div
+									table.table.table-striped.m-b-none.text-small
+										thead
+											tr
+												th Progress
+												th Graph
+												th Item
+												th(width='70')
+												th(width='70')
+										tbody
+											+row-sample2-up("App downloads", "40%")
+												td
+													.progress.progress-small.progress-striped.active.m-t-mini.m-b-none
+														.progress-bar.progress-bar-success(data-toggle='tooltip', data-original-title='80%', style='width: 80%')
+												td
+													.sparkline(data-bar-color='#5cb85c', data-type='bar', data-height='19')
+														// 20,20,20,21,12,5,21,30,24,15,8,19
+											+row-sample2-up("Social connection", "20%")
+												td
+													.progress.progress-mini.m-t-mini.m-b-none
+														.progress-bar.progress-bar-info(data-toggle='tooltip', data-original-title='40%', style='width: 40%')
+												td
+													.sparkline(data-bar-color='#61a1e1', data-type='bar', data-height='19')
+														// ,,,,,5,21,30,24,15,8,19,20,10,15,21,12
+											+row-sample2-down("Revenue", " 5%")
+												td
+													.progress.progress-mini.m-t-mini.m-b-none
+														.progress-bar.progress-bar-info(data-toggle='tooltip', data-original-title='40%', style='width: 40%')
+												td
+													.sparkline(data-bar-color='#999900', data-type='bar', data-height='19')
+														// 200,400,500,100,90,1200,1500,1000,800,500,80,50
 				.row
-					.col-lg-6
+					.col-lg-12
 						section.panel
 							header.panel-heading
 								span.label.bg-danger.pull-right 4 left
-								|							 Tasks
-							div
+								| 종부
+							.table-responsive
 								table.table.table-striped.m-b-none.text-small
 									thead
 										tr
-											th Progress
-											th Item
+											th No.
+											th 개체번호
+											th 모돈상태
+											th 산차
+											th 이유후 경과일
+											th(colspan="3") 종부
+											th 종부한 사람
+											th 상태
 											th(width='70')
 									tbody
-										+row-sample1("App prototype design")
-											td
-												.progress.progress-small.progress-striped.active.m-t-mini.m-b-none
-													.progress-bar.progress-bar-success(data-toggle='tooltip', data-original-title='80%', style='width: 80%')
-										+row-sample1("Design documents")
-											td
-												.progress.progress-mini.m-t-mini.m-b-none
-													.progress-bar.progress-bar-info(data-toggle='tooltip', data-original-title='40%', style='width: 40%')
-					.col-lg-6
-						section.panel
-							header.panel-heading Stats
-							div
-								table.table.table-striped.m-b-none.text-small
-									thead
-										tr
-											th Graph
-											th Item
-											th(width='70')
-									tbody
-										+row-sample2-up("App downloads", "40%")
-											td
-												.sparkline(data-bar-color='#5cb85c', data-type='bar', data-height='19')
-													// 20,20,20,21,12,5,21,30,24,15,8,19
-										+row-sample2-up("Social connection", "20%")
-											td
-												.sparkline(data-bar-color='#61a1e1', data-type='bar', data-height='19')
-													// ,,,,,5,21,30,24,15,8,19,20,10,15,21,12
-										+row-sample2-down("Revenue", " 5%")
-											td
-												.sparkline(data-bar-color='#999900', data-type='bar', data-height='19')
-													// 200,400,500,100,90,1200,1500,1000,800,500,80,50
+										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
+										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
+										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
+										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
+										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
 				.row
 					.col-lg-12
 						section.panel
