@@ -1,56 +1,57 @@
 doctype html
 html(lang="en")
-  head
-    meta(charset="utf-8")
-    title 정진농장 통합관리 시스템
-    meta(name="description", content="mobile first, app, web app, responsive, admin dashboard, flat, flat ui")
-    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
-    link(rel="stylesheet", href="css/bootstrap.css")
-    link(rel="stylesheet", href="css/font-awesome.min.css")
-    link(rel="stylesheet", href="css/font.css")
-    link(rel="stylesheet", href="css/style.css")
-    link(rel="stylesheet", href="css/plugin.css")
-  body
-    // header
-    header#header.navbar
-      a.navbar-brand(href="#") 정진농장
-      button.btn.btn-link.pull-left.nav-toggle.visible-xs(type="button", data-toggle="class:slide-nav slide-nav-left", data-target="body")
-        i.fa.fa-bars.fa-lg.text-default
-    // / header
-    // nav
-    nav#nav.nav-primary.hidden-xs.nav-vertical
-      ul.nav(data-spy="affix", data-offset-top="50")
-        block navi-content
-    // / nav
-    block content
-    // footer
-    footer#footer
-      .text-center.padder.clearfix
-        p
-          small &#169; first 2013, Mobile first web app framework base on Bootstrap
-          br
-          br
-          a.btn.btn-xs.btn-circle.btn-twitter(href="#")
-            i.fa.fa-twitter
-          a.btn.btn-xs.btn-circle.btn-facebook(href="#")
-            i.fa.fa-facebook
-          a.btn.btn-xs.btn-circle.btn-gplus(href="#")
-            i.fa.fa-google-plus
-    a.hide.slide-nav-block(href="#", data-toggle="class:slide-nav slide-nav-left", data-target="body")
-    // / footer
-    script(src="js/jquery.min.js")
-    // Bootstrap
-    script(src="js/bootstrap.js")
-    // app
-    script(src="js/app.js")
-    script(src="js/app.plugin.js")
-    script(src="js/app.data.js")
-    // Sparkline Chart
-    script(src="js/charts/sparkline/jquery.sparkline.min.js")
-    // Easy Pie Chart
-    script(src="js/charts/easypiechart/jquery.easy-pie-chart.js")
-    // fuelux
-    script(src='js/fuelux/fuelux.js')
-    script(src='js/underscore-min.js')
-    // datatables
-    script(src='js/datatables/jquery.dataTables.min.js')
+	head
+		meta(charset="utf-8")
+		title 정진농장 통합관리 시스템
+		meta(name="description", content="mobile first, app, web app, responsive, admin dashboard, flat, flat ui")
+		meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
+		link(rel="stylesheet", href="css/bootstrap.css")
+		link(rel="stylesheet", href="css/font-awesome.min.css")
+		link(rel="stylesheet", href="css/font.css")
+		link(rel="stylesheet", href="css/style.css")
+		link(rel="stylesheet", href="css/plugin.css")
+	body
+		// header
+		header#header.navbar
+			a.navbar-brand(href="#") 정진농장
+			button.btn.btn-link.pull-left.nav-toggle.visible-xs(type="button", data-toggle="class:slide-nav slide-nav-left", data-target="body")
+				i.fa.fa-bars.fa-lg.text-default
+		// / header
+		// nav
+		nav#nav.nav-primary.hidden-xs.nav-vertical
+			ul.nav(data-spy="affix", data-offset-top="50")
+				block navi-content
+		// / nav
+		block content
+		// footer
+		footer#footer
+			.text-center.padder.clearfix
+				p
+					small &#169; first 2013, Mobile first web app framework base on Bootstrap
+					br
+					br
+					a.btn.btn-xs.btn-circle.btn-twitter(href="#")
+						i.fa.fa-twitter
+					a.btn.btn-xs.btn-circle.btn-facebook(href="#")
+						i.fa.fa-facebook
+					a.btn.btn-xs.btn-circle.btn-gplus(href="#")
+						i.fa.fa-google-plus
+		a.hide.slide-nav-block(href="#", data-toggle="class:slide-nav slide-nav-left", data-target="body")
+		// / footer
+		script(src="js/jquery.min.js")
+		// Bootstrap
+		script(src="js/bootstrap.js")
+		// app
+		script(src="js/app.js")
+		script(src="js/app.plugin.js")
+		script(src="js/app.data.js")
+		// Sparkline Chart
+		script(src="js/charts/sparkline/jquery.sparkline.min.js")
+		// Easy Pie Chart
+		script(src="js/charts/easypiechart/jquery.easy-pie-chart.js")
+		// fuelux
+		script(src='js/fuelux/fuelux.js')
+		script(src='js/underscore-min.js')
+		// datatables
+		script(src='js/datatables/jquery.dataTables.min.js')
+		block footer-extra

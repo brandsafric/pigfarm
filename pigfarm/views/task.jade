@@ -9,6 +9,9 @@ block navi-content
 		a(href="work")
 			i.fa.fa-edit.fa-lg
 			span 작업 입력
+			
+block footer-extra
+	script(src='js/task.js')
 
 mixin row-sample1(num, id, motherStatus, batch, daysSinceStopBreastFeed, injection1, injection2, injection3, injector, status)
 	tr
@@ -145,11 +148,7 @@ block content
 											th 종부한 사람
 											th 상태
 											th(width='70')
-									tbody
-										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
-										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
-										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
-										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
+									tbody#fertilization
 										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
 				.row
 					.col-lg-12
