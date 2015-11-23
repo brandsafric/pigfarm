@@ -13,33 +13,6 @@ block navi-content
 block footer-extra
 	script(src='js/task.js')
 
-mixin row-sample1(num, id, motherStatus, batch, daysSinceStopBreastFeed, injection1, injection2, injection3, injector, status)
-	tr
-		td #{num}
-		td #{id}
-		td #{motherStatus}
-		td #{batch}
-		td #{daysSinceStopBreastFeed}
-		td #{injection1}
-		td #{injection2}
-		td #{injection3}
-		td #{injector}
-		td #{status}
-		td.text-right
-			.btn-group
-				a.dropdown-toggle(href='#', data-toggle='dropdown')
-					i.fa.fa-pencil
-				ul.dropdown-menu.pull-right
-					li
-						a(href='#') Action
-					li
-						a(href='#') Another action
-					li
-						a(href='#') Something else here
-					li.divider
-					li
-						a(href='#') Separated link
-
 mixin row-sample2-up(name, percentage)
 	tr
 		block
@@ -149,7 +122,6 @@ block content
 											th 상태
 											th(width='70')
 									tbody#fertilization
-										+row-sample1("1", "Y 39-12", "이유모돈", "2산", "5일", "정액1차", "정액2차", "정액3차", "라유", "완료")
 				.row
 					.col-lg-12
 						section.panel
