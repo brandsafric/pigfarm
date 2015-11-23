@@ -1,17 +1,5 @@
-$(document).ready(function() {
-	$('#fertilization').append(
-		'<tr>'+
-		'	<td>1</td>'+
-		'	<td>Y 39-12</td>'+
-		'	<td>이유모돈</td>'+
-		'	<td>2산</td>'+
-		'	<td>5일</td>'+
-		'	<td>정액1차</td>'+
-		'	<td>정액2차</td>'+
-		'	<td>정액3차</td>'+
-		'	<td>라유</td>'+
-		'	<td>완료</td>'+
-		'	<td class="text-right">'+
+function getOptionMenu() {
+	var optionMenu = 
 		'		<div class="btn-group">'+
 		'			<a href="#" data-toggle="dropdown" class="dropdown-toggle">'+
 		'				<i class="fa fa-pencil"></i>'+
@@ -23,8 +11,42 @@ $(document).ready(function() {
 		'				<li class="divider"></li>'+
 		'				<li><a href="#">Separated link</a></li>'+
 		'			</ul>'+
-		'		</div>'+
-		'	</td>'+
-		'</tr>'
-	);
+		'		</div>';
+	return optionMenu;
+}
+
+function populateTable() {
+
+	// Empty content string
+	var tableContent = '';
+
+	// jQuery AJAX call for JSON
+	$.getJSON( '/task/fertilization', function( data ) {
+
+		// For each item in our JSON, add a table row and cells to the content string
+		$.each(data, function(){
+			tableContent += '<tr>';
+			tableContent += '	<td>' + this.num + '</td>';
+			tableContent += '	<td>' + this.pigId + '</td>';
+			tableContent += '	<td>이유모돈</td>';
+			tableContent += '	<td>2산</td>';
+			tableContent += '	<td>5일</td>';
+			tableContent += '	<td>정액1차</td>';
+			tableContent += '	<td>정액2차</td>';
+			tableContent += '	<td>정액3차</td>';
+			tableContent += '	<td>라유</td>';
+			tableContent += '	<td>완료</td>';
+			tableContent += '	<td class="text-right">';
+			tableContent += getOptionMenu();
+			tableContent += '	</td>';
+		});
+		
+		// Inject the whole content string into our existing HTML table
+//		$('#userList table tbody').html(tableContent);
+		$('#fertilization').append(tableContent);
+	});
+};
+
+$(document).ready(function() {
+	populateTable();
 });
