@@ -611,3 +611,7 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
   .toolbar a{width:25%;float: left;margin-bottom: 10px}
   .toolbar a:nth-child(4n+1){clear: left}
 }
+
+.field-text-input {
+    display:none;
+}

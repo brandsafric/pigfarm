@@ -1,9 +1,11 @@
 #!/bin/bash
 
-cd /home/ubuntu
+cd ~
 #source .bash_profile
 source .profile # aws
 
-cd pigfarm
+export LC_ALL=C; cd ~/db/pigfarm/; mongod --dbpath . &
+
+cd ~/pigfarm
 cd pigfarm && npm install
 DEBUG=pigfarm:* ./bin/www

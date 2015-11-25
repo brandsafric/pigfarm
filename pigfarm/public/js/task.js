@@ -15,6 +15,15 @@ function getOptionMenu() {
 	return optionMenu;
 }
 
+function generateField(data) {
+	var field = '';
+	field += '<td><div class="field">';
+	field += '	<label>' + data + '</label>';
+	field += '	<input type="text" class="field-text-input" value="' + data + '" />';
+	field += '</div></td>';
+	return field;
+}
+
 function populateTable() {
 
 	// Empty content string
@@ -26,16 +35,16 @@ function populateTable() {
 		// For each item in our JSON, add a table row and cells to the content string
 		$.each(data, function(){
 			tableContent += '<tr>';
-			tableContent += '	<td>' + this.num + '</td>';
-			tableContent += '	<td>' + this.pigId + '</td>';
-			tableContent += '	<td>' + this.motherStatus + '</td>';
-			tableContent += '	<td>' + this.batch + '</td>';
-			tableContent += '	<td>' + this.daysSinceStopBreastFeed + '</td>';
-			tableContent += '	<td>' + this.administration1 + '</td>';
-			tableContent += '	<td>' + this.administration2 + '</td>';
-			tableContent += '	<td>' + this.administration3 + '</td>';
-			tableContent += '	<td>' + this.administrator + '</td>';
-			tableContent += '	<td>' + this.status + '</td>';
+			tableContent += generateField(this.num);
+			tableContent += generateField(this.pigId);
+			tableContent += generateField(this.motherStatus);
+			tableContent += generateField(this.batch);
+			tableContent += generateField(this.daysSinceStopBreastFeed);
+			tableContent += generateField(this.administration1);
+			tableContent += generateField(this.administration2);
+			tableContent += generateField(this.administration3);
+			tableContent += generateField(this.administrator);
+			tableContent += generateField(this.status);
 			tableContent += '	<td class="text-right">';
 			tableContent += getOptionMenu();
 			tableContent += '	</td>';
@@ -44,6 +53,18 @@ function populateTable() {
 		// Inject the whole content string into our existing HTML table
 //		$('#userList table tbody').html(tableContent);
 		$('#fertilization').append(tableContent);
+		
+	    $('.field').click(function () {
+	        $(this).find('label').hide();
+	        $(this).find('input[type="text"]').show().focus();
+	    });
+	    
+	    $('input[type=text]').focusout(function() {
+	        var dad = $(this).parent();
+	        $(this).hide();
+	        dad.find('label').show();
+	    });
+
 	});
 };
 
