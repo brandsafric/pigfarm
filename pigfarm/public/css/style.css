@@ -615,3 +615,7 @@ input[type="text"], select, textarea{min-width: 40px;height: auto;}
 .field-text-input {
     display:none;
 }
+
+.data-table tr > *:nth-child(1) {
+    display: none;
+}

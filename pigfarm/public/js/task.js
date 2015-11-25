@@ -34,7 +34,7 @@ function populateTable() {
 
 		// For each item in our JSON, add a table row and cells to the content string
 		$.each(data, function(){
-			tableContent += '<tr>';
+			tableContent += '<tr><td>' + this._id + '</td>';
 			tableContent += generateField(this.num);
 			tableContent += generateField(this.pigId);
 			tableContent += generateField(this.motherStatus);
@@ -54,16 +54,18 @@ function populateTable() {
 //		$('#userList table tbody').html(tableContent);
 		$('#fertilization').append(tableContent);
 		
-	    $('.field').click(function () {
-	        $(this).find('label').hide();
-	        $(this).find('input[type="text"]').show().focus();
-	    });
-	    
-	    $('input[type=text]').focusout(function() {
-	        var dad = $(this).parent();
-	        $(this).hide();
-	        dad.find('label').show();
-	    });
+		$('.field').click(function () {
+			$(this).find('label').hide();
+			$(this).find('input[type="text"]').show().focus();
+			var _id = $(this).parent().parent().find('td:nth-child(1)').html();
+			console.log(_id);
+		});
+		
+		$('input[type=text]').focusout(function() {
+			var dad = $(this).parent();
+			$(this).hide();
+			dad.find('label').show();
+		});
 
 	});
 };
