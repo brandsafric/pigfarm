@@ -19,8 +19,24 @@ function generateField(data) {
 	var field = '';
 	field += '<td><div class="field">';
 	field += '	<label>' + data + '</label>';
-	field += '	<input type="text" class="field-text-input" value="' + data + '" />';
+	field += '	<input type="text" class="form-control field-input" value="' + data + '" />';
 	field += '</div></td>';
+	return field;
+}
+
+function generateFieldNew(data) {
+	var field = '';
+	field += '<td><div class="field-new">';
+	field += '	<input type="text" class="form-control" value="' + data + '" />';
+	field += '</div></td>';
+	return field;
+}
+
+function generateFieldPig(data) {
+	var field = '';
+	field += '<td>';
+	field += '<select style="width:130px" class="input-sm inline form-control"><option value="0">Bulk action</option><option value="1">Delete selected</option><option value="2">Bulk edit</option><option value="3">Export</option></select>';
+	field += '</td>';
 	return field;
 }
 
@@ -47,8 +63,15 @@ function populateTable() {
 			tableContent += generateField(this.status);
 			tableContent += '	<td class="text-right">';
 			tableContent += getOptionMenu();
-			tableContent += '	</td>';
+			tableContent += '	</td></tr>';
 		});
+		
+		tableContent += '<tr><td>' + this._id + '</td>';
+		tableContent += generateFieldPig();
+		for (i = 0; i < 9; i++) {
+			tableContent += generateFieldNew('hi');
+		}
+		tableContent += '<td></td></tr>';
 		
 		// Inject the whole content string into our existing HTML table
 //		$('#userList table tbody').html(tableContent);
@@ -61,12 +84,11 @@ function populateTable() {
 			console.log(_id);
 		});
 		
-		$('input[type=text]').focusout(function() {
+		$('.field-input').focusout(function() {
 			var dad = $(this).parent();
 			$(this).hide();
 			dad.find('label').show();
 		});
-
 	});
 };
 
