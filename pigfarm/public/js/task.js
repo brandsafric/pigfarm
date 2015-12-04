@@ -35,7 +35,7 @@ function generateFieldNew(data) {
 function generateFieldPig(data) {
 	var field = '';
 	field += '<td>';
-	field += '<select style="width:130px" class="input-sm inline form-control"><option value="0">Bulk action</option><option value="1">Delete selected</option><option value="2">Bulk edit</option><option value="3">Export</option></select>';
+	field += '	<input id="tags" class="form-control">';
 	field += '</td>';
 	return field;
 }
@@ -71,7 +71,7 @@ function populateTable() {
 		for (i = 0; i < 9; i++) {
 			tableContent += generateFieldNew('hi');
 		}
-		tableContent += '<td></td></tr>';
+		tableContent += '<td><button type="submit" class="btn btn-primary">추가</button></td></tr>';
 		
 		// Inject the whole content string into our existing HTML table
 //		$('#userList table tbody').html(tableContent);
@@ -88,6 +88,34 @@ function populateTable() {
 			var dad = $(this).parent();
 			$(this).hide();
 			dad.find('label').show();
+		});
+
+		var availableTags = [
+			"ActionScript",
+			"AppleScript",
+			"Asp",
+			"BASIC",
+			"C",
+			"C++",
+			"Clojure",
+			"COBOL",
+			"ColdFusion",
+			"Erlang",
+			"Fortran",
+			"Groovy",
+			"Haskell",
+			"Java",
+			"JavaScript",
+			"Lisp",
+			"Perl",
+			"PHP",
+			"Python",
+			"Ruby",
+			"Scala",
+			"Scheme"
+		];
+		$( "#tags" ).autocomplete({
+			source: availableTags
 		});
 	});
 };
