@@ -24,10 +24,10 @@ function generateField(data) {
 	return field;
 }
 
-function generateFieldNew(data) {
+function generateFieldNew(fieldName, data) {
 	var field = '';
 	field += '<td><div class="field-new">';
-	field += '	<input type="text" class="form-control" value="' + data + '" />';
+	field += '	<input type="text" class="form-control field-input-new" id="' + fieldName + 'Field" value="' + data + '" />';
 	field += '</div></td>';
 	return field;
 }
@@ -40,6 +40,63 @@ function generateFieldPig(data) {
 	return field;
 }
 
+function fertilizationDataToRow(data) {
+	var rowContent = '';
+	rowContent += '<td>' + data._id + '</td>';
+	rowContent += generateField(data.num);
+	rowContent += generateField(data.pigId);
+	rowContent += generateField(data.motherStatus);
+	rowContent += generateField(data.batch);
+	rowContent += generateField(data.daysSinceStopBreastFeed);
+	rowContent += generateField(data.administration1);
+	rowContent += generateField(data.administration2);
+	rowContent += generateField(data.administration3);
+	rowContent += generateField(data.administrator);
+	rowContent += generateField(data.status);
+	rowContent += '	<td class="text-right">';
+	rowContent += getOptionMenu();
+	rowContent += '	</td>';
+	console.log(rowContent);
+	return rowContent;
+}
+
+function addFertilization(event) {
+	var record = {
+		num : $('#numField').val(),
+		pigId : $('#pigIdField').val(),
+		motherStatus : $('#motherStatusField').val(),
+		batch : $('#batchField').val(),
+		daysSinceStopBreastFeed : $('#daysSinceStopBreastFeedField').val(),
+		administration1 : $('#administration1Field').val(),
+		administration2 : $('#administration2Field').val(),
+		administration3 : $('#administration3Field').val(),
+		administrator : $('#administratorField').val(),
+		status : $('#statusField').val()
+	}
+	
+	console.log(record);
+	
+	$.ajax({
+		type: 'POST',
+		data: record,
+		url: '/task/fertilization',
+		dataType: 'JSON'
+	}).done(function( response ) {
+		// Check for successful (blank) response
+		if (response.msg === '') {
+//			$('#addUser fieldset input').val('');	// Clear the form inputs
+//			populateTable();	// Update the table
+			var table = $('#fertilization').parent()[0];
+			var row = table.insertRow(table.rows.length - 1);
+			console.log(record);
+			row.innerHTML = fertilizationDataToRow(record);
+		} else {
+			// If something goes wrong, alert the error message that our service returned
+//			alert('Error: ' + response.msg);
+		}
+	});
+}
+
 function populateTable() {
 
 	// Empty content string
@@ -50,32 +107,42 @@ function populateTable() {
 
 		// For each item in our JSON, add a table row and cells to the content string
 		$.each(data, function(){
-			tableContent += '<tr><td>' + this._id + '</td>';
-			tableContent += generateField(this.num);
-			tableContent += generateField(this.pigId);
-			tableContent += generateField(this.motherStatus);
-			tableContent += generateField(this.batch);
-			tableContent += generateField(this.daysSinceStopBreastFeed);
-			tableContent += generateField(this.administration1);
-			tableContent += generateField(this.administration2);
-			tableContent += generateField(this.administration3);
-			tableContent += generateField(this.administrator);
-			tableContent += generateField(this.status);
-			tableContent += '	<td class="text-right">';
-			tableContent += getOptionMenu();
-			tableContent += '	</td></tr>';
+			tableContent += '<tr>';
+			tableContent += fertilizationDataToRow(this);
+			tableContent += '</tr>';
 		});
-		
-		tableContent += '<tr><td>' + this._id + '</td>';
-		tableContent += generateFieldPig();
-		for (i = 0; i < 9; i++) {
-			tableContent += generateFieldNew('hi');
-		}
-		tableContent += '<td><button type="submit" class="btn btn-primary">추가</button></td></tr>';
+
+		var record = {
+			num : '222',
+			pigId : 'Y 39-12',
+			motherStatus : '이유모돈',
+			batch : '2산',
+			daysSinceStopBreastFeed : '5일',
+			administration1 : '정액1차',
+			administration2 : '정액2차',
+			administration3 : '정액3차',
+			administrator : '라유',
+			status : '완료'
+		};
+
+		tableContent += '<tr><td></td>';
+		tableContent += generateFieldNew('num', record.num);
+		tableContent += generateFieldNew('pigId', record.pigId);
+		tableContent += generateFieldNew('motherStatus', record.motherStatus);
+		tableContent += generateFieldNew('batch', record.batch);
+		tableContent += generateFieldNew('daysSinceStopBreastFeed', record.daysSinceStopBreastFeed);
+		tableContent += generateFieldNew('administration1', record.administration1);
+		tableContent += generateFieldNew('administration2', record.administration2);
+		tableContent += generateFieldNew('administration3', record.administration3);
+		tableContent += generateFieldNew('administrator', record.administrator);
+		tableContent += generateFieldNew('status', record.status);
+		tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
 		
 		// Inject the whole content string into our existing HTML table
 //		$('#userList table tbody').html(tableContent);
 		$('#fertilization').append(tableContent);
+		
+		$('#addButton').on('click', addFertilization);
 		
 		$('.field').click(function () {
 			$(this).find('label').hide();
@@ -114,7 +181,10 @@ function populateTable() {
 			"Scala",
 			"Scheme"
 		];
-		$( "#tags" ).autocomplete({
+		$('.field-input').autocomplete({
+			source: availableTags
+		});
+		$('.field-input-new').autocomplete({
 			source: availableTags
 		});
 	});
