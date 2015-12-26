@@ -2,8 +2,16 @@ function getTable() {
 	return $('#fertilization').parent()[0];
 }
 
+//function getHeaderCell(col) {
+//	return getTable().rows[0].cells[col];
+//}
+
 function getIdFromRow(row) {
 	return row.cells.item(0).innerHTML;
+}
+
+function getIdFromRowJQ(row) {
+	return row.find('td:nth-child(1)').html();
 }
 
 function getRow(id) {
@@ -55,9 +63,9 @@ function getOptionMenu(id) {
 	return optionMenu;
 }
 
-function generateField(data) {
+function generateField(fieldName, data) {
 	var field = '';
-	field += '<td><div class="field">';
+	field += '<td rel="' + fieldName + '"><div class="field">';
 	field += '	<label>' + data + '</label>';
 	field += '	<input type="text" class="form-control field-input" value="' + data + '" />';
 	field += '</div></td>';
@@ -75,16 +83,16 @@ function generateFieldNew(fieldName, data) {
 function fertilizationDataToRow(data) {
 	var rowContent = '';
 	rowContent += '<td>' + data._id + '</td>';
-	rowContent += generateField(data.num);
-	rowContent += generateField(data.pigId);
-	rowContent += generateField(data.motherStatus);
-	rowContent += generateField(data.batch);
-	rowContent += generateField(data.daysSinceStopBreastFeed);
-	rowContent += generateField(data.administration1);
-	rowContent += generateField(data.administration2);
-	rowContent += generateField(data.administration3);
-	rowContent += generateField(data.administrator);
-	rowContent += generateField(data.status);
+	rowContent += generateField('num', data.num);
+	rowContent += generateField('pigId', data.pigId);
+	rowContent += generateField('motherStatus', data.motherStatus);
+	rowContent += generateField('batch', data.batch);
+	rowContent += generateField('daysSinceStopBreastFeed', data.daysSinceStopBreastFeed);
+	rowContent += generateField('administration1', data.administration1);
+	rowContent += generateField('administration2', data.administration2);
+	rowContent += generateField('administration3', data.administration3);
+	rowContent += generateField('administrator', data.administrator);
+	rowContent += generateField('status', data.status);
 	rowContent += '	<td class="text-right">';
 	rowContent += getOptionMenu(data._id);
 	rowContent += '	</td>';
@@ -180,14 +188,34 @@ function populateTable() {
 		$('.field').click(function () {
 			$(this).find('label').hide();
 			$(this).find('input[type="text"]').show().focus();
-			var _id = $(this).parent().parent().find('td:nth-child(1)').html();
-			console.log(_id);
+//			console.log(getIdFromRowJQ($(this).parent().parent()));
 		});
 		
 		$('.field-input').focusout(function() {
-			var dad = $(this).parent();
+			var field = $(this).parent();
 			$(this).hide();
-			dad.find('label').show();
+			field.find('label').show();
+			var cell = field.parent();
+			var row = cell.parent();
+//			var col = row.children().index(cell);
+//			console.log(col);
+//			console.log(getHeaderCell(col).getAttribute('rel'));
+			var fieldName = cell[0].getAttribute('rel');
+//			console.log(fieldName);
+			var value = $(this).val();
+			var record = {};
+			record[fieldName] = value;
+			console.log(record);
+			$.ajax({
+				type : 'POST',
+				data : record,
+				url : '/task/fertilization/' + getIdFromRowJQ(row),
+				dataType: 'JSON'
+			}).done(function(res) {
+				console.log(value);
+				field.find('label').html(value);
+			});
+
 		});
 
 		var availableTags = [

@@ -20,7 +20,18 @@ router.post('/fertilization', function(req, res) {
 		console.log(result);
 		res.send((err == null) ? { msg : '', id : result._id } : { msg : err });
 	});
-//	res.send({ msg : 'success!!!' });
+});
+
+router.post('/fertilization/:id', function(req, res) {
+	var db = req.db;
+	var collection = db.get('fertilization');
+	console.log(req.params.id);
+	console.log(req.body);
+	// https://mongodb.github.io/node-mongodb-native/markdown-docs/insert.html#replacement-object
+	collection.update({ _id : req.params.id }, { $set: req.body }, function(err, result) {
+		console.log(result);
+		res.send((err == null) ? { msg : '' } : { msg : err });
+	});
 });
 
 router.delete('/fertilization/:id', function(req, res) {
