@@ -1,4 +1,4 @@
-./upload.sh
+./upload.sh --essential
 
 shopt -s expand_aliases
 source ~/.bash_profile
