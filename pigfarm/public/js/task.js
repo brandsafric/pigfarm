@@ -1,11 +1,51 @@
-function getOptionMenu() {
+function getTable() {
+	return $('#fertilization').parent()[0];
+}
+
+function getIdFromRow(row) {
+	return row.cells.item(0).innerHTML;
+}
+
+function getRow(id) {
+	var table = getTable();
+//	console.log(table.rows);
+	for (var i = 0, row; row = table.rows[i]; i++) {
+//		console.log(getIdFromRow(row));
+		if (getIdFromRow(row) == id)
+			return row;
+	}
+	return null;
+}
+
+function deleteRow(id) {
+	console.log(id);
+	$.ajax({
+		type : 'DELETE',
+		url : '/task/fertilization/' + id
+	}).done(function(res) {
+		console.log('deleted ' + id);
+		var row = getRow(id);
+		console.log(row);
+		for (var j = 0, cell; cell = row.cells[j]; j++) {
+			cell.style.cssText = "background-color:LightCyan";
+			var label = cell.childNodes[0].childNodes[1];
+			if (label) {
+//				label.style.setProperty("text-decoration", "line-through");
+				label.style.cssText = "text-decoration:line-through; color:LightSteelBlue; ";
+			}
+		}
+	});
+	return false;
+}
+
+function getOptionMenu(id) {
 	var optionMenu = 
 		'		<div class="btn-group">'+
 		'			<a href="#" data-toggle="dropdown" class="dropdown-toggle">'+
 		'				<i class="fa fa-pencil"></i>'+
 		'			</a>'+
 		'			<ul class="dropdown-menu pull-right">'+
-		'				<li><a href="#">Action</a></li>'+
+		'				<li><a href="#" onclick="deleteRow(\'' + id + '\');">삭제</a></li>'+
 		'				<li><a href="#">Another action</a></li>'+
 		'				<li><a href="#">Something else here</a></li>'+
 		'				<li class="divider"></li>'+
@@ -32,14 +72,6 @@ function generateFieldNew(fieldName, data) {
 	return field;
 }
 
-function generateFieldPig(data) {
-	var field = '';
-	field += '<td>';
-	field += '	<input id="tags" class="form-control">';
-	field += '</td>';
-	return field;
-}
-
 function fertilizationDataToRow(data) {
 	var rowContent = '';
 	rowContent += '<td>' + data._id + '</td>';
@@ -54,7 +86,7 @@ function fertilizationDataToRow(data) {
 	rowContent += generateField(data.administrator);
 	rowContent += generateField(data.status);
 	rowContent += '	<td class="text-right">';
-	rowContent += getOptionMenu();
+	rowContent += getOptionMenu(data._id);
 	rowContent += '	</td>';
 	console.log(rowContent);
 	return rowContent;
@@ -74,7 +106,7 @@ function addFertilization(event) {
 		status : $('#statusField').val()
 	}
 	
-	console.log(record);
+//	console.log(record);
 	
 	$.ajax({
 		type: 'POST',
@@ -86,7 +118,7 @@ function addFertilization(event) {
 		if (response.msg === '') {
 //			$('#addUser fieldset input').val('');	// Clear the form inputs
 //			populateTable();	// Update the table
-			var table = $('#fertilization').parent()[0];
+			var table = getTable();
 			var row = table.insertRow(table.rows.length - 1);
 			console.log(record);
 			row.innerHTML = fertilizationDataToRow(record);

@@ -22,4 +22,16 @@ router.post('/fertilization', function(req, res) {
 //	res.send({ msg : 'success!!!' });
 })
 
+router.delete('/fertilization/:id', function(req, res) {
+	try {
+		var db = req.db;
+		var collection = db.get('fertilization');
+		collection.remove({ _id : req.params.id }, function(err) {
+			res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
+		});
+	} catch (e) {
+		res.send(404);
+	}
+});
+
 module.exports = router;
