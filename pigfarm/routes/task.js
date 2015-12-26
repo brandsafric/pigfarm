@@ -17,10 +17,11 @@ router.post('/fertilization', function(req, res) {
 	var db = req.db;
 	var collection = db.get('fertilization');
 	collection.insert(req.body, function(err, result) {
-		res.send((err == null) ? { msg : '' } : { msg : err })
-	})
+		console.log(result);
+		res.send((err == null) ? { msg : '', id : result._id } : { msg : err });
+	});
 //	res.send({ msg : 'success!!!' });
-})
+});
 
 router.delete('/fertilization/:id', function(req, res) {
 	try {

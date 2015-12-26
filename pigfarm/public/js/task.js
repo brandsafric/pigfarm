@@ -117,7 +117,8 @@ function addFertilization(event) {
 		// Check for successful (blank) response
 		if (response.msg === '') {
 //			$('#addUser fieldset input').val('');	// Clear the form inputs
-//			populateTable();	// Update the table
+			console.log(response.id);
+			record._id = response.id;
 			var table = getTable();
 			var row = table.insertRow(table.rows.length - 1);
 			console.log(record);
