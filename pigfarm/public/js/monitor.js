@@ -65,9 +65,22 @@ function makeRealTimeUpdateChart() {
 	
 	chart += '<div class="col-md-6">';
 	chart += '	<section class="panel">';
-	chart += '	<header class="panel-heading font-bold">Real-time update</header>';
+	chart += '		<header class="panel-heading font-bold">Real-time update</header>';
 	chart += '		<div class="panel-body">';
-	chart += '			<div id="flot-live" style="height: 240px; padding: 0px; position: relative;"><canvas class="flot-base" width="1058" height="480" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 529px; height: 240px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 225px; left: 13px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 180px; left: 6px; text-align: right;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 6px; text-align: right;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 90px; left: 6px; text-align: right;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 45px; left: 6px; text-align: right;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 0px; text-align: right;">100</div></div></div><canvas class="flot-overlay" width="1058" height="480" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 529px; height: 240px;"></canvas></div>';
+	chart += '			<div id="flot-live" style="height: 240px; padding: 0px; position: relative;">';
+	chart += '				<canvas class="flot-base" width="1058" height="480" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 529px; height: 240px;"></canvas>';
+	chart += '				<div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);">';
+	chart += '					<div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 225px; left: 13px; text-align: right;">0</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 180px; left: 6px; text-align: right;">20</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 6px; text-align: right;">40</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 90px; left: 6px; text-align: right;">60</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 45px; left: 6px; text-align: right;">80</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 0px; text-align: right;">100</div>';
+	chart += '					</div>';
+	chart += '				</div>';
+	chart += '				<canvas class="flot-overlay" width="1058" height="480" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 529px; height: 240px;"></canvas>';
+	chart += '			</div>';
 	chart += '		</div>';
 	chart += '	</section>';
 	chart += '</div>';
