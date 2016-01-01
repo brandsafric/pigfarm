@@ -1,418 +1,418 @@
 extends layout
 
 block navi-content
-  li.active
-    a(href="/")
-      i.fa.fa-dashboard.fa-lg
-      span 전체 현황
-  li
-    a(href="task")
-      i.fa.fa-edit.fa-lg
-      span 작업 입력
+	li.active
+		a(href="/")
+			i.fa.fa-dashboard.fa-lg
+			span 전체 현황
+	li
+		a(href="task")
+			i.fa.fa-edit.fa-lg
+			span 작업 입력
 
 block content
-    section#content
-      section.main.padder
-        .row
-          .col-lg-12
-            section.toolbar.clearfix.m-t-large.m-b
-              a.btn.btn-white.btn-circle(href="mail.html")
-                i.fa.fa-envelope-o
-                | Inbox
-                b.badge.bg-white 5
-              a.btn.btn-primary.btn-circle.active(href="#")
-                i.fa.fa-lightbulb-o
-                | Projects
-              a.btn.btn-success.btn-circle(href="#")
-                i.fa.fa-check
-                | Tasks
-              a.btn.btn-info.btn-circle.active(href="#")
-                i.fa.fa-clock-o
-                | Timeline
-                b.badge.bg-info
-                  i.fa.fa-plus
-              a.btn.btn-inverse.btn-circle(href="#")
-                i.fa.fa-bar-chart-o
-                | Stats
-              a.btn.btn-warning.btn-circle(href="calendar.html")
-                i.fa.fa-calendar-o
-                | Calendar
-              a.btn.btn-danger.btn-circle(href="#")
-                i.fa.fa-group
-                | Groups
-              a.btn.btn-circle(href="#")
-                i.fa.fa-plus
-                | More
-          .col-lg-6
-            .row
-              // easypiechart
-              .col-xs-6
-                section.panel
-                  header.panel-heading.bg-white
-                    .text-center.h5 Play/Pause pie
-                  .panel-body.pull-in.text-center
-                    .inline
-                      .easypiechart(data-percent="55", data-loop="true")
-                        span.h2(style="margin-left:10px;margin-top:10px;display:inline-block") 55
-                        | %
-                        .easypie-text
-                          button.btn.btn-link.m-t-n-small(data-toggle="class:pie")
-                            i.fa.fa-play.text-active.text-muted
-                            i.fa.fa-pause.text.text-muted
-              .col-xs-6
-                section.panel
-                  header.panel-heading.bg-white
-                    .text-center.h5
-                      | Total:
-                      strong 5,000
-                  .panel-body.pull-in.text-center
-                    .inline
-                      .easypiechart(data-percent="75", data-bar-color="#576879")
-                        span.h2(style="margin-left:10px;margin-top:10px;display:inline-block") 75
-                        | %
-                        .easypie-text.text-muted new visits
-              // easypiechart end
-            section.panel
-              .panel-body.text-muted.l-h-2x
-                span.badge 3,3121
-                span.m-r-small Orders
-                span.badge.bg-success 25,129
-                span.m-r-small Selling Items
-                span.badge 59,973
-                span.m-r-small Items
-                span.badge 3,141
-                | Customers
-          .col-lg-6
-            // sparkline stats
-            section.panel
-              header.panel-heading
-                ul.nav.nav-pills.pull-right
-                  li
-                    a(href="#", data-loading-text="loading...")
-                      i.fa.fa-retweet
-                  li.dropdown
-                    a.dropdown-toggle(data-toggle="dropdown", href="#")
-                      span.text Day
-                      span.caret
-                    ul.dropdown-menu.pull-right
-                      li.active
-                        a(href="#") Day
-                      li
-                        a(href="#") Week
-                      li
-                        a(href="#") Month
-                span Snapshot
-              ul.list-group
-                li.list-group-item
-                  .media
-                    .pull-left.text-center.media-large
-                      .h4.m-t-mini
-                        strong 890
-                      small.text-muted Total views
-                    .pull-right.hidden-sm.text-right.m-t
-                      b.badge.bg-info(data-toggle="tooltip", data-title="New") 250
-                    .media-body
-                      .sparkline(data-type="bar", data-bar-color="#8e98a9", data-bar-width="10", data-height="28")
-                        // 20,10,15,21,12,5,21,30,24,15,8,19
-                      ul.list-inline.text-muted.axis
-                        li
-                          | 12
-                          br
-                          | a
-                        li 2
-                        li 4
-                        li 6
-                        li 8
-                        li 10
-                        li
-                          | 12
-                          br
-                          | p
-                        li 2
-                        li 4
-                        li 6
-                        li 8
-                        li 10
-                li.list-group-item
-                  .media
-                    .pull-left.text-center.media-large
-                      .h4.m-t-mini
-                        strong $4,800
-                      small.text-muted Revenue
-                    .pull-right.hidden-sm.text-right.m-t
-                      b.badge.bg-success(data-toggle="tooltip", data-title="Captured") $4,000
-                    .media-body
-                      .sparkline(data-type="bar", data-bar-color="#13c4a5", data-bar-width="10", data-height="28")
-                        // 200,400,500,100,90,1200,1500,1000,800,500,80,50
-                      ul.list-inline.text-muted.axis
-                        li
-                          | 12
-                          br
-                          | a
-                        li 2
-                        li 4
-                        li 6
-                        li 8
-                        li 10
-                        li
-                          | 12
-                          br
-                          | p
-                        li 2
-                        li 4
-                        li 6
-                        li 8
-                        li 10
-                li.list-group-item
-                  .media
-                    .pull-left.text-center.media-large
-                      .h4.m-t-mini
-                        strong 595
-                      small.text-muted Orders
-                    .pull-right.hidden-sm.text-right.m-t
-                      b.badge(data-toggle="tooltip", data-title="Awaiting")
-                        | 120
-                        i.fa.fa-plane
-                    .media-body
-                      .sparkline(data-type="bar", data-bar-color="#61a1e1", data-bar-width="10", data-height="28")
-                        // 15,21,30,24,15,8,19,20,10,15,21,12
-                      ul.list-inline.text-muted.axis
-                        li
-                          | 12
-                          br
-                          | a
-                        li 2
-                        li 4
-                        li 6
-                        li 8
-                        li 10
-                        li
-                          | 12
-                          br
-                          | p
-                        li 2
-                        li 4
-                        li 6
-                        li 8
-                        li 10
-            // sparkline stats end
-        .row
-          .col-lg-6
-            // scrollable inbox widget
-            section.panel
-              header.panel-heading
-                ul.nav.nav-pills.pull-right
-                  li
-                    a.panel-toggle.text-muted(href="#")
-                      i.fa.fa-caret-down.fa-lg.text-active
-                      i.fa.fa-caret-up.fa-lg.text
-                span.label.label-large.bg-default 15
-                | Inbox
-              section.panel-body.scrollbar.scroll-y.m-b(style="height:210px")
-                article.media
-                  span.pull-left.thumb-small
-                    img.img-circle(src="images/avatar.jpg", alt="John said")
-                  .media-body
-                    .pull-right.media-mini.text-center.text-muted
-                      strong.h4 12:18
-                      br
-                      small.label.bg-light pm
-                    a.h4(href="#") Bootstrap 3.0 is comming
-                    small.block
-                      a(href="#") John Smith
-                      span.label.label-success Circle
-                    small.block
-                      | Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.
-                .line.pull-in
-                article.media
-                  span.pull-left.thumb-small
-                    i.fa.fa-user.fa.fa-2x.text-muted
-                  .media-body
-                    .pull-right.media-mini.text-center.text-muted
-                      strong.h4 17
-                      br
-                      small.label.bg-light feb
-                    a.h4(href="#") Bootstrap documents
-                    small.block
-                      a(href="#") John Smith
-                      span.label.label-info Friends
-                    small.block
-                      | There are a few easy ways to quickly get started with Bootstrap, each one appealing to a different skill level and use case. Read through to see what suits your particular needs.
-                .line.pull-in
-                article.media
-                  .media-body
-                    .pull-right.media-mini.text-center.text-muted
-                      strong.h4 09
-                      br
-                      small.label.bg-light jan
-                    a.h4.text-success(href="#") Mobile first html/css framework
-                    small.block Bootstrap, Ratchet
-            // / scrollable inbox widget
-          .col-lg-6
-            // task
-            section.panel
-              header.panel-heading
-                | Tasks
-              ul.list-group
-                li.list-group-item(data-toggle="class:active", data-target="#todo-1")
-                  .media
-                    span.pull-left.thumb-small.m-t-mini
-                      i.fa.fa-code.fa-lg.text-default
-                    #todo-1.pull-right.text-primary.m-t-small
-                      i.fa.fa-circle.fa-lg.text.text-default
-                      i.fa.fa-check.fa-lg.text-active.text-primary
-                    .media-body
-                      div
-                        a.h5(href="#") Coding on app
-                      small.text-muted 9:30 am every day
-                li.list-group-item.bg(data-toggle="class:active", data-target="#todo-2")
-                  .media
-                    span.pull-left.thumb-small.m-t-mini
-                      i.fa.fa-reply.fa-lg.text-default
-                    #todo-2.pull-right.text-primary.m-t-small
-                      i.fa.fa-circle.fa-lg.text.text-default
-                      i.fa.fa-check.fa-lg.text-active.text-primary
-                    .media-body
-                      div
-                        a.h5(href="#") Reply email
-                      small.text-muted Check Gmail and reply
-                li.list-group-item(data-toggle="class:active", data-target="#todo-3")
-                  .media
-                    span.pull-left.thumb-small.m-t-mini
-                      i.fa.fa-coffee.fa-lg.text-default
-                    #todo-3.pull-right.text-primary.m-t-small
-                      i.fa.fa-circle.fa-lg.text.text-default
-                      i.fa.fa-check.fa-lg.text-active.text-primary
-                    .media-body
-                      div
-                        a.h5(href="#") Coffee time
-                      small.text-muted Freetime as you want
-                li.list-group-item.bg(data-toggle="class:active", data-target="#todo-4")
-                  .media
-                    span.pull-left.thumb-small.m-t-mini
-                      i.fa.fa-music.fa-lg.text-default
-                    #todo-4.pull-right.text-primary.m-t-small
-                      i.fa.fa-circle.fa-lg.text.text-default
-                      i.fa.fa-check.fa-lg.text-active.text-primary
-                    .media-body
-                      div
-                        a.h5(href="#") Listen music
-                      small.text-muted Listening and finding
-            // / task
-        .row
-          .col-lg-12
-            // .comment-list
-            section.comment-list.block
-              article#comment-id-1.comment-item.media.arrow.arrow-left
-                a.pull-left.thumb-small.avatar
-                  img.img-circle(src="images/avatar.jpg")
-                section.media-body.panel
-                  header.panel-heading.clearfix
-                    a(href="#") John smith
-                    label.label.bg-info.m-l-mini Editor
-                    span.text-muted.m-l-small.pull-right
-                      i.fa.fa-clock-o
-                      | 24 minutes ago
-                  .panel-body
-                    div
-                      | Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                    .comment-action.m-t-small
-                      a.btn.btn-white.btn-xs.active(href="#", data-toggle="class")
-                        i.fa.fa-star-o.text-muted.text
-                        i.fa.fa-star.text-danger.text-active
-                        | Like
-                      a.btn.btn-white.btn-xs(href="#comment-form")
-                        i.fa.fa-mail-reply.text-muted
-                        | Reply
-              // .comment-reply
-              article#comment-id-2.comment-item.comment-reply.media.arrow.arrow-left
-                a.pull-left.thumb-small
-                  span.btn.btn-circle.btn-white.btn-xs
-                    i.fa.fa-user
-                section.media-body.panel.text-small
-                  .panel-body
-                    a(href="#") Mika Sam
-                    label.label.bg-inverse.m-l-mini Admin
-                    | Report this comment is helpful
-                    span.text-muted.m-l-small.pull-right
-                      i.fa.fa-clock-o
-                      | 10 minutes ago
-              // / .comment-reply
-              article#comment-id-3.comment-item.media.arrow.arrow-left
-                a.pull-left.thumb-small.avatar
-                  img.img-circle(src="images/avatar.jpg")
-                section.media-body.panel
-                  header.panel-heading.clearfix
-                    a(href="#") By me
-                    label.label.bg-default.m-l-mini User
-                    span.text-muted.m-l-small.pull-right
-                      i.fa.fa-clock-o
-                      | about 1 hour ago
-                  .panel-body
-                    div This comment was posted by you.
-                    .comment-action.m-t-small
-                      a.btn.btn-white.btn-xs(href="#comment-id-3", data-dismiss="alert")
-                        i.fa.fa-trash-o.text-muted
-                        | Remove
-              article#comment-id-4.comment-item.media.arrow.arrow-left
-                a.pull-left.thumb-small.avatar
-                  img.img-circle(src="images/avatar.jpg")
-                section.media-body.panel
-                  header.panel-heading.clearfix
-                    a(href="#") Peter
-                    label.label.bg-primary.m-l-mini Vip
-                    span.text-muted.m-l-small.pull-right
-                      i.fa.fa-clock-o
-                      | 2 hours ago
-                  .panel-body
-                    blockquote
-                      p
-                        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-                      small
-                        | Someone famous in
-                        cite(title="Source Title") Source Title
-                    div Lorem ipsum dolor sit amet, consecteter adipiscing elit...
-                    .comment-action.m-t-small
-                      a.btn.btn-white.btn-xs(href="#", data-toggle="class")
-                        i.fa.fa-star-o.text-muted.text
-                        i.fa.fa-star.text-danger.text-active
-                        | Like
-                      a.btn.btn-white.btn-xs(href="#comment-form")
-                        i.fa.fa-mail-reply.text-muted
-                        | Reply
-              // comment form
-              article#comment-form.comment-item.media
-                a.pull-left.thumb-small.avatar
-                  img.img-circle(src="images/avatar.jpg")
-                section.media-body
-                  form.m-b-none(action="")
-                    .input-group
-                      input.form-control(type="text", placeholder="Input your comment here")
-                      span.input-group-btn
-                        button.btn.btn-primary(type="button") POST
-            // / .comment-list
-    // .modal
-    #modal.modal.fade
-      form.m-b-none
-        .modal-dialog
-          .modal-content
-            .modal-header
-              button.close(type="button", data-dismiss="modal")
-                i.fa.fa-times
-              h4#myModalLabel.modal-title Post your first idea
-            .modal-body
-              .block
-                label.control-label Title
-                input.form-control(type="text", placeholder="Post title")
-              .block
-                label.control-label Content
-                textarea.form-control(placeholder="Content", rows="5")
-              .checkbox
-                label
-                  input(type="checkbox")
-                  | Share with all memebers of first
-            .modal-footer
-              button.btn.btn-sm.btn-default(type="button", data-dismiss="modal") Save
-              button.btn.btn-sm.btn-primary(type="button", data-loading-text="Publishing...") Publish
-          // /.modal-content
-    // / .modal
+	section#content
+		section.main.padder
+			.row
+				.col-lg-12
+					section.toolbar.clearfix.m-t-large.m-b
+						a.btn.btn-white.btn-circle(href="mail.html")
+							i.fa.fa-envelope-o
+							| Inbox
+							b.badge.bg-white 5
+						a.btn.btn-primary.btn-circle.active(href="#")
+							i.fa.fa-lightbulb-o
+							| Projects
+						a.btn.btn-success.btn-circle(href="#")
+							i.fa.fa-check
+							| Tasks
+						a.btn.btn-info.btn-circle.active(href="#")
+							i.fa.fa-clock-o
+							| Timeline
+							b.badge.bg-info
+								i.fa.fa-plus
+						a.btn.btn-inverse.btn-circle(href="#")
+							i.fa.fa-bar-chart-o
+							| Stats
+						a.btn.btn-warning.btn-circle(href="calendar.html")
+							i.fa.fa-calendar-o
+							| Calendar
+						a.btn.btn-danger.btn-circle(href="#")
+							i.fa.fa-group
+							| Groups
+						a.btn.btn-circle(href="#")
+							i.fa.fa-plus
+							| More
+				.col-lg-6
+					.row
+						// easypiechart
+						.col-xs-6
+							section.panel
+								header.panel-heading.bg-white
+									.text-center.h5 Play/Pause pie
+								.panel-body.pull-in.text-center
+									.inline
+										.easypiechart(data-percent="55", data-loop="true")
+											span.h2(style="margin-left:10px;margin-top:10px;display:inline-block") 55
+											| %
+											.easypie-text
+												button.btn.btn-link.m-t-n-small(data-toggle="class:pie")
+													i.fa.fa-play.text-active.text-muted
+													i.fa.fa-pause.text.text-muted
+						.col-xs-6
+							section.panel
+								header.panel-heading.bg-white
+									.text-center.h5
+										| Total:
+										strong 5,000
+								.panel-body.pull-in.text-center
+									.inline
+										.easypiechart(data-percent="75", data-bar-color="#576879")
+											span.h2(style="margin-left:10px;margin-top:10px;display:inline-block") 75
+											| %
+											.easypie-text.text-muted new visits
+						// easypiechart end
+					section.panel
+						.panel-body.text-muted.l-h-2x
+							span.badge 3,3121
+							span.m-r-small Orders
+							span.badge.bg-success 25,129
+							span.m-r-small Selling Items
+							span.badge 59,973
+							span.m-r-small Items
+							span.badge 3,141
+							| Customers
+				.col-lg-6
+					// sparkline stats
+					section.panel
+						header.panel-heading
+							ul.nav.nav-pills.pull-right
+								li
+									a(href="#", data-loading-text="loading...")
+										i.fa.fa-retweet
+								li.dropdown
+									a.dropdown-toggle(data-toggle="dropdown", href="#")
+										span.text Day
+										span.caret
+									ul.dropdown-menu.pull-right
+										li.active
+											a(href="#") Day
+										li
+											a(href="#") Week
+										li
+											a(href="#") Month
+							span Snapshot
+						ul.list-group
+							li.list-group-item
+								.media
+									.pull-left.text-center.media-large
+										.h4.m-t-mini
+											strong 890
+										small.text-muted Total views
+									.pull-right.hidden-sm.text-right.m-t
+										b.badge.bg-info(data-toggle="tooltip", data-title="New") 250
+									.media-body
+										.sparkline(data-type="bar", data-bar-color="#8e98a9", data-bar-width="10", data-height="28")
+											// 20,10,15,21,12,5,21,30,24,15,8,19
+										ul.list-inline.text-muted.axis
+											li
+												| 12
+												br
+												| a
+											li 2
+											li 4
+											li 6
+											li 8
+											li 10
+											li
+												| 12
+												br
+												| p
+											li 2
+											li 4
+											li 6
+											li 8
+											li 10
+							li.list-group-item
+								.media
+									.pull-left.text-center.media-large
+										.h4.m-t-mini
+											strong $4,800
+										small.text-muted Revenue
+									.pull-right.hidden-sm.text-right.m-t
+										b.badge.bg-success(data-toggle="tooltip", data-title="Captured") $4,000
+									.media-body
+										.sparkline(data-type="bar", data-bar-color="#13c4a5", data-bar-width="10", data-height="28")
+											// 200,400,500,100,90,1200,1500,1000,800,500,80,50
+										ul.list-inline.text-muted.axis
+											li
+												| 12
+												br
+												| a
+											li 2
+											li 4
+											li 6
+											li 8
+											li 10
+											li
+												| 12
+												br
+												| p
+											li 2
+											li 4
+											li 6
+											li 8
+											li 10
+							li.list-group-item
+								.media
+									.pull-left.text-center.media-large
+										.h4.m-t-mini
+											strong 595
+										small.text-muted Orders
+									.pull-right.hidden-sm.text-right.m-t
+										b.badge(data-toggle="tooltip", data-title="Awaiting")
+											| 120
+											i.fa.fa-plane
+									.media-body
+										.sparkline(data-type="bar", data-bar-color="#61a1e1", data-bar-width="10", data-height="28")
+											// 15,21,30,24,15,8,19,20,10,15,21,12
+										ul.list-inline.text-muted.axis
+											li
+												| 12
+												br
+												| a
+											li 2
+											li 4
+											li 6
+											li 8
+											li 10
+											li
+												| 12
+												br
+												| p
+											li 2
+											li 4
+											li 6
+											li 8
+											li 10
+					// sparkline stats end
+			.row
+				.col-lg-6
+					// scrollable inbox widget
+					section.panel
+						header.panel-heading
+							ul.nav.nav-pills.pull-right
+								li
+									a.panel-toggle.text-muted(href="#")
+										i.fa.fa-caret-down.fa-lg.text-active
+										i.fa.fa-caret-up.fa-lg.text
+							span.label.label-large.bg-default 15
+							| Inbox
+						section.panel-body.scrollbar.scroll-y.m-b(style="height:210px")
+							article.media
+								span.pull-left.thumb-small
+									img.img-circle(src="images/avatar.jpg", alt="John said")
+								.media-body
+									.pull-right.media-mini.text-center.text-muted
+										strong.h4 12:18
+										br
+										small.label.bg-light pm
+									a.h4(href="#") Bootstrap 3.0 is comming
+									small.block
+										a(href="#") John Smith
+										span.label.label-success Circle
+									small.block
+										| Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.
+							.line.pull-in
+							article.media
+								span.pull-left.thumb-small
+									i.fa.fa-user.fa.fa-2x.text-muted
+								.media-body
+									.pull-right.media-mini.text-center.text-muted
+										strong.h4 17
+										br
+										small.label.bg-light feb
+									a.h4(href="#") Bootstrap documents
+									small.block
+										a(href="#") John Smith
+										span.label.label-info Friends
+									small.block
+										| There are a few easy ways to quickly get started with Bootstrap, each one appealing to a different skill level and use case. Read through to see what suits your particular needs.
+							.line.pull-in
+							article.media
+								.media-body
+									.pull-right.media-mini.text-center.text-muted
+										strong.h4 09
+										br
+										small.label.bg-light jan
+									a.h4.text-success(href="#") Mobile first html/css framework
+									small.block Bootstrap, Ratchet
+					// / scrollable inbox widget
+				.col-lg-6
+					// task
+					section.panel
+						header.panel-heading
+							| Tasks
+						ul.list-group
+							li.list-group-item(data-toggle="class:active", data-target="#todo-1")
+								.media
+									span.pull-left.thumb-small.m-t-mini
+										i.fa.fa-code.fa-lg.text-default
+									#todo-1.pull-right.text-primary.m-t-small
+										i.fa.fa-circle.fa-lg.text.text-default
+										i.fa.fa-check.fa-lg.text-active.text-primary
+									.media-body
+										div
+											a.h5(href="#") Coding on app
+										small.text-muted 9:30 am every day
+							li.list-group-item.bg(data-toggle="class:active", data-target="#todo-2")
+								.media
+									span.pull-left.thumb-small.m-t-mini
+										i.fa.fa-reply.fa-lg.text-default
+									#todo-2.pull-right.text-primary.m-t-small
+										i.fa.fa-circle.fa-lg.text.text-default
+										i.fa.fa-check.fa-lg.text-active.text-primary
+									.media-body
+										div
+											a.h5(href="#") Reply email
+										small.text-muted Check Gmail and reply
+							li.list-group-item(data-toggle="class:active", data-target="#todo-3")
+								.media
+									span.pull-left.thumb-small.m-t-mini
+										i.fa.fa-coffee.fa-lg.text-default
+									#todo-3.pull-right.text-primary.m-t-small
+										i.fa.fa-circle.fa-lg.text.text-default
+										i.fa.fa-check.fa-lg.text-active.text-primary
+									.media-body
+										div
+											a.h5(href="#") Coffee time
+										small.text-muted Freetime as you want
+							li.list-group-item.bg(data-toggle="class:active", data-target="#todo-4")
+								.media
+									span.pull-left.thumb-small.m-t-mini
+										i.fa.fa-music.fa-lg.text-default
+									#todo-4.pull-right.text-primary.m-t-small
+										i.fa.fa-circle.fa-lg.text.text-default
+										i.fa.fa-check.fa-lg.text-active.text-primary
+									.media-body
+										div
+											a.h5(href="#") Listen music
+										small.text-muted Listening and finding
+					// / task
+			.row
+				.col-lg-12
+					// .comment-list
+					section.comment-list.block
+						article#comment-id-1.comment-item.media.arrow.arrow-left
+							a.pull-left.thumb-small.avatar
+								img.img-circle(src="images/avatar.jpg")
+							section.media-body.panel
+								header.panel-heading.clearfix
+									a(href="#") John smith
+									label.label.bg-info.m-l-mini Editor
+									span.text-muted.m-l-small.pull-right
+										i.fa.fa-clock-o
+										| 24 minutes ago
+								.panel-body
+									div
+										| Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+									.comment-action.m-t-small
+										a.btn.btn-white.btn-xs.active(href="#", data-toggle="class")
+											i.fa.fa-star-o.text-muted.text
+											i.fa.fa-star.text-danger.text-active
+											| Like
+										a.btn.btn-white.btn-xs(href="#comment-form")
+											i.fa.fa-mail-reply.text-muted
+											| Reply
+						// .comment-reply
+						article#comment-id-2.comment-item.comment-reply.media.arrow.arrow-left
+							a.pull-left.thumb-small
+								span.btn.btn-circle.btn-white.btn-xs
+									i.fa.fa-user
+							section.media-body.panel.text-small
+								.panel-body
+									a(href="#") Mika Sam
+									label.label.bg-inverse.m-l-mini Admin
+									| Report this comment is helpful
+									span.text-muted.m-l-small.pull-right
+										i.fa.fa-clock-o
+										| 10 minutes ago
+						// / .comment-reply
+						article#comment-id-3.comment-item.media.arrow.arrow-left
+							a.pull-left.thumb-small.avatar
+								img.img-circle(src="images/avatar.jpg")
+							section.media-body.panel
+								header.panel-heading.clearfix
+									a(href="#") By me
+									label.label.bg-default.m-l-mini User
+									span.text-muted.m-l-small.pull-right
+										i.fa.fa-clock-o
+										| about 1 hour ago
+								.panel-body
+									div This comment was posted by you.
+									.comment-action.m-t-small
+										a.btn.btn-white.btn-xs(href="#comment-id-3", data-dismiss="alert")
+											i.fa.fa-trash-o.text-muted
+											| Remove
+						article#comment-id-4.comment-item.media.arrow.arrow-left
+							a.pull-left.thumb-small.avatar
+								img.img-circle(src="images/avatar.jpg")
+							section.media-body.panel
+								header.panel-heading.clearfix
+									a(href="#") Peter
+									label.label.bg-primary.m-l-mini Vip
+									span.text-muted.m-l-small.pull-right
+										i.fa.fa-clock-o
+										| 2 hours ago
+								.panel-body
+									blockquote
+										p
+											| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+										small
+											| Someone famous in
+											cite(title="Source Title") Source Title
+									div Lorem ipsum dolor sit amet, consecteter adipiscing elit...
+									.comment-action.m-t-small
+										a.btn.btn-white.btn-xs(href="#", data-toggle="class")
+											i.fa.fa-star-o.text-muted.text
+											i.fa.fa-star.text-danger.text-active
+											| Like
+										a.btn.btn-white.btn-xs(href="#comment-form")
+											i.fa.fa-mail-reply.text-muted
+											| Reply
+						// comment form
+						article#comment-form.comment-item.media
+							a.pull-left.thumb-small.avatar
+								img.img-circle(src="images/avatar.jpg")
+							section.media-body
+								form.m-b-none(action="")
+									.input-group
+										input.form-control(type="text", placeholder="Input your comment here")
+										span.input-group-btn
+											button.btn.btn-primary(type="button") POST
+					// / .comment-list
+	// .modal
+	#modal.modal.fade
+		form.m-b-none
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(type="button", data-dismiss="modal")
+							i.fa.fa-times
+						h4#myModalLabel.modal-title Post your first idea
+					.modal-body
+						.block
+							label.control-label Title
+							input.form-control(type="text", placeholder="Post title")
+						.block
+							label.control-label Content
+							textarea.form-control(placeholder="Content", rows="5")
+						.checkbox
+							label
+								input(type="checkbox")
+								| Share with all memebers of first
+					.modal-footer
+						button.btn.btn-sm.btn-default(type="button", data-dismiss="modal") Save
+						button.btn.btn-sm.btn-primary(type="button", data-loading-text="Publishing...") Publish
+				// /.modal-content
+	// / .modal
