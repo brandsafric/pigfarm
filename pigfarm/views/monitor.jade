@@ -1,0 +1,32 @@
+extends layout
+
+block navi-content
+	li
+		a(href="/")
+			i.fa.fa-dashboard.fa-lg
+			span 전체 현황
+	li
+		a(href="task")
+			i.fa.fa-edit.fa-lg
+			span 작업 입력
+	li.active
+		a(href="monitor")
+			i.fa.fa-signal.fa-lg
+			span 돈사 모니터
+
+block footer-extra
+	script(src='js/monitor.js')
+	script(src='js/charts/flot/jquery.flot.min.js')
+	script(src='js/charts/flot/jquery.flot.tooltip.min.js')
+	script(src='js/charts/flot/jquery.flot.resize.js')
+	script(src='js/charts/flot/jquery.flot.orderBars.js')
+	script(src='js/charts/flot/jquery.flot.pie.min.js')
+	script(src='js/charts/flot/demo.js')
+
+block content
+	section#content
+		section.main.padder#charts
+			.clearfix
+				h4
+					i.fa.fa-table
+					| 돈사 모니터
