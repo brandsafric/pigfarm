@@ -72,11 +72,11 @@ function makeRealTimeUpdateChart() {
 	chart += '				<div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);">';
 	chart += '					<div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">';
 	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 225px; left: 13px; text-align: right;">0</div>';
-	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 180px; left: 6px; text-align: right;">20</div>';
-	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 6px; text-align: right;">40</div>';
-	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 90px; left: 6px; text-align: right;">60</div>';
-	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 45px; left: 6px; text-align: right;">80</div>';
-	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 0px; text-align: right;">100</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 180px; left: 6px; text-align: right;">5</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 6px; text-align: right;">10</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 90px; left: 6px; text-align: right;">15</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 45px; left: 6px; text-align: right;">20</div>';
+	chart += '						<div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 0px; text-align: right;">25</div>';
 	chart += '					</div>';
 	chart += '				</div>';
 	chart += '				<canvas class="flot-overlay" width="1058" height="480" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 529px; height: 240px;"></canvas>';
@@ -126,11 +126,11 @@ function updateSimpleChart() {
 				colors: ["#3fcf7f"],
 				xaxis: {
 						mode: "categories",
-						tickDecimals: 0						
+						tickDecimals: 0
 				},
 				yaxis: {
 						ticks: 5,
-						tickDecimals: 0,						
+						tickDecimals: 0
 				},
 				tooltip: true,
 				tooltipOpts: {
@@ -145,13 +145,15 @@ function updateSimpleChart() {
 	);
 }
 
-function updateRealTimeUpdateChart() {
+function updateRealTimeUpdateChartTest() {
 	// live update
 	var data = [],
 	totalPoints = 300;
-
+	
+	var x = 0;
+	
 	function getRandomData() {
-
+		
 		if (data.length > 0)
 			data = data.slice(1);
 
@@ -159,8 +161,14 @@ function updateRealTimeUpdateChart() {
 
 		while (data.length < totalPoints) {
 
-			var prev = data.length > 0 ? data[data.length - 1] : 50,
-					y = prev + Math.random() * 10 - 5;
+//			var prev = data.length > 0 ? data[data.length - 1] : 50,
+//					y = prev + Math.random() * 10 - 5;
+
+//			var prev = data.length > 0 ? data[data.length - 1] : 0,
+//					y = prev + 1;
+
+			var prev = data.length > 0 ? data[data.length - 1] : 0,
+					y = Math.sin(x+=0.1) * x * 0.1 + 50;
 
 			if (y < 0) {
 				y = 0;
@@ -175,7 +183,7 @@ function updateRealTimeUpdateChart() {
 
 		var res = [];
 		for (var i = 0; i < data.length; ++i) {
-			res.push([i, data[i]])
+			res.push([i, data[i]]);
 		}
 
 		return res;
@@ -225,6 +233,74 @@ function updateRealTimeUpdateChart() {
 	update();
 }
 
+var data2 = [];
+
+function plot(data2) {
+	var res = [];
+	for (var i = 0; i < data2.length; ++i) {
+		res.push([i, data2[i]]);
+	}
+	var plot = $.plot("#flot-live", [ res ], {
+		series: {
+			lines: {
+				show: true,
+				lineWidth: 1,
+				fill: true,
+				fillColor: {
+					colors: [{
+						opacity: 0.2
+					}, {
+						opacity: 0.1
+					}]
+				}
+			},
+			shadowSize: 2
+		},
+		colors: ["#5191d1"],
+		yaxis: {
+			min: 0,
+			max: 25
+		},
+		xaxis: {
+			show: false
+		},
+		grid: {
+			tickColor: "#f0f0f0",
+			borderWidth: 0
+		},
+	});
+	plot.setData([res]);
+	plot.draw();
+}
+
+function updateTemperature() {
+
+	var totalPoints = 10;
+
+	if (data2.length == 0) {
+		$.getJSON('/monitor/temperature/' + totalPoints, function( data ) {
+			console.log(data);
+			$.each(data, function() {
+				console.log(this.temperature);
+				data2.push(this.temperature);
+			});
+			plot(data2);
+			setTimeout(updateTemperature, 1000);
+		});
+	} else {
+		data2 = data2.slice(1);
+		$.getJSON('/monitor/temperature/1', function( data ) {
+			console.log(data);
+			$.each(data, function() {
+				console.log(this.temperature);
+				data2.push(this.temperature);
+			});
+			plot(data2);
+			setTimeout(updateTemperature, 1000);
+		});
+	}
+}
+
 function populateCharts() {
 	var charts = '';
 	charts += '<div class="row">';
@@ -237,5 +313,6 @@ function populateCharts() {
 $(document).ready(function() {
 	populateCharts();
 	updateSimpleChart();
-	updateRealTimeUpdateChart();
+//	updateRealTimeUpdateChart();
+	updateTemperature();
 });
