@@ -1,0 +1,7 @@
+{
+	"APPID" : "pigfarm",
+	"APIKEY" : "0bb79498b1ef11e59b2c0cc47a1fcfae",
+	"CONTENT" : "정진농장 SMS 통보 시스템 청기와 API 연동 테스트 하나둘셋",
+	"SENDER" : "01048996329",
+	"RECEIVERS" : ["01048996329", "01093684702"]
+}
