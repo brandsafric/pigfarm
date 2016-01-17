@@ -253,4 +253,9 @@ function populateTable() {
 
 $(document).ready(function() {
 	populateTable();
+	$('#date-selector').on('changeDate', function(d) {
+		console.log(d);
+		if (d.viewMode == "days")
+			$('#date-selector').datepicker('hide');
+	});
 });
