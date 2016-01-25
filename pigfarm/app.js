@@ -76,3 +76,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+var daemon = require('./routes/daemon');
+daemon.init();
