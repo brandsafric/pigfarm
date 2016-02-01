@@ -33,7 +33,7 @@ router.post('/temperature', function(req, res) {
 	var collection2 = db.get('agent');
 	var agent = { num : agentNum, lastPing : new Date() };
 //	console.log(agent);
-	collection2.update( { num : agentNum }, agent, { upsert : true }, function(err, result) {
+	collection2.update( { num : agentNum }, { $set: agent }, { upsert : true }, function(err, result) {
 		console.log('agent(' + agentNum + ') status update ' + (result ? 'success' : 'fail!'));
 	})
 });
