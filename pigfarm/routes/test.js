@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/sms', function(req, res) {
-	shooter.shoot();
+	shooter.shoot('hello! 안녕하세요!');
 });
 
 module.exports = router;
