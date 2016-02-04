@@ -96,7 +96,7 @@ function fertilizationDataToRow(data) {
 	rowContent += '	<td class="text-right">';
 	rowContent += getOptionMenu(data._id);
 	rowContent += '	</td>';
-	console.log(rowContent);
+//	console.log(rowContent);
 	return rowContent;
 }
 
@@ -253,8 +253,11 @@ function populateTable() {
 
 $(document).ready(function() {
 	populateTable();
+	console.log($('#date-selector')[0].getAttribute('value'));
 	$('#date-selector').on('changeDate', function(d) {
 		console.log(d);
+		var date = new Date(d.date);
+		console.log(date);
 		if (d.viewMode == "days")
 			$('#date-selector').datepicker('hide');
 	});
