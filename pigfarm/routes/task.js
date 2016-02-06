@@ -5,10 +5,17 @@ router.get('/', function(req, res, next) {
 	res.render('task', { title: 'Express' });
 });
 
-router.get('/fertilization', function(req, res) {
+router.get('/fertilization/:date', function(req, res) {
 	var db = req.db;
 	var collection = db.get('fertilization');
-	collection.find({},{},function(e,docs){
+	var date1 = new Date(decodeURI(req.params.date));
+	var date2 = new Date(date1);
+	date2.setDate(date2.getDate() + 1);
+	console.log('yay!!!!');
+	console.log(decodeURI(req.params.date));
+	console.log(date1);
+	console.log(date2);
+	collection.find({ date : { $gte: date1, $lt: date2 } }, {}, function(e,docs){
 		res.json(docs);
 	});
 });
@@ -16,6 +23,7 @@ router.get('/fertilization', function(req, res) {
 router.post('/fertilization', function(req, res) {
 	var db = req.db;
 	var collection = db.get('fertilization');
+	req.body.date = new Date(req.body.date);
 	collection.insert(req.body, function(err, result) {
 		console.log(result);
 		res.send((err == null) ? { msg : '', id : result._id } : { msg : err });

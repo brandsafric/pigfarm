@@ -14,6 +14,13 @@ function getIdFromRowJQ(row) {
 	return row.find('td:nth-child(1)').html();
 }
 
+function getCurrentDate() {
+	console.log($('#date-selector').prop('value'));
+	var date = new Date($('#date-selector').prop('value'));
+	console.log(date);
+	return date;
+}
+
 function getRow(id) {
 	var table = getTable();
 //	console.log(table.rows);
@@ -111,7 +118,8 @@ function addFertilization(event) {
 		administration2 : $('#administration2Field').val(),
 		administration3 : $('#administration3Field').val(),
 		administrator : $('#administratorField').val(),
-		status : $('#statusField').val()
+		status : $('#statusField').val(),
+		date : getCurrentDate()
 	}
 	
 //	console.log(record);
@@ -138,13 +146,13 @@ function addFertilization(event) {
 	});
 }
 
-function populateTable() {
+function populateTable(date) {
 
 	// Empty content string
 	var tableContent = '';
 
 	// jQuery AJAX call for JSON
-	$.getJSON( '/task/fertilization', function( data ) {
+	$.getJSON( '/task/fertilization/' + encodeURI(date) , function( data ) {
 
 		// For each item in our JSON, add a table row and cells to the content string
 		$.each(data, function(){
@@ -252,13 +260,16 @@ function populateTable() {
 };
 
 $(document).ready(function() {
-	populateTable();
-	console.log($('#date-selector')[0].getAttribute('value'));
+	populateTable(getCurrentDate());
+
 	$('#date-selector').on('changeDate', function(d) {
-		console.log(d);
-		var date = new Date(d.date);
+		console.log(d); // Do not use this!! It returns local midnight, which is not what we want!!!
+		var date = new Date(getCurrentDate());
 		console.log(date);
-		if (d.viewMode == "days")
+		if (d.viewMode == "days") {
 			$('#date-selector').datepicker('hide');
+			$('#fertilization').empty();
+			populateTable(date);
+		}
 	});
 });
