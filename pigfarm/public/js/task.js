@@ -150,6 +150,15 @@ function addFertilization(event) {
 	});
 }
 
+function setAutoComplete(fieldName) {
+	$.getJSON('/task/fertilization/field/' + fieldName, function(data) {
+		console.log(data);
+		$('.' + getFieldClassName(fieldName)).autocomplete({
+			source: data
+		});
+	});
+}
+
 function populateTable(date) {
 
 	// Empty content string
@@ -194,7 +203,18 @@ function populateTable(date) {
 		// Inject the whole content string into our existing HTML table
 //		$('#userList table tbody').html(tableContent);
 		$('#fertilization').append(tableContent);
-		
+
+		setAutoComplete('num');
+		setAutoComplete('pigId');
+		setAutoComplete('motherStatus');
+		setAutoComplete('batch');
+		setAutoComplete('daysSinceStopBreastFeed');
+		setAutoComplete('administration1');
+		setAutoComplete('administration2');
+		setAutoComplete('administration3');
+		setAutoComplete('administrator');
+		setAutoComplete('status');
+
 		$('#addButton').on('click', addFertilization);
 		
 		$('.field').click(function () {
@@ -227,38 +247,6 @@ function populateTable(date) {
 				console.log(value);
 				field.find('label').html(value);
 			});
-
-		});
-
-		var availableTags = [
-			"ActionScript",
-			"AppleScript",
-			"Asp",
-			"BASIC",
-			"C",
-			"C++",
-			"Clojure",
-			"COBOL",
-			"ColdFusion",
-			"Erlang",
-			"Fortran",
-			"Groovy",
-			"Haskell",
-			"Java",
-			"JavaScript",
-			"Lisp",
-			"Perl",
-			"PHP",
-			"Python",
-			"Ruby",
-			"Scala",
-			"Scheme"
-		];
-		$('.field-input').autocomplete({
-			source: availableTags
-		});
-		$('.field-input-new').autocomplete({
-			source: availableTags
 		});
 	});
 };

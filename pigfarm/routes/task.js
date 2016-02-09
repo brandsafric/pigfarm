@@ -5,6 +5,15 @@ router.get('/', function(req, res, next) {
 	res.render('task', { title: 'Express' });
 });
 
+router.get('/fertilization/field/:name', function(req, res) {
+	console.log(req.params.name);
+	var db = req.db;
+	var collection = db.get('fertilization');
+	collection.distinct(req.params.name, {}, function(e,docs){
+		res.json(docs);
+	});
+});
+
 router.get('/fertilization/:date', function(req, res) {
 	var db = req.db;
 	var collection = db.get('fertilization');
