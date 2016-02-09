@@ -70,11 +70,15 @@ function getOptionMenu(id) {
 	return optionMenu;
 }
 
+function getFieldClassName(fieldName) {
+	return fieldName + '-field';
+}
+
 function generateField(fieldName, data) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div class="field">';
 	field += '	<label>' + data + '</label>';
-	field += '	<input type="text" class="form-control field-input" value="' + data + '" />';
+	field += '	<input type="text" class="form-control field-input ' + getFieldClassName(fieldName) + '" value="' + data + '" />';
 	field += '</div></td>';
 	return field;
 }
@@ -82,7 +86,7 @@ function generateField(fieldName, data) {
 function generateFieldNew(fieldName, data) {
 	var field = '';
 	field += '<td><div class="field-new">';
-	field += '	<input type="text" class="form-control field-input-new" id="' + fieldName + 'Field" value="' + data + '" />';
+	field += '	<input type="text" class="form-control field-input-new ' + getFieldClassName(fieldName) + '" value="' + data + '" />';
 	field += '</div></td>';
 	return field;
 }
@@ -109,16 +113,16 @@ function fertilizationDataToRow(data) {
 
 function addFertilization(event) {
 	var record = {
-		num : $('#numField').val(),
-		pigId : $('#pigIdField').val(),
-		motherStatus : $('#motherStatusField').val(),
-		batch : $('#batchField').val(),
-		daysSinceStopBreastFeed : $('#daysSinceStopBreastFeedField').val(),
-		administration1 : $('#administration1Field').val(),
-		administration2 : $('#administration2Field').val(),
-		administration3 : $('#administration3Field').val(),
-		administrator : $('#administratorField').val(),
-		status : $('#statusField').val(),
+		num : $('.field-input-new.' + getFieldClassName('num')).val(),
+		pigId : $('.field-input-new.' + getFieldClassName('pigId')).val(),
+		motherStatus : $('.field-input-new.' + getFieldClassName('motherStatus')).val(),
+		batch : $('.field-input-new.' + getFieldClassName('batch')).val(),
+		daysSinceStopBreastFeed : $('.field-input-new.' + getFieldClassName('daysSinceStopBreastFeed')).val(),
+		administration1 : $('.field-input-new.' + getFieldClassName('administration1')).val(),
+		administration2 : $('.field-input-new.' + getFieldClassName('administration2')).val(),
+		administration3 : $('.field-input-new.' + getFieldClassName('administration3')).val(),
+		administrator : $('.field-input-new.' + getFieldClassName('administrator')).val(),
+		status : $('.field-input-new.' + getFieldClassName('status')).val(),
 		date : getCurrentDate()
 	}
 	
