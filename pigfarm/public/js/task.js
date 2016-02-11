@@ -111,6 +111,60 @@ function fertilizationDataToRow(data) {
 	return rowContent;
 }
 
+function onClickField() {
+	$(this).find('label').hide();
+	$(this).find('input[type="text"]').show().focus();
+//	console.log(getIdFromRowJQ($(this).parent().parent()));
+}
+
+function onFocusOutFromField() {
+	var field = $(this).parent();
+	$(this).hide();
+	field.find('label').show();
+	var cell = field.parent();
+	var row = cell.parent();
+//	var col = row.children().index(cell);
+//	console.log(col);
+//	console.log(getHeaderCell(col).getAttribute('rel'));
+	var fieldName = cell[0].getAttribute('rel');
+//	console.log(fieldName);
+	var value = $(this).val();
+	var record = {};
+	record[fieldName] = value;
+	console.log(record);
+	$.ajax({
+		type : 'POST',
+		data : record,
+		url : '/task/fertilization/' + getIdFromRowJQ(row),
+		dataType: 'JSON'
+	}).done(function(res) {
+		console.log(value);
+		field.find('label').html(value);
+	});
+}
+
+function setAutoComplete(fieldName) {
+	$.getJSON('/task/fertilization/field/' + fieldName, function(data) {
+		console.log(data);
+		$('.' + getFieldClassName(fieldName)).autocomplete({
+			source: data
+		});
+	});
+}
+
+function setAutoCompleteAll() {
+	setAutoComplete('num');
+	setAutoComplete('pigId');
+	setAutoComplete('motherStatus');
+	setAutoComplete('batch');
+	setAutoComplete('daysSinceStopBreastFeed');
+	setAutoComplete('administration1');
+	setAutoComplete('administration2');
+	setAutoComplete('administration3');
+	setAutoComplete('administrator');
+	setAutoComplete('status');
+}
+
 function addFertilization(event) {
 	var record = {
 		num : $('.field-input-new.' + getFieldClassName('num')).val(),
@@ -143,19 +197,13 @@ function addFertilization(event) {
 			var row = table.insertRow(table.rows.length - 1);
 			console.log(record);
 			row.innerHTML = fertilizationDataToRow(record);
+			$(row).find('.field').click(onClickField);
+			$(row).find('.field-input').focusout(onFocusOutFromField);
+			setAutoCompleteAll();
 		} else {
 			// If something goes wrong, alert the error message that our service returned
 //			alert('Error: ' + response.msg);
 		}
-	});
-}
-
-function setAutoComplete(fieldName) {
-	$.getJSON('/task/fertilization/field/' + fieldName, function(data) {
-		console.log(data);
-		$('.' + getFieldClassName(fieldName)).autocomplete({
-			source: data
-		});
 	});
 }
 
@@ -204,50 +252,12 @@ function populateTable(date) {
 //		$('#userList table tbody').html(tableContent);
 		$('#fertilization').append(tableContent);
 
-		setAutoComplete('num');
-		setAutoComplete('pigId');
-		setAutoComplete('motherStatus');
-		setAutoComplete('batch');
-		setAutoComplete('daysSinceStopBreastFeed');
-		setAutoComplete('administration1');
-		setAutoComplete('administration2');
-		setAutoComplete('administration3');
-		setAutoComplete('administrator');
-		setAutoComplete('status');
-
 		$('#addButton').on('click', addFertilization);
-		
-		$('.field').click(function () {
-			$(this).find('label').hide();
-			$(this).find('input[type="text"]').show().focus();
-//			console.log(getIdFromRowJQ($(this).parent().parent()));
-		});
-		
-		$('.field-input').focusout(function() {
-			var field = $(this).parent();
-			$(this).hide();
-			field.find('label').show();
-			var cell = field.parent();
-			var row = cell.parent();
-//			var col = row.children().index(cell);
-//			console.log(col);
-//			console.log(getHeaderCell(col).getAttribute('rel'));
-			var fieldName = cell[0].getAttribute('rel');
-//			console.log(fieldName);
-			var value = $(this).val();
-			var record = {};
-			record[fieldName] = value;
-			console.log(record);
-			$.ajax({
-				type : 'POST',
-				data : record,
-				url : '/task/fertilization/' + getIdFromRowJQ(row),
-				dataType: 'JSON'
-			}).done(function(res) {
-				console.log(value);
-				field.find('label').html(value);
-			});
-		});
+
+		$('.field').click(onClickField);
+		$('.field-input').focusout(onFocusOutFromField);
+
+		setAutoCompleteAll();
 	});
 };
 
