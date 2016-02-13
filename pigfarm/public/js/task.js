@@ -1,9 +1,9 @@
-function getTable() {
-	return $('#fertilization').parent()[0];
+function getTable(tableId) {
+	return $(tableId).parent()[0];
 }
 
-//function getHeaderCell(col) {
-//	return getTable().rows[0].cells[col];
+//function getHeaderCell(tableId, col) {
+//	return getTable(tableId).rows[0].cells[col];
 //}
 
 function getIdFromRow(row) {
@@ -21,8 +21,8 @@ function getCurrentDate() {
 	return date;
 }
 
-function getRow(id) {
-	var table = getTable();
+function getRow(tableId, id) {
+	var table = getTable(tableId);
 //	console.log(table.rows);
 	for (var i = 0, row; row = table.rows[i]; i++) {
 //		console.log(getIdFromRow(row));
@@ -32,14 +32,14 @@ function getRow(id) {
 	return null;
 }
 
-function deleteRow(id) {
-	console.log(id);
+function deleteRow(tableId, accessPoint, recordId) {
+	console.log(recordId);
 	$.ajax({
 		type : 'DELETE',
-		url : '/task/fertilization/' + id
+		url : accessPoint + recordId
 	}).done(function(res) {
-		console.log('deleted ' + id);
-		var row = getRow(id);
+		console.log('deleted ' + recordId);
+		var row = getRow(tableId, recordId);
 		console.log(row);
 		for (var j = 0, cell; cell = row.cells[j]; j++) {
 			cell.style.cssText = "background-color:LightCyan";
@@ -51,23 +51,6 @@ function deleteRow(id) {
 		}
 	});
 	return false;
-}
-
-function getOptionMenu(id) {
-	var optionMenu = 
-		'		<div class="btn-group">'+
-		'			<a href="#" data-toggle="dropdown" class="dropdown-toggle">'+
-		'				<i class="fa fa-pencil"></i>'+
-		'			</a>'+
-		'			<ul class="dropdown-menu pull-right">'+
-		'				<li><a href="#" onclick="deleteRow(\'' + id + '\');">삭제</a></li>'+
-		'				<li><a href="#">Another action</a></li>'+
-		'				<li><a href="#">Something else here</a></li>'+
-		'				<li class="divider"></li>'+
-		'				<li><a href="#">Separated link</a></li>'+
-		'			</ul>'+
-		'		</div>';
-	return optionMenu;
 }
 
 function getFieldClassName(fieldName) {
@@ -91,178 +74,200 @@ function generateFieldNew(fieldName, data) {
 	return field;
 }
 
-function fertilizationDataToRow(data) {
-	var rowContent = '';
-	rowContent += '<td>' + data._id + '</td>';
-	rowContent += generateField('num', data.num);
-	rowContent += generateField('pigId', data.pigId);
-	rowContent += generateField('motherStatus', data.motherStatus);
-	rowContent += generateField('batch', data.batch);
-	rowContent += generateField('daysSinceStopBreastFeed', data.daysSinceStopBreastFeed);
-	rowContent += generateField('administration1', data.administration1);
-	rowContent += generateField('administration2', data.administration2);
-	rowContent += generateField('administration3', data.administration3);
-	rowContent += generateField('administrator', data.administrator);
-	rowContent += generateField('status', data.status);
-	rowContent += '	<td class="text-right">';
-	rowContent += getOptionMenu(data._id);
-	rowContent += '	</td>';
-//	console.log(rowContent);
-	return rowContent;
-}
-
-function onClickField() {
-	$(this).find('label').hide();
-	$(this).find('input[type="text"]').show().focus();
-//	console.log(getIdFromRowJQ($(this).parent().parent()));
-}
-
-function onFocusOutFromField() {
-	var field = $(this).parent();
-	$(this).hide();
-	field.find('label').show();
-	var cell = field.parent();
-	var row = cell.parent();
-//	var col = row.children().index(cell);
-//	console.log(col);
-//	console.log(getHeaderCell(col).getAttribute('rel'));
-	var fieldName = cell[0].getAttribute('rel');
-//	console.log(fieldName);
-	var value = $(this).val();
-	var record = {};
-	record[fieldName] = value;
-	console.log(record);
-	$.ajax({
-		type : 'POST',
-		data : record,
-		url : '/task/fertilization/' + getIdFromRowJQ(row),
-		dataType: 'JSON'
-	}).done(function(res) {
-		console.log(value);
-		field.find('label').html(value);
-	});
-}
-
-function setAutoComplete(fieldName) {
-	$.getJSON('/task/fertilization/field/' + fieldName, function(data) {
-		console.log(data);
+function setAutoComplete(accessPoint, fieldName) {
+	$.getJSON(accessPoint + 'field/' + fieldName, function(data) {
+//		console.log(data);
 		$('.' + getFieldClassName(fieldName)).autocomplete({
 			source: data
 		});
 	});
 }
 
-function setAutoCompleteAll() {
-	setAutoComplete('num');
-	setAutoComplete('pigId');
-	setAutoComplete('motherStatus');
-	setAutoComplete('batch');
-	setAutoComplete('daysSinceStopBreastFeed');
-	setAutoComplete('administration1');
-	setAutoComplete('administration2');
-	setAutoComplete('administration3');
-	setAutoComplete('administrator');
-	setAutoComplete('status');
+function Table(tableId, accessPoint, fieldNames) {
+	this.tableId = tableId;
+	this.accessPoint = accessPoint;
+	this.fieldNames = fieldNames;
+//	console.log(this.tableId + ', ' + this.url + ', ' + this.fieldNames);
 }
 
-function addFertilization(event) {
-	var record = {
-		num : $('.field-input-new.' + getFieldClassName('num')).val(),
-		pigId : $('.field-input-new.' + getFieldClassName('pigId')).val(),
-		motherStatus : $('.field-input-new.' + getFieldClassName('motherStatus')).val(),
-		batch : $('.field-input-new.' + getFieldClassName('batch')).val(),
-		daysSinceStopBreastFeed : $('.field-input-new.' + getFieldClassName('daysSinceStopBreastFeed')).val(),
-		administration1 : $('.field-input-new.' + getFieldClassName('administration1')).val(),
-		administration2 : $('.field-input-new.' + getFieldClassName('administration2')).val(),
-		administration3 : $('.field-input-new.' + getFieldClassName('administration3')).val(),
-		administrator : $('.field-input-new.' + getFieldClassName('administrator')).val(),
-		status : $('.field-input-new.' + getFieldClassName('status')).val(),
-		date : getCurrentDate()
-	}
-	
-//	console.log(record);
-	
-	$.ajax({
-		type: 'POST',
-		data: record,
-		url: '/task/fertilization',
-		dataType: 'JSON'
-	}).done(function( response ) {
-		// Check for successful (blank) response
-		if (response.msg === '') {
-//			$('#addUser fieldset input').val('');	// Clear the form inputs
-			console.log(response.id);
-			record._id = response.id;
-			var table = getTable();
-			var row = table.insertRow(table.rows.length - 1);
+Table.prototype = {
+    constructor: Table,
+
+    populateTable:function(date) {
+
+		var self = this;
+
+		var addRecord = function(event) {
+			var record = {};
+			for (i in self.fieldNames) {
+				record[self.fieldNames[i]] = $('.field-input-new.' + getFieldClassName(self.fieldNames[i])).val();
+			}
+			record['date'] = getCurrentDate();
+
 			console.log(record);
-			row.innerHTML = fertilizationDataToRow(record);
-			$(row).find('.field').click(onClickField);
-			$(row).find('.field-input').focusout(onFocusOutFromField);
-			setAutoCompleteAll();
-		} else {
-			// If something goes wrong, alert the error message that our service returned
-//			alert('Error: ' + response.msg);
-		}
-	});
-}
 
-function populateTable(date) {
-
-	// Empty content string
-	var tableContent = '';
-
-	// jQuery AJAX call for JSON
-	$.getJSON( '/task/fertilization/' + encodeURI(date) , function( data ) {
-
-		// For each item in our JSON, add a table row and cells to the content string
-		$.each(data, function(){
-			tableContent += '<tr>';
-			tableContent += fertilizationDataToRow(this);
-			tableContent += '</tr>';
-		});
-
-		var record = {
-			num : '222',
-			pigId : 'Y 39-12',
-			motherStatus : '이유모돈',
-			batch : '2산',
-			daysSinceStopBreastFeed : '5일',
-			administration1 : '정액1차',
-			administration2 : '정액2차',
-			administration3 : '정액3차',
-			administrator : '라유',
-			status : '완료'
+			$.ajax({
+				type: 'POST',
+				data: record,
+				url: self.accessPoint,
+				dataType: 'JSON'
+			}).done(function( response ) {
+				// Check for successful (blank) response
+				if (response.msg === '') {
+//					$('#addUser fieldset input').val('');	// Clear the form inputs
+					console.log(response.id);
+					record._id = response.id;
+					var table = getTable(self.tableId);
+					var row = table.insertRow(table.rows.length - 1);
+					console.log(record);
+					row.innerHTML = self.dataToRow(record);
+					self.setEditAction(row);
+					self.setAutoCompleteAll();
+				} else {
+					// If something goes wrong, alert the error message that our service returned
+//					alert('Error: ' + response.msg);
+				}
+			});
 		};
 
-		tableContent += '<tr><td></td>';
-		tableContent += generateFieldNew('num', record.num);
-		tableContent += generateFieldNew('pigId', record.pigId);
-		tableContent += generateFieldNew('motherStatus', record.motherStatus);
-		tableContent += generateFieldNew('batch', record.batch);
-		tableContent += generateFieldNew('daysSinceStopBreastFeed', record.daysSinceStopBreastFeed);
-		tableContent += generateFieldNew('administration1', record.administration1);
-		tableContent += generateFieldNew('administration2', record.administration2);
-		tableContent += generateFieldNew('administration3', record.administration3);
-		tableContent += generateFieldNew('administrator', record.administrator);
-		tableContent += generateFieldNew('status', record.status);
-		tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
-		
-		// Inject the whole content string into our existing HTML table
-//		$('#userList table tbody').html(tableContent);
-		$('#fertilization').append(tableContent);
+		// Empty content string
+		var tableContent = '';
 
-		$('#addButton').on('click', addFertilization);
+		// jQuery AJAX call for JSON
+		$.getJSON(this.accessPoint + encodeURI(date) , function( data ) {
 
-		$('.field').click(onClickField);
-		$('.field-input').focusout(onFocusOutFromField);
+			// For each item in our JSON, add a table row and cells to the content string
+			$.each(data, function(){
+				tableContent += '<tr>';
+				tableContent += self.dataToRow(this);
+				tableContent += '</tr>';
+			});
 
-		setAutoCompleteAll();
-	});
+			var record = {
+				num : '222',
+				pigId : 'Y 39-12',
+				motherStatus : '이유모돈',
+				batch : '2산',
+				daysSinceStopBreastFeed : '5일',
+				administration1 : '정액1차',
+				administration2 : '정액2차',
+				administration3 : '정액3차',
+				administrator : '라유',
+				status : '완료'
+			};
+
+			tableContent += '<tr><td></td>';
+			for (i in self.fieldNames) {
+				tableContent += generateFieldNew(self.fieldNames[i], record[self.fieldNames[i]]);
+			}
+			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
+			
+			// Inject the whole content string into our existing HTML table
+//			$('#userList table tbody').html(tableContent);
+			$(self.tableId).append(tableContent);
+
+			$('#addButton').on('click', addRecord);
+
+			self.setEditAction();
+			self.setAutoCompleteAll();
+		});
+	},
+
+	setEditAction:function(row) {
+
+		var self = this;
+
+		(row ? $(row).find('.field') : $('.field')).click(function() {
+			$(this).find('label').hide();
+			$(this).find('input[type="text"]').show().focus();
+//			console.log(getIdFromRowJQ($(this).parent().parent()));
+		});
+
+		(row ? $(row).find('.field-input') : $('.field-input')).focusout(function() {
+			var field = $(this).parent();
+			$(this).hide();
+			field.find('label').show();
+			var cell = field.parent();
+			var row = cell.parent();
+//			var col = row.children().index(cell);
+//			console.log(col);
+//			console.log(getHeaderCell(col).getAttribute('rel'));
+			var fieldName = cell[0].getAttribute('rel');
+//			console.log(fieldName);
+			var value = $(this).val();
+			var record = {};
+			record[fieldName] = value;
+			console.log(record);
+			$.ajax({
+				type : 'POST',
+				data : record,
+				url : self.accessPoint + getIdFromRowJQ(row),
+				dataType: 'JSON'
+			}).done(function(res) {
+				console.log(value);
+				field.find('label').html(value);
+			});
+		});
+	},
+
+	setAutoCompleteAll:function() {
+		for (i in this.fieldNames) {
+			setAutoComplete(this.accessPoint, this.fieldNames[i]);
+		}
+	},
+
+	dataToRow:function(data) {
+		var rowContent = '';
+		rowContent += '<td>' + data._id + '</td>';
+		for (i in this.fieldNames) {
+			rowContent += generateField(this.fieldNames[i], data[this.fieldNames[i]]);
+		}
+		rowContent += '	<td class="text-right">';
+		rowContent += this.getOptionMenu(data._id);
+		rowContent += '	</td>';
+//		console.log(rowContent);
+		return rowContent;
+	},
+
+	getOptionMenu:function(recordId) {
+		var optionMenu =
+			'		<div class="btn-group">'+
+			'			<a href="#" data-toggle="dropdown" class="dropdown-toggle">'+
+			'				<i class="fa fa-pencil"></i>'+
+			'			</a>'+
+			'			<ul class="dropdown-menu pull-right">'+
+			'				<li><a href="#" onclick="deleteRow(\'' + this.tableId + '\', \'' + this.accessPoint + '\', \'' + recordId + '\');">삭제</a></li>'+
+			'				<li><a href="#">Another action</a></li>'+
+			'				<li><a href="#">Something else here</a></li>'+
+			'				<li class="divider"></li>'+
+			'				<li><a href="#">Separated link</a></li>'+
+			'			</ul>'+
+			'		</div>';
+		return optionMenu;
+	}
 };
 
 $(document).ready(function() {
-	populateTable(getCurrentDate());
+	var tables = [
+		new Table(
+			'#fertilization',
+			'/task/fertilization/',
+			[
+				'num',
+				'pigId',
+				'motherStatus',
+				'batch',
+				'daysSinceStopBreastFeed',
+				'administration1',
+				'administration2',
+				'administration3',
+				'administrator',
+				'status'
+			]
+		),
+	];
+
+	tables[0].populateTable(getCurrentDate());
 
 	$('#date-selector').on('changeDate', function(d) {
 		console.log(d); // Do not use this!! It returns local midnight, which is not what we want!!!
@@ -271,7 +276,7 @@ $(document).ready(function() {
 		if (d.viewMode == "days") {
 			$('#date-selector').datepicker('hide');
 			$('#fertilization').empty();
-			populateTable(date);
+			tables[0].populateTable(date);
 		}
 	});
 });
