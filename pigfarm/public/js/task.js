@@ -97,39 +97,6 @@ Table.prototype = {
 
 		var self = this;
 
-		var addRecord = function(event) {
-			var record = {};
-			for (i in self.fieldNames) {
-				record[self.fieldNames[i]] = $('.field-input-new.' + getFieldClassName(self.fieldNames[i])).val();
-			}
-			record['date'] = getCurrentDate();
-
-			console.log(record);
-
-			$.ajax({
-				type: 'POST',
-				data: record,
-				url: self.accessPoint,
-				dataType: 'JSON'
-			}).done(function( response ) {
-				// Check for successful (blank) response
-				if (response.msg === '') {
-//					$('#addUser fieldset input').val('');	// Clear the form inputs
-					console.log(response.id);
-					record._id = response.id;
-					var table = getTable(self.tableId);
-					var row = table.insertRow(table.rows.length - 1);
-					console.log(record);
-					row.innerHTML = self.dataToRow(record);
-					self.setEditAction(row);
-					self.setAutoCompleteAll();
-				} else {
-					// If something goes wrong, alert the error message that our service returned
-//					alert('Error: ' + response.msg);
-				}
-			});
-		};
-
 		// Empty content string
 		var tableContent = '';
 
@@ -143,33 +110,14 @@ Table.prototype = {
 				tableContent += '</tr>';
 			});
 
-			var record = {
-				num : '222',
-				pigId : 'Y 39-12',
-				motherStatus : '이유모돈',
-				batch : '2산',
-				daysSinceStopBreastFeed : '5일',
-				administration1 : '정액1차',
-				administration2 : '정액2차',
-				administration3 : '정액3차',
-				administrator : '라유',
-				status : '완료'
-			};
-
-			tableContent += '<tr><td></td>';
-			for (i in self.fieldNames) {
-				tableContent += generateFieldNew(self.fieldNames[i], record[self.fieldNames[i]]);
-			}
-			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
-			
 			// Inject the whole content string into our existing HTML table
 //			$('#userList table tbody').html(tableContent);
 			$(self.tableId).append(tableContent);
 
-			$('#addButton').on('click', addRecord);
-
 			self.setEditAction();
 			self.setAutoCompleteAll();
+
+			self.addLastRowForAddingNewRecord();
 		});
 	},
 
@@ -214,6 +162,58 @@ Table.prototype = {
 		for (i in this.fieldNames) {
 			setAutoComplete(this.accessPoint, this.fieldNames[i]);
 		}
+	},
+
+	addLastRowForAddingNewRecord: function() {
+
+		var self = this;
+
+		var addRecord = function(event) {
+			var record = {};
+			for (i in self.fieldNames) {
+				record[self.fieldNames[i]] = $('.field-input-new.' + getFieldClassName(self.fieldNames[i])).val();
+			}
+			record['date'] = getCurrentDate();
+
+			console.log(record);
+
+			$.ajax({
+				type: 'POST',
+				data: record,
+				url: self.accessPoint,
+				dataType: 'JSON'
+			}).done(function( response ) {
+				// Check for successful (blank) response
+				if (response.msg === '') {
+//					$('#addUser fieldset input').val('');	// Clear the form inputs
+					console.log(response.id);
+					record._id = response.id;
+					var table = getTable(self.tableId);
+					var row = table.insertRow(table.rows.length - 1);
+					console.log(record);
+					row.innerHTML = self.dataToRow(record);
+					self.setEditAction(row);
+					self.setAutoCompleteAll();
+				} else {
+					// If something goes wrong, alert the error message that our service returned
+//					alert('Error: ' + response.msg);
+				}
+			});
+		};
+
+		$.getJSON(this.accessPoint + 'last' , function( data ) {
+			var record = data[0];
+
+			var tableContent = '<tr><td></td>';
+			for (i in self.fieldNames) {
+				tableContent += generateFieldNew(self.fieldNames[i], record[self.fieldNames[i]]);
+			}
+			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
+			
+			$(self.tableId).append(tableContent);
+
+			$('#addButton').on('click', addRecord);
+		});
 	},
 
 	dataToRow:function(data) {
