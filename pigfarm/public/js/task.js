@@ -54,7 +54,10 @@ function deleteRow(tableId, accessPoint, recordId) {
 }
 
 function getFieldClassName(fieldName) {
-	return fieldName + '-field';
+	if (fieldName.startsWith('+') || fieldName.startsWith('-'))
+		return fieldName.substr(1) + '-field'
+	else
+		return fieldName + '-field';
 }
 
 function generateField(fieldName, data) {
@@ -62,6 +65,14 @@ function generateField(fieldName, data) {
 	field += '<td rel="' + fieldName + '"><div class="field">';
 	field += '	<label>' + data + '</label>';
 	field += '	<input type="text" class="form-control field-input ' + getFieldClassName(fieldName) + '" value="' + data + '" />';
+	field += '</div></td>';
+	return field;
+}
+
+function generateFieldAux(fieldName) {
+	var field = '';
+	field += '<td rel="' + fieldName + '"><div class="field">';
+	field += '	<label class="form-control field-input ' + getFieldClassName(fieldName) + '>loading...</label>';
 	field += '</div></td>';
 	return field;
 }
@@ -74,19 +85,32 @@ function generateFieldNew(fieldName, data) {
 	return field;
 }
 
-function setAutoComplete(accessPoint, fieldName) {
+function generateFieldNewAux(fieldName) {
+	var field = '';
+	field += '<td><div class="field-new">';
+	field += '	<label class="' + getFieldClassName(fieldName) + '">loading...</label>';
+	field += '</div></td>';
+	return field;
+}
+
+function setAutoComplete(accessPoint, tableId, fieldName) {
 	$.getJSON(accessPoint + 'field/' + fieldName, function(data) {
-//		console.log(data);
-		$('.' + getFieldClassName(fieldName)).autocomplete({
-			source: data
+		console.log(data);
+		console.log(getFieldClassName(fieldName));
+		console.log($(tableId));
+		$(tableId).find('.' + getFieldClassName(fieldName)).each(function() {
+			$( this ).autocomplete({
+				source: data
+			});
 		});
 	});
 }
 
-function Table(tableId, accessPoint, fieldNames) {
+function Table(tableId, accessPoint, fieldNames, accessPointAux) {
 	this.tableId = tableId;
 	this.accessPoint = accessPoint;
 	this.fieldNames = fieldNames;
+	this.accessPointAux = accessPointAux;
 //	console.log(this.tableId + ', ' + this.url + ', ' + this.fieldNames);
 }
 
@@ -103,6 +127,8 @@ Table.prototype = {
 		// jQuery AJAX call for JSON
 		$.getJSON(this.accessPoint + encodeURI(date) , function( data ) {
 
+			$(self.tableId).empty();
+
 			// For each item in our JSON, add a table row and cells to the content string
 			$.each(data, function(){
 				tableContent += '<tr>';
@@ -115,9 +141,9 @@ Table.prototype = {
 			$(self.tableId).append(tableContent);
 
 			self.setEditAction();
-			self.setAutoCompleteAll();
 
 			self.addLastRowForAddingNewRecord();
+			self.setAutoCompleteAll();
 		});
 	},
 
@@ -160,7 +186,13 @@ Table.prototype = {
 
 	setAutoCompleteAll:function() {
 		for (i in this.fieldNames) {
-			setAutoComplete(this.accessPoint, this.fieldNames[i]);
+			var fieldName = this.fieldNames[i];
+			if (fieldName.startsWith('+'))
+				setAutoComplete(this.accessPointAux, this.tableId, fieldName.substr(1));
+			else if (fieldName.startsWith('-'))
+				continue;
+			else
+				setAutoComplete(this.accessPoint, this.tableId, fieldName);
 		}
 	},
 
@@ -206,7 +238,11 @@ Table.prototype = {
 
 			var tableContent = '<tr><td></td>';
 			for (i in self.fieldNames) {
-				tableContent += generateFieldNew(self.fieldNames[i], record[self.fieldNames[i]]);
+				var fieldName = self.fieldNames[i];
+				if (fieldName.startsWith('-'))
+					tableContent += generateFieldNewAux(fieldName);
+				else
+					tableContent += generateFieldNew(fieldName, (record ? record[fieldName] : ''));
 			}
 			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
 			
@@ -220,7 +256,11 @@ Table.prototype = {
 		var rowContent = '';
 		rowContent += '<td>' + data._id + '</td>';
 		for (i in this.fieldNames) {
-			rowContent += generateField(this.fieldNames[i], data[this.fieldNames[i]]);
+			var fieldName = this.fieldNames[i];
+			if (fieldName.startsWith('-'))
+				rowContent += generateFieldAux(fieldName);
+			else
+				rowContent += generateField(fieldName, data[fieldName]);
 		}
 		rowContent += '	<td class="text-right">';
 		rowContent += this.getOptionMenu(data._id);
@@ -265,9 +305,24 @@ $(document).ready(function() {
 				'status'
 			]
 		),
+		new Table(
+			'#relocation',
+			'/task/relocation/',
+			[
+				'num',
+				'+pigId',
+				'-motherStatus',
+				'-fertilizedDate',
+				'-prevHouse',
+				'newHouse'
+			],
+			'/views/mother/'
+		)
 	];
 
-	tables[0].populateTable(getCurrentDate());
+	for (i in tables) {
+		tables[i].populateTable(getCurrentDate());
+	}
 
 	$('#date-selector').on('changeDate', function(d) {
 		console.log(d); // Do not use this!! It returns local midnight, which is not what we want!!!
@@ -275,8 +330,9 @@ $(document).ready(function() {
 		console.log(date);
 		if (d.viewMode == "days") {
 			$('#date-selector').datepicker('hide');
-			$('#fertilization').empty();
-			tables[0].populateTable(date);
+			for (i in tables) {
+				tables[i].populateTable(date);
+			}
 		}
 	});
 });

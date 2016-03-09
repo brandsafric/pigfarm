@@ -5,29 +5,29 @@ router.get('/', function(req, res, next) {
 	res.render('task', { title: 'Express' });
 });
 
-function handlerFactory(router, accessPoint) {
+function handlerFactory(router, tableName) {
 
-	router.get(accessPoint + '/last', function(req, res) {
+	router.get('/' + tableName + '/last', function(req, res) {
 		console.log(req.params.name);
 		var db = req.db;
-		var collection = db.get('fertilization');
+		var collection = db.get(tableName);
 		collection.find( {}, { sort : {_id:-1}, limit : 1 }, function(e,docs){
 			res.json(docs);
 		});
 	});
 
-	router.get(accessPoint + '/field/:name', function(req, res) {
+	router.get('/' + tableName + '/field/:name', function(req, res) {
 		console.log(req.params.name);
 		var db = req.db;
-		var collection = db.get('fertilization');
+		var collection = db.get(tableName);
 		collection.distinct(req.params.name, {}, function(e,docs){
 			res.json(docs);
 		});
 	});
 
-	router.get(accessPoint + '/:date', function(req, res) {
+	router.get('/' + tableName + '/:date', function(req, res) {
 		var db = req.db;
-		var collection = db.get('fertilization');
+		var collection = db.get(tableName);
 		var date1 = new Date(decodeURI(req.params.date));
 		var date2 = new Date(date1);
 		date2.setDate(date2.getDate() + 1);
@@ -40,9 +40,9 @@ function handlerFactory(router, accessPoint) {
 		});
 	});
 
-	router.post(accessPoint, function(req, res) {
+	router.post('/' + tableName, function(req, res) {
 		var db = req.db;
-		var collection = db.get('fertilization');
+		var collection = db.get(tableName);
 		req.body.date = new Date(req.body.date);
 		collection.insert(req.body, function(err, result) {
 			console.log(result);
@@ -50,9 +50,9 @@ function handlerFactory(router, accessPoint) {
 		});
 	});
 
-	router.post(accessPoint + '/:id', function(req, res) {
+	router.post('/' + tableName + '/:id', function(req, res) {
 		var db = req.db;
-		var collection = db.get('fertilization');
+		var collection = db.get(tableName);
 		console.log(req.params.id);
 		console.log(req.body);
 		// https://mongodb.github.io/node-mongodb-native/markdown-docs/insert.html#replacement-object
@@ -62,10 +62,10 @@ function handlerFactory(router, accessPoint) {
 		});
 	});
 
-	router.delete(accessPoint + '/:id', function(req, res) {
+	router.delete('/' + tableName + '/:id', function(req, res) {
 		try {
 			var db = req.db;
-			var collection = db.get('fertilization');
+			var collection = db.get(tableName);
 			collection.remove({ _id : req.params.id }, function(err) {
 				res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
 			});
@@ -75,6 +75,7 @@ function handlerFactory(router, accessPoint) {
 	});
 }
 
-handlerFactory(router, '/fertilization')
+handlerFactory(router, 'fertilization')
+handlerFactory(router, 'relocation')
 
 module.exports = router;
