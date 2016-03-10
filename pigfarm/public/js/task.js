@@ -53,57 +53,36 @@ function deleteRow(tableId, accessPoint, recordId) {
 	return false;
 }
 
-function getFieldClassName(fieldName) {
-	if (fieldName.startsWith('+') || fieldName.startsWith('-'))
-		return fieldName.substr(1) + '-field'
-	else
-		return fieldName + '-field';
-}
-
 function generateField(fieldName, data) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div class="field">';
 	field += '	<label>' + data + '</label>';
-	field += '	<input type="text" class="form-control field-input ' + getFieldClassName(fieldName) + '" value="' + data + '" />';
+	field += '	<input type="text" class="form-control field-input" value="' + data + '" />';
 	field += '</div></td>';
 	return field;
 }
 
 function generateFieldAux(fieldName) {
 	var field = '';
-	field += '<td rel="' + fieldName + '"><div class="field">';
-	field += '	<label class="form-control field-input ' + getFieldClassName(fieldName) + '>loading...</label>';
+	field += '<td rel="' + fieldName + '"><div>';
+	field += '	<label></label>';
 	field += '</div></td>';
 	return field;
 }
 
 function generateFieldNew(fieldName, data) {
 	var field = '';
-	field += '<td><div class="field-new">';
-	field += '	<input type="text" class="form-control field-input-new ' + getFieldClassName(fieldName) + '" value="' + data + '" />';
+	field += '<td rel="' + norm(fieldName) + '"><div>';
+	field += '	<input type="text" class="form-control field-input-new" value="' + data + '" />';
 	field += '</div></td>';
 	return field;
 }
 
-function generateFieldNewAux(fieldName) {
-	var field = '';
-	field += '<td><div class="field-new">';
-	field += '	<label class="' + getFieldClassName(fieldName) + '">loading...</label>';
-	field += '</div></td>';
-	return field;
-}
-
-function setAutoComplete(accessPoint, tableId, fieldName) {
-	$.getJSON(accessPoint + 'field/' + fieldName, function(data) {
-		console.log(data);
-		console.log(getFieldClassName(fieldName));
-		console.log($(tableId));
-		$(tableId).find('.' + getFieldClassName(fieldName)).each(function() {
-			$( this ).autocomplete({
-				source: data
-			});
-		});
-	});
+function norm(fieldName) {
+	if (fieldName.startsWith('-') || fieldName.startsWith('+'))
+		return fieldName.substr(1);
+	else
+		return fieldName;
 }
 
 function Table(tableId, accessPoint, fieldNames, accessPointAux) {
@@ -139,6 +118,16 @@ Table.prototype = {
 			// Inject the whole content string into our existing HTML table
 //			$('#userList table tbody').html(tableContent);
 			$(self.tableId).append(tableContent);
+
+			$.each(data, function(){
+				var row = $(getRow(self.tableId, this._id));
+				var ref = self.getRefJoinField(row);
+				if (ref) {
+					self.fillReferenceData(row, ref.find('label').html());
+					ref.on('focusin', function() {self.clearReferenceData(row);});
+					ref.on('focusout', function() {self.fillReferenceData(row, $(this).find('input').val());});
+				}
+			});
 
 			self.setEditAction();
 
@@ -184,16 +173,69 @@ Table.prototype = {
 		});
 	},
 
+	setAutoComplete:function(accessPoint, fieldName) {
+		var self = this;
+		$.getJSON(accessPoint + 'field/' + fieldName, function(data) {
+			self.getFieldSet(fieldName).each(function() {
+				$(this).find('input').autocomplete({
+					source: data
+				});
+			});
+		});
+	},
+
 	setAutoCompleteAll:function() {
 		for (i in this.fieldNames) {
 			var fieldName = this.fieldNames[i];
 			if (fieldName.startsWith('+'))
-				setAutoComplete(this.accessPointAux, this.tableId, fieldName.substr(1));
+				this.setAutoComplete(this.accessPointAux, fieldName.substr(1));
 			else if (fieldName.startsWith('-'))
 				continue;
 			else
-				setAutoComplete(this.accessPoint, this.tableId, fieldName);
+				this.setAutoComplete(this.accessPoint, fieldName);
 		}
+	},
+
+	getField2:function(row, fieldName) {
+		return row.find('td[rel="' + norm(fieldName) + '"]');
+	},
+
+	getFieldSet:function(fieldName) {
+		return $(this.tableId).find('td[rel="' + norm(fieldName) + '"]');
+	},
+
+	getRefJoinField:function(row) {
+		for (i in this.fieldNames) {
+			var fieldName = this.fieldNames[i];
+			if (fieldName.startsWith('+')) {
+				var field = this.getField2(row, fieldName)
+//				console.log(field);
+				return field;
+			}
+		}
+		return null;
+	},
+
+	clearReferenceData:function(row) {
+		for (i in this.fieldNames) {
+			var fieldName = this.fieldNames[i];
+			if (fieldName.startsWith('-'))
+				this.getField2(row, fieldName).find('label').html('');
+		}
+	},
+
+	fillReferenceData:function(row, ref) {
+//		console.log(row);
+//		console.log(ref);
+		var self = this;
+		$.getJSON(this.accessPointAux + encodeURI(ref) , function( data ) {
+			console.log(data);
+			Object.keys(data).forEach(function(key,index) {
+//				console.log(data[key]);
+//				console.log(self.getField2(row, key));
+				self.getField2(row, key).find('label').html(data[key]);
+			});
+		});
 	},
 
 	addLastRowForAddingNewRecord: function() {
@@ -202,12 +244,18 @@ Table.prototype = {
 
 		var addRecord = function(event) {
 			var record = {};
+			var newRow = self.getNewRow()
 			for (i in self.fieldNames) {
-				record[self.fieldNames[i]] = $('.field-input-new.' + getFieldClassName(self.fieldNames[i])).val();
+				var fieldName = self.fieldNames[i]
+				if (fieldName.startsWith('-'))
+					continue;
+				else if (fieldName.startsWith('+'))
+					fieldName = fieldName.substr(1);
+				record[fieldName] = self.getField2(newRow, fieldName).find('input').val();
 			}
 			record['date'] = getCurrentDate();
 
-			console.log(record);
+//			console.log(record);
 
 			$.ajax({
 				type: 'POST',
@@ -224,6 +272,14 @@ Table.prototype = {
 					var row = table.insertRow(table.rows.length - 1);
 					console.log(record);
 					row.innerHTML = self.dataToRow(record);
+
+					var ref = self.getRefJoinField($(row));
+					if (ref) {
+						self.fillReferenceData($(row), ref.find('label').html());
+						ref.on('focusin', function() {self.clearReferenceData($(row));});
+						ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
+					}
+
 					self.setEditAction(row);
 					self.setAutoCompleteAll();
 				} else {
@@ -236,20 +292,33 @@ Table.prototype = {
 		$.getJSON(this.accessPoint + 'last' , function( data ) {
 			var record = data[0];
 
-			var tableContent = '<tr><td></td>';
+			var tableContent = '<tr rel="new"><td></td>';
 			for (i in self.fieldNames) {
 				var fieldName = self.fieldNames[i];
 				if (fieldName.startsWith('-'))
-					tableContent += generateFieldNewAux(fieldName);
+					tableContent += generateFieldAux(fieldName.substr(1));
+				else if (fieldName.startsWith('+'))
+					tableContent += generateFieldNew(fieldName, '');
 				else
 					tableContent += generateFieldNew(fieldName, (record ? record[fieldName] : ''));
 			}
 			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
-			
+
 			$(self.tableId).append(tableContent);
 
-			$('#addButton').on('click', addRecord);
+			var row = self.getNewRow();
+			var ref = self.getRefJoinField(row);
+			if (ref) {
+				ref.on('focusin', function() {self.clearReferenceData(row);});
+				ref.on('focusout', function() {self.fillReferenceData(row, $(this).find('input').val());});
+			}
+
+			$(self.tableId).find('#addButton').on('click', addRecord);
 		});
+	},
+
+	getNewRow:function() {
+		return $(this.tableId).find('tr[rel="new"]');
 	},
 
 	dataToRow:function(data) {
@@ -258,9 +327,12 @@ Table.prototype = {
 		for (i in this.fieldNames) {
 			var fieldName = this.fieldNames[i];
 			if (fieldName.startsWith('-'))
-				rowContent += generateFieldAux(fieldName);
+				rowContent += generateFieldAux(fieldName.substr(1));
+			else if (fieldName.startsWith('+'))
+				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
 			else
 				rowContent += generateField(fieldName, data[fieldName]);
+//			rowContent += '\n';
 		}
 		rowContent += '	<td class="text-right">';
 		rowContent += this.getOptionMenu(data._id);
