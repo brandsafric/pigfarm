@@ -129,7 +129,7 @@ Table.prototype = {
 				}
 			});
 
-			self.setEditAction();
+//			self.setEditAction();
 
 			self.addLastRowForAddingNewRecord();
 			self.setAutoCompleteAll();
@@ -281,7 +281,7 @@ Table.prototype = {
 						ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
 					}
 
-					self.setEditAction(row);
+//					self.setEditAction(row);
 					self.setAutoCompleteAll();
 
 					var newRow = self.getNewRow();
@@ -293,9 +293,7 @@ Table.prototype = {
 			});
 		};
 
-		$.getJSON(this.accessPoint + 'last' , function( data ) {
-			var record = data[0];
-
+		var createNewRow = function(record) {
 			var tableContent = '<tr rel="new"><td></td>';
 			for (i in self.fieldNames) {
 				var fieldName = self.fieldNames[i];
@@ -318,7 +316,14 @@ Table.prototype = {
 			}
 
 			$(self.tableId).find('#addButton').on('click', addRecord);
+		}
+
+		$.getJSON(this.accessPoint + 'last' , function( data ) {
+			var record = data[0];
+			createNewRow(record);
 		});
+
+//		createNewRow();
 	},
 
 	getNewRow:function() {
@@ -371,7 +376,6 @@ $(document).ready(function() {
 			'#fertilization',
 			'/task/fertilization/',
 			[
-				'num',
 				'pigId',
 				'motherStatus',
 				'batch',
@@ -387,7 +391,6 @@ $(document).ready(function() {
 			'#relocation',
 			'/task/relocation/',
 			[
-				'num',
 				'+pigId',
 				'-motherStatus',
 				'-fertilizedDate',
