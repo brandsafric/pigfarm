@@ -123,7 +123,7 @@ Table.prototype = {
 				var row = $(getRow(self.tableId, this._id));
 				var ref = self.getRefJoinField(row);
 				if (ref) {
-					self.fillReferenceData(row, ref.find('label').html());
+//					self.fillReferenceData(row, ref.find('label').html());
 					ref.on('focusin', function() {self.clearReferenceData(row);});
 					ref.on('focusout', function() {self.fillReferenceData(row, $(this).find('input').val());});
 				}
@@ -246,12 +246,13 @@ Table.prototype = {
 			var record = {};
 			var newRow = self.getNewRow()
 			for (i in self.fieldNames) {
-				var fieldName = self.fieldNames[i]
+				var fieldName = self.fieldNames[i];
 				if (fieldName.startsWith('-'))
-					continue;
+					record[fieldName.substr(1)] = self.getField2(newRow, fieldName).find('label').html();
 				else if (fieldName.startsWith('+'))
-					fieldName = fieldName.substr(1);
-				record[fieldName] = self.getField2(newRow, fieldName).find('input').val();
+					record[fieldName.substr(1)] = self.getField2(newRow, fieldName).find('input').val();
+				else
+					record[fieldName] = self.getField2(newRow, fieldName).find('input').val();
 			}
 			record['date'] = getCurrentDate();
 
@@ -275,7 +276,7 @@ Table.prototype = {
 
 					var ref = self.getRefJoinField($(row));
 					if (ref) {
-						self.fillReferenceData($(row), ref.find('label').html());
+//						self.fillReferenceData($(row), ref.find('label').html());
 						ref.on('focusin', function() {self.clearReferenceData($(row));});
 						ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
 					}
@@ -322,12 +323,14 @@ Table.prototype = {
 	},
 
 	dataToRow:function(data) {
+//		console.log(data);
 		var rowContent = '';
 		rowContent += '<td>' + data._id + '</td>';
 		for (i in this.fieldNames) {
 			var fieldName = this.fieldNames[i];
 			if (fieldName.startsWith('-'))
-				rowContent += generateFieldAux(fieldName.substr(1));
+//				rowContent += generateFieldAux(fieldName.substr(1));
+				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
 			else if (fieldName.startsWith('+'))
 				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
 			else
