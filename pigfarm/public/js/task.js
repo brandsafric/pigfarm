@@ -283,6 +283,9 @@ Table.prototype = {
 
 					self.setEditAction(row);
 					self.setAutoCompleteAll();
+
+					var newRow = self.getNewRow();
+					self.fillReferenceData(newRow, self.getRefJoinField(newRow).find('input').val());
 				} else {
 					// If something goes wrong, alert the error message that our service returned
 //					alert('Error: ' + response.msg);
