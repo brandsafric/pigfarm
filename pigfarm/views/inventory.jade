@@ -1,0 +1,114 @@
+extends layout
+
+block navi-content
+	li
+		a(href="/")
+			i.fa.fa-dashboard.fa-lg
+			span 전체 현황
+	li
+		a(href="mother")
+			i.fa.fa-edit.fa-lg
+			span 임신사
+	li.active
+		a(href="inventory")
+			i.fa.fa-edit.fa-lg
+			span 재고 관리
+	li
+		a(href="monitor")
+			i.fa.fa-signal.fa-lg
+			span 돈사 모니터
+			
+block footer-extra
+	script(src='js/task.js')
+	script(src='js/inventory.js')
+
+mixin row-sample2-up(name, percentage)
+	tr
+		block
+		td #{name}
+		td.text-success
+			i.fa.fa-level-up
+			|	#{percentage}
+		td.text-right
+			.btn-group
+				a.dropdown-toggle(href='#', data-toggle='dropdown')
+					i.fa.fa-pencil
+				ul.dropdown-menu.pull-right
+					li
+						a(href='#') Action
+					li
+						a(href='#') Another action
+					li
+						a(href='#') Something else here
+					li.divider
+					li
+						a(href='#') Separated link
+
+mixin row-sample2-down(name, percentage)
+	tr
+		block
+		td #{name}
+		td.text-warning
+			i.fa.fa-level-down
+			|	#{percentage}
+		td.text-right
+			.btn-group
+				a.dropdown-toggle(href='#', data-toggle='dropdown')
+					i.fa.fa-pencil
+				ul.dropdown-menu.pull-right
+					li
+						a(href='#') Action
+					li
+						a(href='#') Another action
+					li
+						a(href='#') Something else here
+					li.divider
+					li
+						a(href='#') Separated link
+
+block content
+	section#content
+		section.main.padder
+			.clearfix
+				h4
+					i.fa.fa-table
+					| Table
+					input#date-selector.input-sm.form-control.datepicker(size='16', type='text', value=moment().format('YYYY-MM-DD'), data-date-format='yyyy-mm-dd')
+			.row
+				.col-lg-12
+					section.panel
+						header.panel-heading
+							span.label.bg-danger.pull-right 4 Left
+							| 종부
+						.table-responsive
+							table.table.table-striped.m-b-none.text-small.data-table
+								thead
+									tr
+										th _id
+										th 개체번호
+										th 모돈상태
+										th 산차
+										th 이유후 경과일
+										th(colspan="3") 종부
+										th 종부한 사람
+										th 상태
+										th(width='70')
+								tbody#fertilization
+			.row
+				.col-lg-12
+					section.panel
+						header.panel-heading
+							span.label.bg-danger.pull-right 4 Left
+							| 돈사이동
+						.table-responsive
+							table.table.table-striped.m-b-none.text-small.data-table
+								thead
+									tr
+										th _id
+										th 개체번호
+										th 모돈상태
+										th 종부일
+										th 이동 전 돈사
+										th 이동 후 돈사
+										th(width='70')
+								tbody#relocation

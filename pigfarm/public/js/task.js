@@ -370,37 +370,7 @@ Table.prototype = {
 	}
 };
 
-$(document).ready(function() {
-	var tables = [
-		new Table(
-			'#fertilization',
-			'/task/fertilization/',
-			[
-				'pigId',
-				'motherStatus',
-				'batch',
-				'daysSinceStopBreastFeed',
-				'administration1',
-				'administration2',
-				'administration3',
-				'administrator',
-				'status'
-			]
-		),
-		new Table(
-			'#relocation',
-			'/task/relocation/',
-			[
-				'+pigId',
-				'-motherStatus',
-				'-fertilizedDate',
-				'-prevHouse',
-				'newHouse'
-			],
-			'/views/mother/'
-		)
-	];
-
+var initializeTables = function(tables) {
 	for (i in tables) {
 		tables[i].populateTable(getCurrentDate());
 	}
@@ -416,4 +386,4 @@ $(document).ready(function() {
 			}
 		}
 	});
-});
+};

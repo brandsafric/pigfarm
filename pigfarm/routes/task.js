@@ -1,10 +1,3 @@
-var express = require('express');
-var router = express.Router();
-
-router.get('/', function(req, res, next) {
-	res.render('task', { title: 'Express' });
-});
-
 function handlerFactory(router, tableName) {
 
 	router.get('/' + tableName + '/last', function(req, res) {
@@ -75,7 +68,4 @@ function handlerFactory(router, tableName) {
 	});
 }
 
-handlerFactory(router, 'fertilization')
-handlerFactory(router, 'relocation')
-
-module.exports = router;
+exports.handlerFactory = handlerFactory;
