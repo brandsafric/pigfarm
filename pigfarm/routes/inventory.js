@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 
 var task = require('./task.js');
 
-task.handlerFactory(router, 'fertilization')
-task.handlerFactory(router, 'relocation')
+task.handlerFactory(router, 'daily')
+task.handlerFactory(router, 'relocation2')
 
 module.exports = router;
