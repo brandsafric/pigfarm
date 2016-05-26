@@ -15,6 +15,57 @@ $(document).ready(function() {
 
 	initializeTables(tables);
 
+	var isArray = function(o) {
+		return Object.prototype.toString.call(o) === '[object Array]';
+	}
+
+	var complexDataToRows = function(data){
+
+		var rows = new Array();
+
+		for (var property in data) {
+			if (!data.hasOwnProperty(property))
+				continue;
+			var p = data[property];
+//			console.log(p);
+
+			if (isArray(p)) {
+				console.log(property + ' is array');
+				for (var i = 0; i < p.length; i++) {
+					rows = rows.concat(complexDataToRows(p[i]));
+//					console.log(complexDataToRows(p[i]));
+				}
+//				console.log(rows);
+				break;
+			}
+		}
+
+//		console.log(rows);
+
+		var r = '';
+
+		for (var property in data) {
+			if (!data.hasOwnProperty(property))
+				continue;
+			var p = data[property];
+
+			if (isArray(p))
+				r = r + rows[0];
+			else if (rows.length >= 2)
+				r = r + '<td rowspan=' + rows.length + '>' + p + '</td>';
+			else
+				r = r + '<td>' + p + '</td>';
+		}
+
+//		console.log(r);
+
+		rows[0] = r;
+
+//		console.log(rows);
+
+		return rows;
+	}
+
 	var loadTable = function(tableId, accessPoint, date) {
 
 		var tableContent = '';
@@ -24,14 +75,25 @@ $(document).ready(function() {
 			$(tableId).empty();
 
 			$.each(data, function() {
-				tableContent += '<tr><td></td>';
-				tableContent += '<td>' + JSON.stringify(this) + '</td><td></td><td></td><td></td>';
-				tableContent += '</tr>';
+				for (var property in this) {
+					if (!this.hasOwnProperty(property))
+						continue;
+//					console.log(property);
+				}
+//				tableContent += '<tr><td></td>';
+//				tableContent += '<td><pre>' + JSON.stringify(this, null, ' ') + '</pre></td><td></td><td></td><td></td>';
+//				tableContent += '</tr>';
+
+				var rows = complexDataToRows(this);
+				for (var i = 0; i < rows.length; i++) {
+					tableContent += '<tr>' + rows[i] + '<td></td></tr>';
+				}
+				console.log(rows);
 			});
 
 			$(tableId).append(tableContent);
 
-			console.log(tableContent);
+//			console.log(tableContent);
 		});
 	}
 
