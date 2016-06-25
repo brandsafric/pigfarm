@@ -79,10 +79,14 @@ function generateFieldNew(fieldName, data) {
 }
 
 function norm(fieldName) {
-	if (fieldName.startsWith('-') || fieldName.startsWith('+'))
+	if (fieldName.startsWith('-') || fieldName.startsWith('+') || fieldName.startsWith('='))
 		return fieldName.substr(1);
 	else
 		return fieldName;
+}
+
+var isArray = function(o) {
+	return Object.prototype.toString.call(o) === '[object Array]';
 }
 
 function Table(tableId, accessPoint, fieldNames, accessPointAux) {
@@ -189,7 +193,7 @@ Table.prototype = {
 			var fieldName = this.fieldNames[i];
 			if (fieldName.startsWith('+'))
 				this.setAutoComplete(this.accessPointAux, fieldName.substr(1));
-			else if (fieldName.startsWith('-'))
+			else if (fieldName.startsWith('-') || fieldName.startsWith('='))
 				continue;
 			else
 				this.setAutoComplete(this.accessPoint, fieldName);
@@ -221,6 +225,9 @@ Table.prototype = {
 			var fieldName = this.fieldNames[i];
 			if (fieldName.startsWith('-'))
 				this.getField2(row, fieldName).find('label').html('');
+			else if (fieldName.startsWith('='))
+				; // todo
+
 		}
 	},
 
@@ -233,7 +240,10 @@ Table.prototype = {
 			Object.keys(data).forEach(function(key,index) {
 //				console.log(data[key]);
 //				console.log(self.getField2(row, key));
-				self.getField2(row, key).find('label').html(data[key]);
+				if (isArray(data[key]))
+					self.getField2(row, key).find('input').autocomplete({ source: data[key] });
+				else
+					self.getField2(row, key).find('label').html(data[key]);
 			});
 		});
 	},
@@ -249,7 +259,7 @@ Table.prototype = {
 				var fieldName = self.fieldNames[i];
 				if (fieldName.startsWith('-'))
 					record[fieldName.substr(1)] = self.getField2(newRow, fieldName).find('label').html();
-				else if (fieldName.startsWith('+'))
+				else if (fieldName.startsWith('+') || fieldName.startsWith('='))
 					record[fieldName.substr(1)] = self.getField2(newRow, fieldName).find('input').val();
 				else
 					record[fieldName] = self.getField2(newRow, fieldName).find('input').val();
@@ -299,7 +309,7 @@ Table.prototype = {
 				var fieldName = self.fieldNames[i];
 				if (fieldName.startsWith('-'))
 					tableContent += generateFieldAux(fieldName.substr(1));
-				else if (fieldName.startsWith('+'))
+				else if (fieldName.startsWith('+') || fieldName.startsWith('='))
 					tableContent += generateFieldNew(fieldName, '');
 				else
 					tableContent += generateFieldNew(fieldName, (record ? record[fieldName] : ''));
@@ -340,6 +350,8 @@ Table.prototype = {
 //				rowContent += generateFieldAux(fieldName.substr(1));
 				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
 			else if (fieldName.startsWith('+'))
+				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
+			else if (fieldName.startsWith('='))
 				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
 			else
 				rowContent += generateField(fieldName, data[fieldName]);

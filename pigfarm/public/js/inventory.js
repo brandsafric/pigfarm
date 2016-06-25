@@ -4,12 +4,12 @@ $(document).ready(function() {
 			'#relocation',
 			'/inventory/relocation2/',
 			[
-				'+cage:cageBefore',
+				'+house',
 				'=wob',
 				'count',
-				'*cage:cageAfter'
+				'*house:houseAfter'
 			],
-			'/inventory/daily/'
+			'/views/inventory/daily/'
 		)
 	];
 

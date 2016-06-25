@@ -48,5 +48,50 @@ router.get('/mother/:pigId', function(req, res) {
 	});
 });
 
+router.get('/inventory/daily/field/house', function(req, res) {
+	var houses = new Array();
+
+	var db = req.db;
+
+	var collection = db.get('daily');
+	collection.find( {}, { sort : {_id:-1}, limit : 1 }, function(e,docs){
+		if (docs[0]) {
+			for (var i = 0; i < docs[0].houses.length; i++) {
+				houses.push(docs[0].houses[i].name);
+			}
+		}
+//		console.log(houses);
+		res.json(houses);
+	});
+});
+
+router.get('/inventory/daily/:houseName', function(req, res) {
+	var houseName = decodeURI(req.params.houseName);
+	console.log(houseName);
+
+	var doc = {};
+	doc['wob'] = new Array();
+
+	var db = req.db;
+
+	var collection = db.get('daily');
+	collection.find( {}, { sort : {_id:-1}, limit : 1 }, function(e,docs){
+//		console.log(docs);
+		if (docs[0]) {
+			for (var i = 0; i < docs[0].houses.length; i++) {
+				var house = docs[0].houses[i];
+				console.log(house);
+				if (house.name == houseName) {
+					for (var j in house.groups) {
+						if (house.groups[j].wob)
+							doc['wob'].push(house.groups[j].wob.toString());
+					}
+				}
+			}
+		}
+//		console.log(doc);
+		res.json(doc);
+	});
+});
 
 module.exports = router;
