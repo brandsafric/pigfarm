@@ -181,9 +181,16 @@ Table.prototype = {
 		var self = this;
 		$.getJSON(accessPoint + 'field/' + fieldName, function(data) {
 			self.getFieldSet(fieldName).each(function() {
-				$(this).find('input').autocomplete({
-					source: data
+				var input = $(this).find('input');
+				input.autocomplete({
+					source: data,
+					minLength: 0
 				});
+				input.focusin(function() {
+					$(this).autocomplete('search', '');
+				});
+				if (input.is(':focus'))
+					input.autocomplete('search', '');
 			});
 		});
 	},
@@ -223,11 +230,14 @@ Table.prototype = {
 	clearReferenceData:function(row) {
 		for (i in this.fieldNames) {
 			var fieldName = this.fieldNames[i];
-			if (fieldName.startsWith('-'))
+			if (fieldName.startsWith('-')) {
 				this.getField2(row, fieldName).find('label').html('');
-			else if (fieldName.startsWith('='))
-				; // todo
-
+			} else if (fieldName.startsWith('=')) {
+				var input = this.getField2(row, fieldName).find('input');
+				input.autocomplete({
+					source: []
+				});
+			}
 		}
 	},
 
@@ -240,10 +250,20 @@ Table.prototype = {
 			Object.keys(data).forEach(function(key,index) {
 //				console.log(data[key]);
 //				console.log(self.getField2(row, key));
-				if (isArray(data[key]))
-					self.getField2(row, key).find('input').autocomplete({ source: data[key] });
-				else
+				if (isArray(data[key])) {
+					var input = self.getField2(row, key).find('input');
+					input.autocomplete({
+						source: data[key],
+						minLength: 0
+					});
+					input.focusin(function() {
+						$(this).autocomplete('search', '');
+					});
+					if (input.is(':focus'))
+						input.autocomplete('search', '');
+				} else {
 					self.getField2(row, key).find('label').html(data[key]);
+				}
 			});
 		});
 	},
