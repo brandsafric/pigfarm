@@ -1,4 +1,4 @@
-function handlerFactory(router, tableName) {
+function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 
 	router.get('/' + tableName + '/last', function(req, res) {
 		console.log(req.params.name);
@@ -39,7 +39,13 @@ function handlerFactory(router, tableName) {
 		req.body.date = new Date(req.body.date);
 		collection.insert(req.body, function(err, result) {
 			console.log(result);
-			res.send((err == null) ? { msg : '', id : result._id } : { msg : err });
+			if (onInsert) {
+				onInsert(db, req.body, function(err) {
+					res.send((err == null) ? { msg : '', id : result._id } : { msg : err });
+				});
+			} else {
+				res.send((err == null) ? { msg : '', id : result._id } : { msg : err });
+			}
 		});
 	});
 
@@ -51,7 +57,13 @@ function handlerFactory(router, tableName) {
 		// https://mongodb.github.io/node-mongodb-native/markdown-docs/insert.html#replacement-object
 		collection.update({ _id : req.params.id }, { $set: req.body }, function(err, result) {
 			console.log(result);
-			res.send((err == null) ? { msg : '' } : { msg : err });
+			if (onUpdate) {
+				onUpdate(db, req.body, function(err) {
+					res.send((err == null) ? { msg : '' } : { msg : err });
+				});
+			} else {
+				res.send((err == null) ? { msg : '' } : { msg : err });
+			}
 		});
 	});
 
@@ -60,7 +72,13 @@ function handlerFactory(router, tableName) {
 			var db = req.db;
 			var collection = db.get(tableName);
 			collection.remove({ _id : req.params.id }, function(err) {
-				res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
+				if (onRemove) {
+					onRemove(db, req.params.id , function(err) {
+						res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
+					});
+				} else {
+					res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
+				}
 			});
 		} catch (e) {
 			res.send(404);
