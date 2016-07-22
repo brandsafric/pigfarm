@@ -9,7 +9,15 @@ $(document).ready(function() {
 				'count',
 				'*house:houseAfter'
 			],
-			'/views/inventory/daily/'
+			'/views/inventory/daily/',
+			function(recordId) {
+				console.log('onAddEntry', this.tableId, recordId);
+				loadTable('#daily', '/inventory/daily/', getCurrentDate());
+			},
+			null,
+			function(recordId) {
+				loadTable('#daily', '/inventory/daily/', getCurrentDate());
+			}
 		)
 	];
 
@@ -106,6 +114,7 @@ $(document).ready(function() {
 		if (d.viewMode == "days") {
 			$('#date-selector').datepicker('hide');
 			console.log('todo: reload daily inventory view');
+			loadTable('#daily', '/inventory/daily/', getCurrentDate());
 		}
 	});
 });

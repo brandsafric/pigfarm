@@ -32,27 +32,6 @@ function getRow(tableId, id) {
 	return null;
 }
 
-function deleteRow(tableId, accessPoint, recordId) {
-	console.log(recordId);
-	$.ajax({
-		type : 'DELETE',
-		url : accessPoint + recordId
-	}).done(function(res) {
-		console.log('deleted ' + recordId);
-		var row = getRow(tableId, recordId);
-		console.log(row);
-		for (var j = 0, cell; cell = row.cells[j]; j++) {
-			cell.style.cssText = "background-color:LightCyan";
-			var label = cell.childNodes[0].childNodes[1];
-			if (label) {
-//				label.style.setProperty("text-decoration", "line-through");
-				label.style.cssText = "text-decoration:line-through; color:LightSteelBlue; ";
-			}
-		}
-	});
-	return false;
-}
-
 function generateField(fieldName, data) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div class="field">';
@@ -89,11 +68,14 @@ var isArray = function(o) {
 	return Object.prototype.toString.call(o) === '[object Array]';
 }
 
-function Table(tableId, accessPoint, fieldNames, accessPointAux) {
+function Table(tableId, accessPoint, fieldNames, accessPointAux, onAddEntry, onEditEntry, onRemoveEntry) {
 	this.tableId = tableId;
 	this.accessPoint = accessPoint;
 	this.fieldNames = fieldNames;
 	this.accessPointAux = accessPointAux;
+	this.onAddEntry = onAddEntry;
+	this.onEditEntry = onEditEntry;
+	this.onRemoveEntry = onRemoveEntry;
 //	console.log(this.tableId + ', ' + this.url + ', ' + this.fieldNames);
 }
 
@@ -132,6 +114,15 @@ Table.prototype = {
 					ref.on('focusout', function() {self.fillReferenceData(row, $(this).find('input').val());});
 				}
 			});
+
+			var table = getTable(self.tableId);
+			for (var i = 0, row; row = table.rows[i]; i++) {
+				$(row.cells[5]).find('.menu-item-delete').on('click', function(event) {
+					const recordId = getIdFromRowJQ($(event.target).closest('tr'));
+					console.log(self.accessPoint, self.tableId, recordId);
+					self.removeEntry(recordId);
+				});
+			}
 
 //			self.setEditAction();
 
@@ -311,6 +302,12 @@ Table.prototype = {
 						ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
 					}
 
+					$(row.cells[5]).find('.menu-item-delete').on('click', function(event) {
+						const recordId = getIdFromRowJQ($(event.target).closest('tr'));
+						console.log(self.accessPoint, self.tableId, recordId);
+						self.removeEntry(recordId);
+					});
+
 //					self.setEditAction(row);
 					self.setAutoCompleteAll();
 
@@ -320,6 +317,8 @@ Table.prototype = {
 					// If something goes wrong, alert the error message that our service returned
 //					alert('Error: ' + response.msg);
 				}
+				if (self.onAddEntry)
+					self.onAddEntry(record._id);
 			});
 		};
 
@@ -391,7 +390,7 @@ Table.prototype = {
 			'				<i class="fa fa-pencil"></i>'+
 			'			</a>'+
 			'			<ul class="dropdown-menu pull-right">'+
-			'				<li><a href="#" onclick="deleteRow(\'' + this.tableId + '\', \'' + this.accessPoint + '\', \'' + recordId + '\');">삭제</a></li>'+
+			'				<li><a href="#" class="menu-item-delete">삭제</a></li>'+
 			'				<li><a href="#">Another action</a></li>'+
 			'				<li><a href="#">Something else here</a></li>'+
 			'				<li class="divider"></li>'+
@@ -399,6 +398,30 @@ Table.prototype = {
 			'			</ul>'+
 			'		</div>';
 		return optionMenu;
+	},
+
+	removeEntry:function(recordId) {
+		console.log(recordId);
+		var self = this;
+		$.ajax({
+			type : 'DELETE',
+			url : this.accessPoint + recordId
+		}).done(function(res) {
+			console.log('deleted ' + recordId);
+			var row = getRow(self.tableId, recordId);
+			console.log(row);
+			for (var j = 0, cell; cell = row.cells[j]; j++) {
+				cell.style.cssText = "background-color:LightCyan";
+				var label = cell.childNodes[0].childNodes[1];
+				if (label) {
+//	 				label.style.setProperty("text-decoration", "line-through");
+					label.style.cssText = "text-decoration:line-through; color:LightSteelBlue; ";
+				}
+			}
+			if (self.onRemoveEntry)
+				self.onRemoveEntry(recordId);
+		});
+		return false;
 	}
 };
 
