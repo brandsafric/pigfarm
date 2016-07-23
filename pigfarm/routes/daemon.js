@@ -21,7 +21,7 @@ var db = monk('localhost:27017/pigfarm');
 var cronJob = cron.job(schedEveryHalfMin, function() {
 
 	var collection = db.get('agent');
-	
+
 	collection.find( {}, { sort : { _id : -1 } }, function(e, docs) {
 		for (var i in docs) {
 			const now = new Date();

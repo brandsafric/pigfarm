@@ -5,3 +5,5 @@ source ~/.bash_profile
 
 ssh-pigfarm 'cd pigfarm; ./stop.sh'
 ssh-pigfarm 'cd pigfarm; ./run.sh' &
+
+say -v Yuna 서버를 재시작했습니다, 멋진 주인님
