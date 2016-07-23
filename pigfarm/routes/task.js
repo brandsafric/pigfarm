@@ -71,15 +71,17 @@ function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 		try {
 			var db = req.db;
 			var collection = db.get(tableName);
-			collection.remove({ _id : req.params.id }, function(err) {
-				if (onRemove) {
-					onRemove(db, req.params.id , function(err) {
+			if (onRemove) {
+				onRemove(db, req.params.id, function(err) {
+					collection.remove({ _id : req.params.id }, function(err) {
 						res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
 					});
-				} else {
+				});
+			} else {
+				collection.remove({ _id : req.params.id }, function(err) {
 					res.send((err === null) ? { msg : '' } : { msg : 'error: ' + err });
-				}
-			});
+				});
+			}
 		} catch (e) {
 			res.send(404);
 		}
