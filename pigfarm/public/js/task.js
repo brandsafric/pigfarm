@@ -57,26 +57,26 @@ function generateFieldNew(fieldName, data) {
 	return field;
 }
 
-function norm(fieldName) {
-	if (fieldName.startsWith('-') || fieldName.startsWith('+') || fieldName.startsWith('='))
-		return fieldName.substr(1);
+function norm(fieldSpec) {
+	if (fieldSpec.startsWith('-') || fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
+		return fieldSpec.substr(1);
 	else
-		return fieldName;
+		return fieldSpec;
 }
 
 var isArray = function(o) {
 	return Object.prototype.toString.call(o) === '[object Array]';
 }
 
-function Table(tableId, accessPoint, fieldNames, accessPointAux, onAddEntry, onEditEntry, onRemoveEntry) {
+function Table(tableId, accessPoint, fieldSpecs, accessPointAux, onAddEntry, onEditEntry, onRemoveEntry) {
 	this.tableId = tableId;
 	this.accessPoint = accessPoint;
-	this.fieldNames = fieldNames;
+	this.fieldSpecs = fieldSpecs;
 	this.accessPointAux = accessPointAux;
 	this.onAddEntry = onAddEntry;
 	this.onEditEntry = onEditEntry;
 	this.onRemoveEntry = onRemoveEntry;
-//	console.log(this.tableId + ', ' + this.url + ', ' + this.fieldNames);
+//	console.log(this.tableId + ', ' + this.url + ', ' + this.fieldSpecs);
 }
 
 Table.prototype = {
@@ -187,30 +187,30 @@ Table.prototype = {
 	},
 
 	setAutoCompleteAll:function() {
-		for (i in this.fieldNames) {
-			var fieldName = this.fieldNames[i];
-			if (fieldName.startsWith('+'))
-				this.setAutoComplete(this.accessPointAux, fieldName.substr(1));
-			else if (fieldName.startsWith('-') || fieldName.startsWith('='))
+		for (i in this.fieldSpecs) {
+			var fieldSpec = this.fieldSpecs[i];
+			if (fieldSpec.startsWith('+'))
+				this.setAutoComplete(this.accessPointAux, fieldSpec.substr(1));
+			else if (fieldSpec.startsWith('-') || fieldSpec.startsWith('='))
 				continue;
 			else
-				this.setAutoComplete(this.accessPoint, fieldName);
+				this.setAutoComplete(this.accessPoint, fieldSpec);
 		}
 	},
 
-	getField2:function(row, fieldName) {
-		return row.find('td[rel="' + norm(fieldName) + '"]');
+	getField2:function(row, fieldSpec) {
+		return row.find('td[rel="' + norm(fieldSpec) + '"]');
 	},
 
-	getFieldSet:function(fieldName) {
-		return $(this.tableId).find('td[rel="' + norm(fieldName) + '"]');
+	getFieldSet:function(fieldSpec) {
+		return $(this.tableId).find('td[rel="' + norm(fieldSpec) + '"]');
 	},
 
 	getRefJoinField:function(row) {
-		for (i in this.fieldNames) {
-			var fieldName = this.fieldNames[i];
-			if (fieldName.startsWith('+')) {
-				var field = this.getField2(row, fieldName)
+		for (i in this.fieldSpecs) {
+			var fieldSpec = this.fieldSpecs[i];
+			if (fieldSpec.startsWith('+')) {
+				var field = this.getField2(row, fieldSpec)
 //				console.log(field);
 				return field;
 			}
@@ -219,12 +219,13 @@ Table.prototype = {
 	},
 
 	clearReferenceData:function(row) {
-		for (i in this.fieldNames) {
-			var fieldName = this.fieldNames[i];
-			if (fieldName.startsWith('-')) {
-				this.getField2(row, fieldName).find('label').html('');
-			} else if (fieldName.startsWith('=')) {
-				var input = this.getField2(row, fieldName).find('input');
+		for (i in this.fieldSpecs) {
+			var fieldSpec = this.fieldSpecs[i];
+			if (fieldSpec.startsWith('-')) {
+				this.getField2(row, fieldSpec).find('label').html('');
+			} else if (fieldSpec.startsWith('=')) {
+				// todo: clear field value also
+				var input = this.getField2(row, fieldSpec).find('input');
 				input.autocomplete({
 					source: []
 				});
@@ -266,14 +267,14 @@ Table.prototype = {
 		var addRecord = function(event) {
 			var record = {};
 			var newRow = self.getNewRow()
-			for (i in self.fieldNames) {
-				var fieldName = self.fieldNames[i];
-				if (fieldName.startsWith('-'))
-					record[fieldName.substr(1)] = self.getField2(newRow, fieldName).find('label').html();
-				else if (fieldName.startsWith('+') || fieldName.startsWith('='))
-					record[fieldName.substr(1)] = self.getField2(newRow, fieldName).find('input').val();
+			for (i in self.fieldSpecs) {
+				var fieldSpec = self.fieldSpecs[i];
+				if (fieldSpec.startsWith('-'))
+					record[fieldSpec.substr(1)] = self.getField2(newRow, fieldSpec).find('label').html();
+				else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
+					record[fieldSpec.substr(1)] = self.getField2(newRow, fieldSpec).find('input').val();
 				else
-					record[fieldName] = self.getField2(newRow, fieldName).find('input').val();
+					record[fieldSpec] = self.getField2(newRow, fieldSpec).find('input').val();
 			}
 			record['date'] = getCurrentDate();
 
@@ -324,14 +325,14 @@ Table.prototype = {
 
 		var createNewRow = function(record) {
 			var tableContent = '<tr rel="new"><td></td>';
-			for (i in self.fieldNames) {
-				var fieldName = self.fieldNames[i];
-				if (fieldName.startsWith('-'))
-					tableContent += generateFieldAux(fieldName.substr(1));
-				else if (fieldName.startsWith('+') || fieldName.startsWith('='))
-					tableContent += generateFieldNew(fieldName, '');
+			for (i in self.fieldSpecs) {
+				var fieldSpec = self.fieldSpecs[i];
+				if (fieldSpec.startsWith('-'))
+					tableContent += generateFieldAux(fieldSpec.substr(1));
+				else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
+					tableContent += generateFieldNew(fieldSpec, '');
 				else
-					tableContent += generateFieldNew(fieldName, (record ? record[fieldName] : ''));
+					tableContent += generateFieldNew(fieldSpec, (record ? record[fieldSpec] : ''));
 			}
 			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
 
@@ -363,17 +364,17 @@ Table.prototype = {
 //		console.log(data);
 		var rowContent = '';
 		rowContent += '<td>' + data._id + '</td>';
-		for (i in this.fieldNames) {
-			var fieldName = this.fieldNames[i];
-			if (fieldName.startsWith('-'))
-//				rowContent += generateFieldAux(fieldName.substr(1));
-				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
-			else if (fieldName.startsWith('+'))
-				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
-			else if (fieldName.startsWith('='))
-				rowContent += generateField(fieldName.substr(1), data[fieldName.substr(1)]);
+		for (i in this.fieldSpecs) {
+			var fieldSpec = this.fieldSpecs[i];
+			if (fieldSpec.startsWith('-'))
+//				rowContent += generateFieldAux(fieldSpec.substr(1));
+				rowContent += generateField(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+			else if (fieldSpec.startsWith('+'))
+				rowContent += generateField(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+			else if (fieldSpec.startsWith('='))
+				rowContent += generateField(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
 			else
-				rowContent += generateField(fieldName, data[fieldName]);
+				rowContent += generateField(fieldSpec, data[fieldSpec]);
 //			rowContent += '\n';
 		}
 		rowContent += '	<td class="text-right">';
