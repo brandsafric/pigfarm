@@ -32,7 +32,37 @@ function getRow(tableId, id) {
 	return null;
 }
 
-function generateField(fieldName, data) {
+function generateFieldForListing(fieldSpec, data) {
+	if (fieldSpec.startsWith('-'))
+//		return generateFieldReadOnly(fieldSpec.substr(1));
+		return generateFieldNormal(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+	else if (fieldSpec.startsWith('+'))
+		return generateFieldNormal(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+	else if (fieldSpec.startsWith('='))
+		return generateFieldNormal(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+	else
+		return generateFieldNormal(fieldSpec, data[fieldSpec]);
+}
+
+function generateFieldForNewRow(fieldSpec, record) {
+	if (fieldSpec.startsWith('-'))
+		return generateFieldReadOnly(fieldSpec.substr(1));
+	else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
+		return generateFieldNew(fieldSpec, '');
+	else
+		return generateFieldNew(fieldSpec, (record ? record[fieldSpec] : ''));
+}
+
+function extractFieldValue(fieldSpec, field) {
+	if (fieldSpec.startsWith('-'))
+		return field.find('label').html();
+	else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
+		return field.find('input').val();
+	else
+		return field.find('input').val();
+}
+
+function generateFieldNormal(fieldName, data) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div class="field">';
 	field += '	<label>' + data + '</label>';
@@ -41,7 +71,7 @@ function generateField(fieldName, data) {
 	return field;
 }
 
-function generateFieldAux(fieldName) {
+function generateFieldReadOnly(fieldName) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div>';
 	field += '	<label></label>';
@@ -269,12 +299,7 @@ Table.prototype = {
 			var newRow = self.getNewRow()
 			for (i in self.fieldSpecs) {
 				var fieldSpec = self.fieldSpecs[i];
-				if (fieldSpec.startsWith('-'))
-					record[fieldSpec.substr(1)] = self.getField2(newRow, fieldSpec).find('label').html();
-				else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
-					record[fieldSpec.substr(1)] = self.getField2(newRow, fieldSpec).find('input').val();
-				else
-					record[fieldSpec] = self.getField2(newRow, fieldSpec).find('input').val();
+				record[norm(fieldSpec)] = extractFieldValue(fieldSpec, self.getField2(newRow, fieldSpec));
 			}
 			record['date'] = getCurrentDate();
 
@@ -326,13 +351,7 @@ Table.prototype = {
 		var createNewRow = function(record) {
 			var tableContent = '<tr rel="new"><td></td>';
 			for (i in self.fieldSpecs) {
-				var fieldSpec = self.fieldSpecs[i];
-				if (fieldSpec.startsWith('-'))
-					tableContent += generateFieldAux(fieldSpec.substr(1));
-				else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
-					tableContent += generateFieldNew(fieldSpec, '');
-				else
-					tableContent += generateFieldNew(fieldSpec, (record ? record[fieldSpec] : ''));
+				tableContent += generateFieldForNewRow(self.fieldSpecs[i], record);
 			}
 			tableContent += '<td><button class="btn btn-primary" id="addButton">추가</button></td></tr>';
 
@@ -365,16 +384,7 @@ Table.prototype = {
 		var rowContent = '';
 		rowContent += '<td>' + data._id + '</td>';
 		for (i in this.fieldSpecs) {
-			var fieldSpec = this.fieldSpecs[i];
-			if (fieldSpec.startsWith('-'))
-//				rowContent += generateFieldAux(fieldSpec.substr(1));
-				rowContent += generateField(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
-			else if (fieldSpec.startsWith('+'))
-				rowContent += generateField(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
-			else if (fieldSpec.startsWith('='))
-				rowContent += generateField(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
-			else
-				rowContent += generateField(fieldSpec, data[fieldSpec]);
+			rowContent += generateFieldForListing(this.fieldSpecs[i], data);
 //			rowContent += '\n';
 		}
 		rowContent += '	<td class="text-right">';
