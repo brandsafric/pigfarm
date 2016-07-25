@@ -4,10 +4,10 @@ $(document).ready(function() {
 			'#relocation',
 			'/inventory/relocation2/',
 			[
-				'+house',
+				'+houseBefore:house',
 				'=wob',
 				'count',
-				'*house:houseAfter'
+				'*houseAfter:house'
 			],
 			'/views/inventory/daily/',
 			function(recordId) {

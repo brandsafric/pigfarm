@@ -58,10 +58,10 @@ var getGroup = function(daily, houseName, wob) {
 }
 
 var onInsert = function(db, relocation, cb) {
-	console.log(relocation.house, relocation['*house:houseAfter'], relocation.wob, relocation.count);
+	console.log(relocation.houseBefore, relocation.houseAfter, relocation.wob, relocation.count);
 	getTodaysInventory(db, function(daily) {
-		var groupFrom = getGroup(daily, relocation.house, relocation.wob);
-		var groupTo = getGroup(daily, relocation['*house:houseAfter'], relocation.wob);
+		var groupFrom = getGroup(daily, relocation.houseBefore, relocation.wob);
+		var groupTo = getGroup(daily, relocation.houseAfter, relocation.wob);
 		relocation.count = parseInt(relocation.count);
 		groupFrom.hcnt -= relocation.count;
 		groupTo.hcnt += relocation.count;
@@ -73,14 +73,14 @@ var onInsert = function(db, relocation, cb) {
 }
 
 var onRemove = function(db, id, cb) {
-	console.log(db, id, cb);
+//	console.log(db, id, cb);
 	var collection = db.get('relocation2');
 	collection.find({ _id : id }, {}, function(e,docs){
 //		console.log(e, docs);
 		var relocation = docs[0];
 		getTodaysInventory(db, function(daily) {
-			var groupFrom = getGroup(daily, relocation.house, relocation.wob);
-			var groupTo = getGroup(daily, relocation['*house:houseAfter'], relocation.wob);
+			var groupFrom = getGroup(daily, relocation.houseBefore, relocation.wob);
+			var groupTo = getGroup(daily, relocation.houseAfter, relocation.wob);
 			relocation.count = parseInt(relocation.count);
 			groupFrom.hcnt += relocation.count;
 			groupTo.hcnt -= relocation.count;

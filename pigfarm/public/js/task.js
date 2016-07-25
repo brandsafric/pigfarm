@@ -33,24 +33,31 @@ function getRow(tableId, id) {
 }
 
 function generateFieldForListing(fieldSpec, data) {
-	if (fieldSpec.startsWith('-'))
-//		return generateFieldReadOnly(fieldSpec.substr(1));
-		return generateFieldNormal(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
-	else if (fieldSpec.startsWith('+'))
-		return generateFieldNormal(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+	const fieldName = getFieldName(fieldSpec);
+	if (fieldSpec.startsWith('+'))
+		return generateFieldNormal(fieldName, data[fieldName]);
+	else if (fieldSpec.startsWith('-'))
+		return generateFieldReadOnly(fieldName);
 	else if (fieldSpec.startsWith('='))
-		return generateFieldNormal(fieldSpec.substr(1), data[fieldSpec.substr(1)]);
+		return generateFieldNormal(fieldName, data[fieldName]);
+	else if (fieldSpec.startsWith('*'))
+		return generateFieldNormal(fieldName, data[fieldName]);
 	else
-		return generateFieldNormal(fieldSpec, data[fieldSpec]);
+		return generateFieldNormal(fieldName, data[fieldName]);
 }
 
 function generateFieldForNewRow(fieldSpec, record) {
-	if (fieldSpec.startsWith('-'))
-		return generateFieldReadOnly(fieldSpec.substr(1));
-	else if (fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
-		return generateFieldNew(fieldSpec, '');
+	const fieldName = getFieldName(fieldSpec);
+	if (fieldSpec.startsWith('+'))
+		return generateFieldNew(fieldName, '');
+	else if (fieldSpec.startsWith('-'))
+		return generateFieldReadOnly(fieldName);
+	else if (fieldSpec.startsWith('='))
+		return generateFieldNew(fieldName, '');
+	else if (fieldSpec.startsWith('*'))
+		return generateFieldNew(fieldName, '');
 	else
-		return generateFieldNew(fieldSpec, (record ? record[fieldSpec] : ''));
+		return generateFieldNew(fieldName, (record ? record[fieldName] : ''));
 }
 
 function extractFieldValue(fieldSpec, field) {
@@ -62,11 +69,11 @@ function extractFieldValue(fieldSpec, field) {
 		return field.find('input').val();
 }
 
-function generateFieldNormal(fieldName, data) {
+function generateFieldNormal(fieldName, value) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div class="field">';
-	field += '	<label>' + data + '</label>';
-	field += '	<input type="text" class="form-control field-input" value="' + data + '" />';
+	field += '	<label>' + value + '</label>';
+	field += '	<input type="text" class="form-control field-input" value="' + value + '" />';
 	field += '</div></td>';
 	return field;
 }
@@ -79,19 +86,28 @@ function generateFieldReadOnly(fieldName) {
 	return field;
 }
 
-function generateFieldNew(fieldName, data) {
+function generateFieldNew(fieldName, initialValue) {
 	var field = '';
-	field += '<td rel="' + norm(fieldName) + '"><div>';
-	field += '	<input type="text" class="form-control field-input-new" value="' + data + '" />';
+	field += '<td rel="' + fieldName + '"><div>';
+	field += '	<input type="text" class="form-control field-input-new" value="' + initialValue + '" />';
 	field += '</div></td>';
 	return field;
 }
 
-function norm(fieldSpec) {
-	if (fieldSpec.startsWith('-') || fieldSpec.startsWith('+') || fieldSpec.startsWith('='))
-		return fieldSpec.substr(1);
+function getFieldName(fieldSpec) {
+	if (fieldSpec.startsWith('+') || fieldSpec.startsWith('-') || fieldSpec.startsWith('=') || fieldSpec.startsWith('*'))
+		return fieldSpec.substr(1).split(':')[0];
 	else
 		return fieldSpec;
+}
+
+function getFieldNameRef(fieldSpec) {
+	if (fieldSpec.startsWith('+') || fieldSpec.startsWith('-') || fieldSpec.startsWith('=') || fieldSpec.startsWith('*')) {
+		var tokens = fieldSpec.substr(1).split(':');
+		return tokens[1] ? tokens[1] : tokens[0];
+	} else {
+		return fieldSpec;
+	}
 }
 
 var isArray = function(o) {
@@ -200,7 +216,10 @@ Table.prototype = {
 
 	setAutoComplete:function(accessPoint, fieldName) {
 		var self = this;
-		$.getJSON(accessPoint + 'field/' + fieldName, function(data) {
+		$.getJSON(accessPoint, function(data) {
+			for (var i in data)
+				if (data[i] == null)
+					data[i] = '';
 			self.getFieldSet(fieldName).each(function() {
 				var input = $(this).find('input');
 				input.autocomplete({
@@ -208,6 +227,7 @@ Table.prototype = {
 					minLength: 0
 				});
 				input.focusin(function() {
+					console.log(this);
 					$(this).autocomplete('search', '');
 				});
 				if (input.is(':focus'))
@@ -219,21 +239,21 @@ Table.prototype = {
 	setAutoCompleteAll:function() {
 		for (i in this.fieldSpecs) {
 			var fieldSpec = this.fieldSpecs[i];
-			if (fieldSpec.startsWith('+'))
-				this.setAutoComplete(this.accessPointAux, fieldSpec.substr(1));
+			if (fieldSpec.startsWith('+') || fieldSpec.startsWith('*'))
+				this.setAutoComplete(this.accessPointAux + 'field/' + getFieldNameRef(fieldSpec), getFieldName(fieldSpec));
 			else if (fieldSpec.startsWith('-') || fieldSpec.startsWith('='))
-				continue;
+				;
 			else
-				this.setAutoComplete(this.accessPoint, fieldSpec);
+				this.setAutoComplete(this.accessPoint + 'field/' + getFieldName(fieldSpec), getFieldName(fieldSpec));
 		}
 	},
 
 	getField2:function(row, fieldSpec) {
-		return row.find('td[rel="' + norm(fieldSpec) + '"]');
+		return row.find('td[rel="' + getFieldName(fieldSpec) + '"]');
 	},
 
 	getFieldSet:function(fieldSpec) {
-		return $(this.tableId).find('td[rel="' + norm(fieldSpec) + '"]');
+		return $(this.tableId).find('td[rel="' + getFieldName(fieldSpec) + '"]');
 	},
 
 	getRefJoinField:function(row) {
@@ -299,7 +319,7 @@ Table.prototype = {
 			var newRow = self.getNewRow()
 			for (i in self.fieldSpecs) {
 				var fieldSpec = self.fieldSpecs[i];
-				record[norm(fieldSpec)] = extractFieldValue(fieldSpec, self.getField2(newRow, fieldSpec));
+				record[getFieldName(fieldSpec)] = extractFieldValue(fieldSpec, self.getField2(newRow, fieldSpec));
 			}
 			record['date'] = getCurrentDate();
 
