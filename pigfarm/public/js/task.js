@@ -173,7 +173,6 @@ Table.prototype = {
 //			self.setEditAction();
 
 			self.addLastRowForAddingNewRecord();
-			self.setAutoCompleteAll();
 		});
 	},
 
@@ -390,6 +389,7 @@ Table.prototype = {
 		$.getJSON(this.accessPoint + 'last' , function( data ) {
 			var record = data[0];
 			createNewRow(record);
+			self.setAutoCompleteAll();
 		});
 
 //		createNewRow();
