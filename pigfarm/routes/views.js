@@ -60,8 +60,28 @@ router.get('/inventory/daily/field/house', function(req, res) {
 				houses.push(docs[0].houses[i].name);
 			}
 		}
-//		console.log(houses);
 		res.json(houses);
+	});
+});
+
+router.get('/inventory/daily', function(req, res) {
+	var string = '';
+
+	var db = req.db;
+
+	var collection = db.get('daily');
+	collection.find( {}, { sort : {_id:-1}, limit : 1 }, function(e,docs){
+		console.log(docs);
+		if (docs[0]) {
+			for (var i = 0; i < docs[0].houses.length; i++) {
+				var house = docs[0].houses[i];
+				for (var j in house.groups) {
+					if (house.groups[j].wob)
+						string += house.name + '\t' + house.groups[j].wob  + '\t' + house.groups[j].hcnt + '\n';
+				}
+			}
+		}
+		res.send(string);
 	});
 });
 
