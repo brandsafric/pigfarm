@@ -4,15 +4,16 @@ $(document).ready(function() {
 			'#introduction',
 			'/mother/introduction/',
 			[
-				'pigId'
+				'pigId',
+				'motherStatus'
 			]
 		),
 		new Table(
 			'#fertilization',
 			'/mother/fertilization/',
 			[
-				'pigId',
-				'motherStatus',
+				'+pigId',
+				'-motherStatus',
 				'batch',
 				'daysSinceStopBreastFeed',
 				'administration1',
@@ -20,7 +21,8 @@ $(document).ready(function() {
 				'administration3',
 				'administrator',
 				'status'
-			]
+			],
+			'/views/mother/'
 		),
 		new Table(
 			'#relocation',

@@ -37,7 +37,7 @@ function generateFieldForListing(fieldSpec, data) {
 	if (fieldSpec.startsWith('+'))
 		return generateFieldNormal(fieldName, data[fieldName]);
 	else if (fieldSpec.startsWith('-'))
-		return generateFieldReadOnly(fieldName);
+		return generateFieldReadOnly(fieldName, data[fieldName]);
 	else if (fieldSpec.startsWith('='))
 		return generateFieldNormal(fieldName, data[fieldName]);
 	else if (fieldSpec.startsWith('*'))
@@ -51,7 +51,7 @@ function generateFieldForNewRow(fieldSpec, record) {
 	if (fieldSpec.startsWith('+'))
 		return generateFieldNew(fieldName, '');
 	else if (fieldSpec.startsWith('-'))
-		return generateFieldReadOnly(fieldName);
+		return generateFieldReadOnly(fieldName, '');
 	else if (fieldSpec.startsWith('='))
 		return generateFieldNew(fieldName, '');
 	else if (fieldSpec.startsWith('*'))
@@ -78,10 +78,10 @@ function generateFieldNormal(fieldName, value) {
 	return field;
 }
 
-function generateFieldReadOnly(fieldName) {
+function generateFieldReadOnly(fieldName, value) {
 	var field = '';
 	field += '<td rel="' + fieldName + '"><div>';
-	field += '	<label></label>';
+	field += '	<label>' + value + '</label>';
 	field += '</div></td>';
 	return field;
 }
@@ -155,9 +155,9 @@ Table.prototype = {
 				var row = $(getRow(self.tableId, this._id));
 				var ref = self.getRefJoinField(row);
 				if (ref) {
-//					self.fillReferenceData(row, ref.find('label').html());
-					ref.on('focusin', function() {self.clearReferenceData(row);});
-					ref.on('focusout', function() {self.fillReferenceData(row, $(this).find('input').val());});
+					// self.fillReferenceData(row, ref.find('label').html());
+					// ref.on('focusin', function() {self.clearReferenceData(row);});
+					// ref.on('focusout', function() {self.fillReferenceData(row, $(this).find('input').val());});
 				}
 			});
 
@@ -342,9 +342,9 @@ Table.prototype = {
 
 					var ref = self.getRefJoinField($(row));
 					if (ref) {
-//						self.fillReferenceData($(row), ref.find('label').html());
-						ref.on('focusin', function() {self.clearReferenceData($(row));});
-						ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
+						// self.fillReferenceData($(row), ref.find('label').html());
+						// ref.on('focusin', function() {self.clearReferenceData($(row));});
+						// ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
 					}
 
 					$(row.cells[row.cells.length - 1]).find('.menu-item-delete').on('click', function(event) {
