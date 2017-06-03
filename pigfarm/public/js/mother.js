@@ -1,6 +1,13 @@
 $(document).ready(function() {
 	var tables = [
 		new Table(
+			'#introduction',
+			'/mother/introduction/',
+			[
+				'pigId'
+			]
+		),
+		new Table(
 			'#fertilization',
 			'/mother/fertilization/',
 			[

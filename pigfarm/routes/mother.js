@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
 
 var task = require('./task.js');
 
+task.handlerFactory(router, 'introduction')
 task.handlerFactory(router, 'fertilization')
 task.handlerFactory(router, 'relocation')
 

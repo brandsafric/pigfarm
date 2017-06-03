@@ -163,7 +163,7 @@ Table.prototype = {
 
 			var table = getTable(self.tableId);
 			for (var i = 0, row; row = table.rows[i]; i++) {
-				$(row.cells[5]).find('.menu-item-delete').on('click', function(event) {
+				$(row.cells[row.cells.length - 1]).find('.menu-item-delete').on('click', function(event) {
 					const recordId = getIdFromRowJQ($(event.target).closest('tr'));
 					console.log(self.accessPoint, self.tableId, recordId);
 					self.removeEntry(recordId);
@@ -347,7 +347,7 @@ Table.prototype = {
 						ref.on('focusout', function() {self.fillReferenceData($(row), $(this).find('input').val());});
 					}
 
-					$(row.cells[5]).find('.menu-item-delete').on('click', function(event) {
+					$(row.cells[row.cells.length - 1]).find('.menu-item-delete').on('click', function(event) {
 						const recordId = getIdFromRowJQ($(event.target).closest('tr'));
 						console.log(self.accessPoint, self.tableId, recordId);
 						self.removeEntry(recordId);
