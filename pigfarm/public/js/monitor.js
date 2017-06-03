@@ -258,8 +258,8 @@ function plot(data2) {
 		},
 		colors: ["#5191d1"],
 		yaxis: {
-			min: 0,
-			max: 25
+			min: -15,
+			max: 35
 		},
 		xaxis: {
 			show: false

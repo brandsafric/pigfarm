@@ -8,7 +8,7 @@ try:
 		print h
 		print t
 		try:
-			r = requests.post("http://ec2-52-25-245-158.us-west-2.compute.amazonaws.com:3000/monitor/temperature", data={'temperature': t, 'humidity': h})
+			r = requests.post("http://ec2-54-149-117-43.us-west-2.compute.amazonaws.com:3000/monitor/temperature", data={'temperature': t, 'humidity': h})
 			print(r.status_code, r.reason)
 			print(r.text[:300] + '...')
 		except:
