@@ -22,7 +22,15 @@ $(document).ready(function() {
 				'administrator',
 				'status'
 			],
-			'/views/mother/'
+			'/views/mother/',
+			function(recordId) {
+				console.log('onAddEntry', this.tableId, recordId);
+				tables[0].populateTable(getCurrentDate());
+			},
+			null,
+			function(recordId) {
+				tables[0].populateTable(getCurrentDate());
+			}
 		),
 		new Table(
 			'#relocation',
