@@ -6,7 +6,19 @@ $(document).ready(function() {
 			[
 				'pigId',
 				'motherStatus'
-			]
+			],
+			null,
+			function(recordId) {
+				console.log('onAddEntry', this.tableId, recordId);
+				tables[1].setAutoComplete('/views/mother/field/pigId', 'pigId');
+				tables[2].setAutoComplete('/views/mother/field/pigId', 'pigId');
+			},
+			null,
+			function(recordId) {
+				tables[0].populateTable(getCurrentDate());
+				tables[1].setAutoComplete('/views/mother/field/pigId', 'pigId');
+				tables[2].setAutoComplete('/views/mother/field/pigId', 'pigId');
+			}
 		),
 		new Table(
 			'#fertilization',

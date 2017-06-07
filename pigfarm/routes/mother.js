@@ -42,7 +42,7 @@ var onRemove = function(db, id, cb) {
 //		console.log(e, docs);
 		var fertilization = docs[0];
 		getMother(db, fertilization.pigId, function(mother) {
-			mother.motherStatus = '(예전 상태 알아내서 넣어주기)';
+			mother.motherStatus = fertilization.motherStatus;
 			var collection = db.get('introduction');
 			collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
 				cb(err);

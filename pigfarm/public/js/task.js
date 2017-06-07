@@ -357,7 +357,9 @@ Table.prototype = {
 					self.setAutoCompleteAll();
 
 					var newRow = self.getNewRow();
-					self.fillReferenceData(newRow, self.getRefJoinField(newRow).find('input').val());
+					var refJoinField = self.getRefJoinField(newRow);
+					if (refJoinField)
+						self.fillReferenceData(newRow, refJoinField.find('input').val());
 				} else {
 					// If something goes wrong, alert the error message that our service returned
 //					alert('Error: ' + response.msg);

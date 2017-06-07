@@ -21,4 +21,5 @@ scp -i ~/keys/amazon.jiwon.pem pigfarm.tar.gz $PIGFARM1:/home/ubuntu
 ssh-pigfarm 'tar xvfm pigfarm.tar.gz'
 ssh-pigfarm 'rm pigfarm.tar.gz'
 
-say -v Yuna 업로드 완료했습니다, 멋진 주인님
+# say -v Yuna 업로드 완료했습니다, 멋진 주인님
+osascript -e 'display notification "업로드 완료했습니다" with title "Pigfarm"'

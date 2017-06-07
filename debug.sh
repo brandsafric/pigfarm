@@ -7,4 +7,5 @@ source aliases.sh
 ssh-pigfarm 'cd pigfarm; ./stop.sh'
 ssh-pigfarm 'cd pigfarm; ./run.sh' &
 
-say -v Yuna 서버를 재시작했습니다, 멋진 주인님
+# say -v Yuna 서버를 재시작했습니다, 멋진 주인님
+osascript -e 'display notification "서버를 재시작했습니다" with title "Pigfarm"'
