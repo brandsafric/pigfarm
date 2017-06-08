@@ -4,7 +4,7 @@ var router = express.Router();
 router.get('/mother/field/pigId', function(req, res) {
 	console.log(req.params.name);
 	var db = req.db;
-	var collection = db.get('introduction');
+	var collection = db.get('mother');
 	collection.distinct('pigId', {}, function(e,docs){
 		res.json(docs);
 	});
@@ -20,7 +20,7 @@ router.get('/mother/:pigId', function(req, res) {
 
 	var waiting = 3;
 
-	var collection = db.get('introduction');
+	var collection = db.get('mother');
 	collection.find( { pigId : pigId }, { sort : {_id:-1}, limit : 1 }, function(e,docs){
 		console.log(docs);
 		if (docs[0]) {
