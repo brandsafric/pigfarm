@@ -33,6 +33,7 @@ var getTodaysInventory = function(db, cb) {
 	var collection = db.get('daily');
 	var date1 = new Date();
 	date1.setHours(0, 0, 0);
+	date1.setMilliseconds(0);
 	var date2 = new Date(date1);
 	date2.setDate(date2.getDate() + 1);
 	console.log(date1);
