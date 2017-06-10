@@ -59,4 +59,7 @@ $(document).ready(function() {
 	];
 
 	initializeTables(tables);
+
+	loadTable('#mother', '/mother/mother/');
+
 });

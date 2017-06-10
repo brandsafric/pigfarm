@@ -32,20 +32,13 @@ task.handlerFactory(router, 'introduction', onInsertIntroduction, null, onRemove
 
 var getMother = function(db, pigId, cb) {
 	var collection = db.get('mother');
-	var date1 = new Date();
-	date1.setHours(0, 0, 0);
-	date1.setMilliseconds(0);
-	var date2 = new Date(date1);
-	date2.setDate(date2.getDate() + 1);
-	console.log(date1);
-	console.log(date2);
-	collection.find({ $and : [ { date : { $gte: date1, $lt: date2 } }, { pigId : pigId } ] }, {}, function(e, docs) {
+	collection.find({ pigId : pigId }, {}, function(e, docs) {
 		console.log(docs);
 		cb(docs[0]);
 	});
 }
 
-var onInsert = function(db, fertilization, cb) {
+var onInsertFertilization = function(db, fertilization, cb) {
 	console.log(fertilization.pigId, fertilization.motherStatus);
 	getMother(db, fertilization.pigId, function(mother) {
 		mother.motherStatus = '임신돈';
@@ -56,7 +49,7 @@ var onInsert = function(db, fertilization, cb) {
 	});
 }
 
-var onRemove = function(db, id, cb) {
+var onRemoveFertilization = function(db, id, cb) {
 //	console.log(db, id, cb);
 	var collection = db.get('fertilization');
 	collection.find({ _id : id }, {}, function(e,docs) {
@@ -72,7 +65,8 @@ var onRemove = function(db, id, cb) {
 	});
 }
 
-task.handlerFactory(router, 'fertilization', onInsert, null, onRemove);
+task.handlerFactory(router, 'fertilization', onInsertFertilization, null, onRemoveFertilization);
 task.handlerFactory(router, 'relocation');
+task.handlerFactory(router, 'mother');
 
 module.exports = router;
