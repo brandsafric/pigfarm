@@ -18,15 +18,17 @@ router.get('/mother/:pigId', function(req, res) {
 
 	var db = req.db;
 
-	var waiting = 3;
+	var waiting = 2;
 
 	var collection = db.get('mother');
 	collection.find( { pigId : pigId }, { sort : {_id:-1}, limit : 1 }, function(e,docs){
 		console.log(docs);
 		if (docs[0]) {
 			doc['motherStatus'] = docs[0]['motherStatus'];
+			doc['prevHouse'] = docs[0]['house'];
 		} else {
-			doc['motherStatus'] = '(정보 없음)';
+			doc['motherStatus'] = '(오류: 유입 기록 없음!)';
+			doc['house'] = '(오류: 유입 기록 없음!)';
 		}
 		if (--waiting == 0)
 			res.json(doc);
@@ -45,17 +47,17 @@ router.get('/mother/:pigId', function(req, res) {
 			res.json(doc);
 	});
 
-	collection = db.get('relocation');
-	collection.find( { pigId : pigId }, { sort : {_id:-1}, limit : 1 }, function(e,docs){
-		console.log(docs);
-		if (docs[0]) {
-			doc['prevHouse'] = docs[0]['newHouse'];
-		} else {
-			doc['prevHouse'] = '(정보 없음)';
-		}
-		if (--waiting == 0)
-			res.json(doc);
-	});
+	// collection = db.get('relocation');
+	// collection.find( { pigId : pigId }, { sort : {_id:-1}, limit : 1 }, function(e,docs){
+	// 	console.log(docs);
+	// 	if (docs[0]) {
+	// 		doc['prevHouse'] = docs[0]['newHouse'];
+	// 	} else {
+	// 		doc['prevHouse'] = '(정보 없음)';
+	// 	}
+	// 	if (--waiting == 0)
+	// 		res.json(doc);
+	// });
 });
 
 router.get('/inventory/daily/field/house', function(req, res) {

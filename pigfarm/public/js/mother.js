@@ -5,6 +5,7 @@ $(document).ready(function() {
 			'/mother/introduction/',
 			[
 				'pigId',
+				'house',
 				'motherStatus'
 			],
 			null,
@@ -12,12 +13,14 @@ $(document).ready(function() {
 				console.log('onAddEntry', this.tableId, recordId);
 				tables[1].setAutoComplete('/views/mother/field/pigId', 'pigId');
 				tables[2].setAutoComplete('/views/mother/field/pigId', 'pigId');
+				loadTable('#mother', '/mother/mother/');
 			},
 			null,
 			function(recordId) {
 				tables[0].populateTable(getCurrentDate());
 				tables[1].setAutoComplete('/views/mother/field/pigId', 'pigId');
 				tables[2].setAutoComplete('/views/mother/field/pigId', 'pigId');
+				loadTable('#mother', '/mother/mother/');
 			}
 		),
 		new Table(
@@ -37,11 +40,11 @@ $(document).ready(function() {
 			'/views/mother/',
 			function(recordId) {
 				console.log('onAddEntry', this.tableId, recordId);
-				tables[0].populateTable(getCurrentDate());
+				loadTable('#mother', '/mother/mother/');
 			},
 			null,
 			function(recordId) {
-				tables[0].populateTable(getCurrentDate());
+				loadTable('#mother', '/mother/mother/');
 			}
 		),
 		new Table(
@@ -54,7 +57,15 @@ $(document).ready(function() {
 				'-prevHouse',
 				'newHouse'
 			],
-			'/views/mother/'
+			'/views/mother/',
+			function(recordId) {
+				console.log('onAddEntry', this.tableId, recordId);
+				loadTable('#mother', '/mother/mother/');
+			},
+			null,
+			function(recordId) {
+				loadTable('#mother', '/mother/mother/');
+			}
 		)
 	];
 

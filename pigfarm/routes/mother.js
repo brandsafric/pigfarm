@@ -66,7 +66,35 @@ var onRemoveFertilization = function(db, id, cb) {
 }
 
 task.handlerFactory(router, 'fertilization', onInsertFertilization, null, onRemoveFertilization);
-task.handlerFactory(router, 'relocation');
+
+var onInsertRelocation = function(db, relocation, cb) {
+	console.log(relocation.pigId, relocation.newHouse);
+	getMother(db, relocation.pigId, function(mother) {
+		mother.house = relocation.newHouse;
+		var collection = db.get('mother');
+		collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
+			cb(err);
+		});
+	});
+}
+
+var onRemoveRelocation = function(db, id, cb) {
+//	console.log(db, id, cb);
+	var collection = db.get('relocation');
+	collection.find({ _id : id }, {}, function(e,docs) {
+//		console.log(e, docs);
+		var relocation = docs[0];
+		getMother(db, relocation.pigId, function(mother) {
+			mother.house = relocation.prevHouse;
+			var collection = db.get('mother');
+			collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
+				cb(err);
+			});
+		});
+	});
+}
+
+task.handlerFactory(router, 'relocation', onInsertRelocation, null, onRemoveRelocation);
 task.handlerFactory(router, 'mother');
 
 module.exports = router;
