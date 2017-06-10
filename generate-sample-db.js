@@ -1,5 +1,10 @@
 use pigfarm;
 
+db.fertilization.drop();
+db.relocation.drop();
+db.introduction.drop();
+db.mother.drop();
+
 db.fertilization.insert({
 	"num":"333",
 	"pigId":"Y 39-12",

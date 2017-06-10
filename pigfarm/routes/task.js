@@ -33,14 +33,6 @@ function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 		});
 	});
 
-	router.get('/' + tableName, function(req, res) {
-		var db = req.db;
-		var collection = db.get(tableName);
-		collection.find({}, {}, function(e,docs){
-			res.json(docs);
-		});
-	});
-
 	router.post('/' + tableName, function(req, res) {
 		var db = req.db;
 		var collection = db.get(tableName);

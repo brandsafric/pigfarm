@@ -10,8 +10,8 @@ $(document).ready(function() {
 				'*houseAfter:house'
 			],
 			'/views/inventory/daily/',
-			function(recordId) {
-				console.log('onAddEntry', this.tableId, recordId);
+			function(record) {
+				console.log('onAddEntry', this.tableId, record._id);
 				loadTable('#daily', '/inventory/daily/', getCurrentDate());
 			},
 			null,

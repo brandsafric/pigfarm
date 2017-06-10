@@ -10,6 +10,10 @@ function getIdFromRow(row) {
 	return row.cells.item(0).innerHTML;
 }
 
+function getFieldValueFromRow(row, columnNum) {
+	return row.cells.item(columnNum).innerHTML;
+}
+
 function getIdFromRowJQ(row) {
 	return row.find('td:nth-child(1)').html();
 }
@@ -27,6 +31,17 @@ function getRow(tableId, id) {
 	for (var i = 0, row; row = table.rows[i]; i++) {
 //		console.log(getIdFromRow(row));
 		if (getIdFromRow(row) == id)
+			return row;
+	}
+	return null;
+}
+
+function getRowByColumnValue(tableId, columnNum, value) {
+	var table = getTable(tableId);
+//	console.log(table.rows);
+	for (var i = 0, row; row = table.rows[i]; i++) {
+		// console.log(getFieldValueFromRow(row, columnNum));
+		if (getFieldValueFromRow(row, columnNum) == value)
 			return row;
 	}
 	return null;
@@ -365,7 +380,7 @@ Table.prototype = {
 //					alert('Error: ' + response.msg);
 				}
 				if (self.onAddEntry)
-					self.onAddEntry(record._id);
+					self.onAddEntry(record);
 			});
 		};
 
@@ -444,7 +459,7 @@ Table.prototype = {
 			var row = getRow(self.tableId, recordId);
 			console.log(row);
 			for (var j = 0, cell; cell = row.cells[j]; j++) {
-				cell.style.cssText = "background-color:LightCyan";
+				cell.style.cssText = "background-color:Gainsboro";
 				var label = cell.childNodes[0].childNodes[1];
 				if (label) {
 //	 				label.style.setProperty("text-decoration", "line-through");
@@ -529,7 +544,7 @@ var complexDataToRows = function(data){
 	return rows;
 }
 
-var loadTable = function(tableId, accessPoint, date) {
+var loadTable = function(tableId, accessPoint, date, cb) {
 
 	var tableContent = '';
 
@@ -555,7 +570,9 @@ var loadTable = function(tableId, accessPoint, date) {
 		});
 
 		$(tableId).append(tableContent);
-
 //		console.log(tableContent);
+
+		if (cb)
+			cb();
 	});
 }

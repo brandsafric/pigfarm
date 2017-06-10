@@ -32,7 +32,14 @@ task.handlerFactory(router, 'introduction', onInsertIntroduction, null, onRemove
 
 var getMother = function(db, pigId, cb) {
 	var collection = db.get('mother');
-	collection.find({ pigId : pigId }, {}, function(e, docs) {
+	var date1 = new Date();
+	date1.setHours(0, 0, 0);
+	date1.setMilliseconds(0);
+	var date2 = new Date(date1);
+	date2.setDate(date2.getDate() + 1);
+	console.log(date1);
+	console.log(date2);
+	collection.find({ $and : [ { date : { $gte: date1, $lt: date2 } }, { pigId : pigId } ] }, {}, function(e, docs) {
 		console.log(docs);
 		cb(docs[0]);
 	});
