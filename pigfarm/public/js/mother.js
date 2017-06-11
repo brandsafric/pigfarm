@@ -51,7 +51,11 @@ $(document).ready(function() {
 			'/views/mother/',
 			function(record) {
 				console.log('onAddEntry', this.tableId, record._id);
-				loadTable('#mother', '/mother/mother/', getCurrentDate());
+				loadTable('#mother', '/mother/mother/', getCurrentDate(), function() {
+					var row = getRowByColumnValue('#mother', 1, record.pigId)
+					var cell = row.cells[3];
+					cell.style.cssText = "background-color:Lavender; font-weight:bold";
+				});
 			},
 			null,
 			function(recordId) {
@@ -71,7 +75,11 @@ $(document).ready(function() {
 			'/views/mother/',
 			function(record) {
 				console.log('onAddEntry', this.tableId, record._id);
-				loadTable('#mother', '/mother/mother/', getCurrentDate());
+				loadTable('#mother', '/mother/mother/', getCurrentDate(), function() {
+					var row = getRowByColumnValue('#mother', 1, record.pigId)
+					var cell = row.cells[2];
+					cell.style.cssText = "background-color:Lavender; font-weight:bold";
+				});
 			},
 			null,
 			function(recordId) {
