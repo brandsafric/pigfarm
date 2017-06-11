@@ -11,8 +11,8 @@ $(document).ready(function() {
 			null,
 			function(record) {
 				console.log('onAddEntry', this.tableId, record._id);
-				tables[1].setAutoComplete('/views/mother/field/pigId', 'pigId');
-				tables[2].setAutoComplete('/views/mother/field/pigId', 'pigId');
+				tables[1].setAutoComplete(0);
+				tables[2].setAutoComplete(0);
 				loadTable('#mother', '/mother/mother/', getCurrentDate(), function() {
 					var row = getRowByColumnValue('#mother', 1, record.pigId)
 					console.log(row);
@@ -29,8 +29,8 @@ $(document).ready(function() {
 			null,
 			function(recordId) {
 				// tables[0].populateTable(getCurrentDate());
-				tables[1].setAutoComplete('/views/mother/field/pigId', 'pigId');
-				tables[2].setAutoComplete('/views/mother/field/pigId', 'pigId');
+				tables[1].setAutoComplete(0);
+				tables[2].setAutoComplete(0);
 				loadTable('#mother', '/mother/mother/', getCurrentDate());
 			}
 		),
@@ -92,4 +92,12 @@ $(document).ready(function() {
 
 	loadTable('#mother', '/mother/mother/', getCurrentDate());
 
+	$('#date-selector').on('changeDate', function(d) {
+		var date = new Date(getCurrentDate());
+		console.log(date);
+		if (d.viewMode == "days") {
+			$('#date-selector').datepicker('hide');
+			loadTable('#mother', '/mother/mother/', getCurrentDate());
+		}
+	});
 });

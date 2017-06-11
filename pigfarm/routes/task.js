@@ -1,10 +1,21 @@
+function getDayQuery(date) {
+	var date1 = new Date(date);
+	var date2 = new Date(date1);
+	date2.setDate(date2.getDate() + 1);
+	console.log('yay!!!!');
+	console.log(date);
+	console.log(date1);
+	console.log(date2);
+	return { date : { $gte: date1, $lt: date2 } };
+}
+
 function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 
 	router.get('/' + tableName + '/last', function(req, res) {
 		console.log(req.params.name);
 		var db = req.db;
 		var collection = db.get(tableName);
-		collection.find( {}, { sort : {_id:-1}, limit : 1 }, function(e,docs){
+		collection.find( {}, { sort : {_id:-1}, limit : 1 }, function(e,docs) {
 			res.json(docs);
 		});
 	});
@@ -13,7 +24,7 @@ function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 		console.log(req.params.name);
 		var db = req.db;
 		var collection = db.get(tableName);
-		collection.distinct(req.params.name, {}, function(e,docs){
+		collection.distinct(req.params.name, {}, function(e,docs) {
 			res.json(docs);
 		});
 	});
@@ -21,14 +32,7 @@ function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 	router.get('/' + tableName + '/:date', function(req, res) {
 		var db = req.db;
 		var collection = db.get(tableName);
-		var date1 = new Date(decodeURI(req.params.date));
-		var date2 = new Date(date1);
-		date2.setDate(date2.getDate() + 1);
-		console.log('yay!!!!');
-		console.log(decodeURI(req.params.date));
-		console.log(date1);
-		console.log(date2);
-		collection.find({ date : { $gte: date1, $lt: date2 } }, {}, function(e,docs){
+		collection.find(getDayQuery(decodeURI(req.params.date)), {}, function(e,docs) {
 			res.json(docs);
 		});
 	});
@@ -89,3 +93,4 @@ function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 }
 
 exports.handlerFactory = handlerFactory;
+exports.getDayQuery = getDayQuery;

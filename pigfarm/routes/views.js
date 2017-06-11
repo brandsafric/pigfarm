@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/mother/field/pigId', function(req, res) {
-	console.log(req.params.name);
+var task = require('./task.js');
+
+router.get('/mother/field/pigId/:date', function(req, res) {
+	// console.log(req.params.date);
+	// console.log(task.getDayQuery(decodeURI(req.params.date)));
 	var db = req.db;
 	var collection = db.get('mother');
-	collection.distinct('pigId', {}, function(e,docs){
+	collection.distinct('pigId', task.getDayQuery(decodeURI(req.params.date)), function(e,docs){
 		res.json(docs);
 	});
 });

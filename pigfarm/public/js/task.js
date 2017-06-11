@@ -228,7 +228,7 @@ Table.prototype = {
 		});
 	},
 
-	setAutoComplete:function(accessPoint, fieldName) {
+	_setAutoComplete:function(accessPoint, fieldName) {
 		var self = this;
 		$.getJSON(accessPoint, function(data) {
 			for (var i in data)
@@ -250,15 +250,19 @@ Table.prototype = {
 		});
 	},
 
+	setAutoComplete:function(index) {
+		var fieldSpec = this.fieldSpecs[index];
+		if (fieldSpec.startsWith('+') || fieldSpec.startsWith('*'))
+			this._setAutoComplete(this.accessPointAux + 'field/' + getFieldNameRef(fieldSpec) + '/' + encodeURI(getCurrentDate()), getFieldName(fieldSpec));
+		else if (fieldSpec.startsWith('-') || fieldSpec.startsWith('='))
+			;
+		else
+			this._setAutoComplete(this.accessPoint + 'field/' + getFieldName(fieldSpec), getFieldName(fieldSpec));
+	},
+
 	setAutoCompleteAll:function() {
 		for (i in this.fieldSpecs) {
-			var fieldSpec = this.fieldSpecs[i];
-			if (fieldSpec.startsWith('+') || fieldSpec.startsWith('*'))
-				this.setAutoComplete(this.accessPointAux + 'field/' + getFieldNameRef(fieldSpec), getFieldName(fieldSpec));
-			else if (fieldSpec.startsWith('-') || fieldSpec.startsWith('='))
-				;
-			else
-				this.setAutoComplete(this.accessPoint + 'field/' + getFieldName(fieldSpec), getFieldName(fieldSpec));
+			this.setAutoComplete(i);
 		}
 	},
 
