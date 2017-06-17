@@ -4,7 +4,7 @@ $(document).ready(function() {
 			'#introduction',
 			'/mother/introduction/',
 			[
-				'pigId',
+				'!pigId',
 				'house',
 				'motherStatus'
 			],

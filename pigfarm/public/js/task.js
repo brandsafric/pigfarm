@@ -49,7 +49,9 @@ function getRowByColumnValue(tableId, columnNum, value) {
 
 function generateFieldForListing(fieldSpec, data) {
 	const fieldName = getFieldName(fieldSpec);
-	if (fieldSpec.startsWith('+'))
+	if (fieldSpec.startsWith('!'))
+		return generateFieldNormal(fieldName, data[fieldName]);
+	else if (fieldSpec.startsWith('+'))
 		return generateFieldNormal(fieldName, data[fieldName]);
 	else if (fieldSpec.startsWith('-'))
 		return generateFieldReadOnly(fieldName, data[fieldName]);
@@ -63,7 +65,9 @@ function generateFieldForListing(fieldSpec, data) {
 
 function generateFieldForNewRow(fieldSpec, record) {
 	const fieldName = getFieldName(fieldSpec);
-	if (fieldSpec.startsWith('+'))
+	if (fieldSpec.startsWith('!'))
+		return generateFieldNew(fieldName, '');
+	else if (fieldSpec.startsWith('+'))
 		return generateFieldNew(fieldName, '');
 	else if (fieldSpec.startsWith('-'))
 		return generateFieldReadOnly(fieldName, '');
@@ -103,21 +107,23 @@ function generateFieldReadOnly(fieldName, value) {
 
 function generateFieldNew(fieldName, initialValue) {
 	var field = '';
-	field += '<td rel="' + fieldName + '"><div>';
+	field += '<td rel="' + fieldName + '">';
+	field += '<div class="form-group has-feedback">'
 	field += '	<input type="text" class="form-control field-input-new" value="' + initialValue + '" />';
-	field += '</div></td>';
+	field += '	<span class="glyphicon form-control-feedback"></span>';
+	field += '</td>';
 	return field;
 }
 
 function getFieldName(fieldSpec) {
-	if (fieldSpec.startsWith('+') || fieldSpec.startsWith('-') || fieldSpec.startsWith('=') || fieldSpec.startsWith('*'))
+	if (fieldSpec.startsWith('!') || fieldSpec.startsWith('+') || fieldSpec.startsWith('-') || fieldSpec.startsWith('=') || fieldSpec.startsWith('*'))
 		return fieldSpec.substr(1).split(':')[0];
 	else
 		return fieldSpec;
 }
 
 function getFieldNameRef(fieldSpec) {
-	if (fieldSpec.startsWith('+') || fieldSpec.startsWith('-') || fieldSpec.startsWith('=') || fieldSpec.startsWith('*')) {
+	if (fieldSpec.startsWith('!') || fieldSpec.startsWith('+') || fieldSpec.startsWith('-') || fieldSpec.startsWith('=') || fieldSpec.startsWith('*')) {
 		var tokens = fieldSpec.substr(1).split(':');
 		return tokens[1] ? tokens[1] : tokens[0];
 	} else {
@@ -127,6 +133,58 @@ function getFieldNameRef(fieldSpec) {
 
 var isArray = function(o) {
 	return Object.prototype.toString.call(o) === '[object Array]';
+}
+
+function __setAutoComplete(input, data) {
+	input.autocomplete({
+		source: data,
+		minLength: 0
+	});
+	input.focusin(function() {
+		console.log(this);
+		$(this).autocomplete('search', '');
+	});
+	if (input.is(':focus'))
+		input.autocomplete('search', '');
+}
+
+function setupValidityCheckUi(cell)
+{
+	cell.showSucess = function() {
+		$(this).find('.form-group').addClass('has-success');
+		$(this).find('.form-group').removeClass('has-warning');
+		$(this).find('.form-group').removeClass('has-error');
+		$(this).find('.glyphicon').addClass('glyphicon-ok');
+		$(this).find('.glyphicon').removeClass('glyphicon-warning-sign');
+		$(this).find('.glyphicon').removeClass('glyphicon-remove');
+		// console.log($(this).find('input').autocomplete);
+	}
+	cell.showFail = function() {
+		$(this).find('.form-group').removeClass('has-success');
+		$(this).find('.form-group').removeClass('has-warning');
+		$(this).find('.form-group').addClass('has-error');
+		$(this).find('.glyphicon').removeClass('glyphicon-ok');
+		$(this).find('.glyphicon').removeClass('glyphicon-warning-sign');
+		$(this).find('.glyphicon').addClass('glyphicon-remove');
+		// console.log($(this).find('input').autocomplete);
+	}
+
+	// console.log(cell);
+
+	var cellShowValidity = function() {
+		var cell = this.parentNode.parentNode;
+		// console.log(cell);
+		if (this.isValidInput()) {
+			console.log(this.value);
+			cell.showSucess();
+			// console.log($(this).autocomplete);
+		} else {
+			cell.showFail();
+		}
+	}
+
+	$(cell).find('input').keyup(cellShowValidity);
+	$(cell).find('input').on('focusout', cellShowValidity);
 }
 
 function Table(tableId, accessPoint, fieldSpecs, accessPointAux, onAddEntry, onEditEntry, onRemoveEntry) {
@@ -228,24 +286,32 @@ Table.prototype = {
 		});
 	},
 
-	_setAutoComplete:function(accessPoint, fieldName) {
+	_setAutoComplete:function(accessPoint, fieldSpec) {
 		var self = this;
 		$.getJSON(accessPoint, function(data) {
 			for (var i in data)
 				if (data[i] == null)
 					data[i] = '';
-			self.getFieldSet(fieldName).each(function() {
+			self.getFieldSet(fieldSpec).each(function() {
 				var input = $(this).find('input');
-				input.autocomplete({
-					source: data,
-					minLength: 0
-				});
-				input.focusin(function() {
-					console.log(this);
-					$(this).autocomplete('search', '');
-				});
-				if (input.is(':focus'))
-					input.autocomplete('search', '');
+				__setAutoComplete(input, data);
+				if (fieldSpec.startsWith('!')) {
+					input[0].isValidInput = function() {
+						if ($.inArray(input.val(), data) >= 0)
+							return false;
+						else
+							return true;
+					}
+					setupValidityCheckUi($(this)[0]);
+				} else if (fieldSpec.startsWith('+')) {
+					input[0].isValidInput = function() {
+						if ($.inArray(input.val(), data) >= 0)
+							return true;
+						else
+							return false;
+					}
+					setupValidityCheckUi($(this)[0]);
+				}
 			});
 		});
 	},
@@ -253,11 +319,13 @@ Table.prototype = {
 	setAutoComplete:function(index) {
 		var fieldSpec = this.fieldSpecs[index];
 		if (fieldSpec.startsWith('+') || fieldSpec.startsWith('*'))
-			this._setAutoComplete(this.accessPointAux + 'field/' + getFieldNameRef(fieldSpec) + '/' + encodeURI(getCurrentDate()), getFieldName(fieldSpec));
+			this._setAutoComplete(this.accessPointAux + 'field/' + getFieldNameRef(fieldSpec) + '/' + encodeURI(getCurrentDate()), fieldSpec);
 		else if (fieldSpec.startsWith('-') || fieldSpec.startsWith('='))
 			;
+		else if (fieldSpec.startsWith('!'))
+			this._setAutoComplete(this.accessPoint + 'field/' + getFieldName(fieldSpec), fieldSpec);
 		else
-			this._setAutoComplete(this.accessPoint + 'field/' + getFieldName(fieldSpec), getFieldName(fieldSpec));
+			this._setAutoComplete(this.accessPoint + 'field/' + getFieldName(fieldSpec), fieldSpec);
 	},
 
 	setAutoCompleteAll:function() {
@@ -312,15 +380,7 @@ Table.prototype = {
 //				console.log(self.getField2(row, key));
 				if (isArray(data[key])) {
 					var input = self.getField2(row, key).find('input');
-					input.autocomplete({
-						source: data[key],
-						minLength: 0
-					});
-					input.focusin(function() {
-						$(this).autocomplete('search', '');
-					});
-					if (input.is(':focus'))
-						input.autocomplete('search', '');
+					__setAutoComplete(input, data[key]);
 				} else {
 					self.getField2(row, key).find('label').html(data[key]);
 				}
