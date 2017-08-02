@@ -45,12 +45,24 @@ var getMother = function(db, pigId, cb) {
 	});
 }
 
+var getCopyForUpdate = function(data) {
+	var data2 = {};
+	for (var property in data) {
+		if (!data.hasOwnProperty(property))
+			continue;
+		if (property != '_id')
+			data2[property] = data[property];
+	}
+	console.log(data2);
+	return data2;
+}
+
 var onInsertFertilization = function(db, fertilization, cb) {
 	console.log(fertilization.pigId, fertilization.motherStatus);
 	getMother(db, fertilization.pigId, function(mother) {
 		mother.motherStatus = '임신돈';
 		var collection = db.get('mother');
-		collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
+		collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
 			cb(err);
 		});
 	});
@@ -65,7 +77,7 @@ var onRemoveFertilization = function(db, id, cb) {
 		getMother(db, fertilization.pigId, function(mother) {
 			mother.motherStatus = fertilization.motherStatus;
 			var collection = db.get('mother');
-			collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
+			collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
 				cb(err);
 			});
 		});
@@ -79,7 +91,7 @@ var onInsertRelocation = function(db, relocation, cb) {
 	getMother(db, relocation.pigId, function(mother) {
 		mother.house = relocation.newHouse;
 		var collection = db.get('mother');
-		collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
+		collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
 			cb(err);
 		});
 	});
@@ -94,7 +106,7 @@ var onRemoveRelocation = function(db, id, cb) {
 		getMother(db, relocation.pigId, function(mother) {
 			mother.house = relocation.prevHouse;
 			var collection = db.get('mother');
-			collection.update({ _id : mother._id }, { $set: mother }, function(err, result) {
+			collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
 				cb(err);
 			});
 		});

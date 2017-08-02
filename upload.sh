@@ -16,7 +16,8 @@ fi
 
 # scp -i ~/keys/amazon.jiwon.pem pigfarm.tar.gz ubuntu@ec2-52-25-245-158.us-west-2.compute.amazonaws.com:/home/ubuntu
 # scp -i ~/keys/amazon.jiwon.pem pigfarm.tar.gz ubuntu@ec2-54-191-187-235.us-west-2.compute.amazonaws.com:/home/ubuntu
-scp -i ~/keys/amazon.jiwon.pem pigfarm.tar.gz $PIGFARM1:/home/ubuntu
+# scp -i ~/keys/amazon.jiwon.pem pigfarm.tar.gz $PIGFARM1:/home/ubuntu
+scp -P 822 pigfarm.tar.gz $PIGFARM_PI:/home/pi
 
 ssh-pigfarm 'tar xvfm pigfarm.tar.gz'
 ssh-pigfarm 'rm pigfarm.tar.gz'

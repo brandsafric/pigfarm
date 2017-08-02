@@ -617,16 +617,21 @@ var loadTable = function(tableId, accessPoint, date, cb) {
 		$(tableId).empty();
 
 		$.each(data, function() {
+
+			var data2 = {};
+			data2['_id'] = this['_id'];
 			for (var property in this) {
 				if (!this.hasOwnProperty(property))
 					continue;
-//				console.log(property);
+				if (property != '_id')
+					data2[property] = this[property];
+				console.log(data2);
 			}
 //			tableContent += '<tr><td></td>';
 //			tableContent += '<td><pre>' + JSON.stringify(this, null, ' ') + '</pre></td><td></td><td></td><td></td>';
 //			tableContent += '</tr>';
 
-			var rows = complexDataToRows(this);
+			var rows = complexDataToRows(data2);
 			for (var i = 0; i < rows.length; i++) {
 				tableContent += '<tr>' + rows[i] + '<td></td></tr>';
 			}
