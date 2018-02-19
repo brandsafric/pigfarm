@@ -13,8 +13,9 @@ node import.js
 
 cd ~/pigfarm/pigfarm
 npm install
-# mkdir -p node_modules/bson/build/Release
-# cp node_modules/bson/browser_build/* node_modules/bson/build/Release
+
+mkdir -p node_modules/bson/build/Release
+cp node_modules/bson/browser_build/* node_modules/bson/build/Release
 
 
 

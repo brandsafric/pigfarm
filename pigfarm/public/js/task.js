@@ -209,10 +209,10 @@ Table.prototype = {
 		var tableContent = '';
 
 		// jQuery AJAX call for JSON
-		$.getJSON(this.accessPoint + encodeURI(date) , function( data ) {
+		$.getJSON(this.accessPoint + encodeURI(date), function( data ) {
 
 			$(self.tableId).empty();
-
+			
 			// For each item in our JSON, add a table row and cells to the content string
 			$.each(data, function(){
 				tableContent += '<tr>';
@@ -473,7 +473,7 @@ Table.prototype = {
 			self.setAutoCompleteAll();
 		});
 
-//		createNewRow();
+		// createNewRow();
 	},
 
 	getNewRow:function() {
@@ -608,7 +608,7 @@ var complexDataToRows = function(data){
 	return rows;
 }
 
-var loadTable = function(tableId, accessPoint, date, cb) {
+var loadTable = function(tableId, accessPoint, motherTableColumns, date, cb) {
 
 	var tableContent = '';
 
@@ -620,10 +620,8 @@ var loadTable = function(tableId, accessPoint, date, cb) {
 
 			var data2 = {};
 			data2['_id'] = this['_id'];
-			for (var property in this) {
-				if (!this.hasOwnProperty(property))
-					continue;
-				if (property != '_id')
+			for (var col in motherTableColumns) {
+				var property = motherTableColumns[col];
 					data2[property] = this[property];
 				console.log(data2);
 			}

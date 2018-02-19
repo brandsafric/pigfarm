@@ -1,3 +1,5 @@
+const motherTableColumns = ['pigId', 'house', 'motherStatus', 'date'];
+
 $(document).ready(function() {
 	var tables = [
 		new Table(
@@ -13,7 +15,7 @@ $(document).ready(function() {
 				console.log('onAddEntry', this.tableId, record._id);
 				tables[1].setAutoComplete(0);
 				tables[2].setAutoComplete(0);
-				loadTable('#mother', '/mother/mother/', getCurrentDate(), function() {
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate(), function() {
 					var row = getRowByColumnValue('#mother', 1, record.pigId)
 					console.log(row);
 					for (var j = 0, cell; cell = row.cells[j]; j++) {
@@ -31,7 +33,7 @@ $(document).ready(function() {
 				// tables[0].populateTable(getCurrentDate());
 				tables[1].setAutoComplete(0);
 				tables[2].setAutoComplete(0);
-				loadTable('#mother', '/mother/mother/', getCurrentDate());
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate());
 			}
 		),
 		new Table(
@@ -51,15 +53,15 @@ $(document).ready(function() {
 			'/views/mother/',
 			function(record) {
 				console.log('onAddEntry', this.tableId, record._id);
-				loadTable('#mother', '/mother/mother/', getCurrentDate(), function() {
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate(), function() {
 					var row = getRowByColumnValue('#mother', 1, record.pigId)
-					var cell = row.cells[3];
+					var cell = row.cells[motherTableColumns.indexOf('motherStatus') + 1];
 					cell.style.cssText = "background-color:Lavender; font-weight:bold";
 				});
 			},
 			null,
 			function(recordId) {
-				loadTable('#mother', '/mother/mother/', getCurrentDate());
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate());
 			}
 		),
 		new Table(
@@ -75,29 +77,29 @@ $(document).ready(function() {
 			'/views/mother/',
 			function(record) {
 				console.log('onAddEntry', this.tableId, record._id);
-				loadTable('#mother', '/mother/mother/', getCurrentDate(), function() {
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate(), function() {
 					var row = getRowByColumnValue('#mother', 1, record.pigId)
-					var cell = row.cells[2];
+					var cell = row.cells[motherTableColumns.indexOf('house') + 1];
 					cell.style.cssText = "background-color:Lavender; font-weight:bold";
 				});
 			},
 			null,
 			function(recordId) {
-				loadTable('#mother', '/mother/mother/', getCurrentDate());
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate());
 			}
 		)
 	];
 
 	initializeTables(tables);
 
-	loadTable('#mother', '/mother/mother/', getCurrentDate());
+	loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate());
 
 	$('#date-selector').on('changeDate', function(d) {
 		var date = new Date(getCurrentDate());
 		console.log(date);
 		if (d.viewMode == "days") {
 			$('#date-selector').datepicker('hide');
-			loadTable('#mother', '/mother/mother/', getCurrentDate());
+			loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate());
 		}
 	});
 });

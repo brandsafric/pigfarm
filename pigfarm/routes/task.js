@@ -32,7 +32,10 @@ function handlerFactory(router, tableName, onInsert, onUpdate, onRemove) {
 	router.get('/' + tableName + '/:date', function(req, res) {
 		var db = req.db;
 		var collection = db.get(tableName);
+		// console.log(req.params.date);
+		// console.log(decodeURI(req.params.date));
 		collection.find(getDayQuery(decodeURI(req.params.date)), {}, function(e,docs) {
+			if (e) console.log(e);
 			res.json(docs);
 		});
 	});
