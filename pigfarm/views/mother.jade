@@ -124,6 +124,9 @@ block content
 									tr
 										th _id
 										th 개체번호
+										th 모돈 종
+										th 생주
+										th 출처
 										th 돈사
 										th 유입 당시 상태
 								tbody#introduction
@@ -147,6 +150,21 @@ block content
 										th 진행 상황
 										th(width='70')
 								tbody#fertilization
+			.row
+				.col-lg-12
+					section.panel
+						header.panel-heading
+							span.label.bg-danger.pull-right 4 Left
+							| 분만
+						.table-responsive
+							table.table.table-striped.m-b-none.text-small.data-table
+								thead
+									tr
+										th _id
+										th 개체번호
+										th 자돈번호
+										th(width='70')
+								tbody#delivery
 			.row
 				.col-lg-12
 					section.panel
@@ -177,6 +195,9 @@ block content
 									tr
 										th _id
 										th 개체번호
+										th 모돈 종
+										th 생주
+										th 출처
 										th 돈사
 										th 상태
 										th 날짜

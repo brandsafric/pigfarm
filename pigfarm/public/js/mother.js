@@ -1,4 +1,4 @@
-const motherTableColumns = ['pigId', 'house', 'motherStatus', 'date'];
+const motherTableColumns = ['pigId', 'type', 'wob', 'origin', 'house', 'motherStatus', 'date'];
 
 $(document).ready(function() {
 	var tables = [
@@ -7,6 +7,9 @@ $(document).ready(function() {
 			'/mother/introduction/',
 			[
 				'!pigId',
+				'type',
+				'wob',
+				'origin',
 				'house',
 				'motherStatus'
 			],
@@ -49,6 +52,27 @@ $(document).ready(function() {
 				'administration3',
 				'administrator',
 				'status'
+			],
+			'/views/mother/',
+			function(record) {
+				console.log('onAddEntry', this.tableId, record._id);
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate(), function() {
+					var row = getRowByColumnValue('#mother', 1, record.pigId)
+					var cell = row.cells[motherTableColumns.indexOf('motherStatus') + 1];
+					cell.style.cssText = "background-color:Lavender; font-weight:bold";
+				});
+			},
+			null,
+			function(recordId) {
+				loadTable('#mother', '/mother/mother/', motherTableColumns, getCurrentDate());
+			}
+		),
+		new Table(
+			'#delivery',
+			'/mother/delivery/',
+			[
+				'+pigId',
+				'offspringId'
 			],
 			'/views/mother/',
 			function(record) {

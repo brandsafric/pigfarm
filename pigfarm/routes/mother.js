@@ -86,6 +86,38 @@ var onRemoveFertilization = function(db, id, cb) {
 
 task.handlerFactory(router, 'fertilization', onInsertFertilization, null, onRemoveFertilization);
 
+
+var onInsertDelivery = function(db, delivery, cb) {
+	console.log(delivery.pigId, delivery.motherStatus);
+	getMother(db, delivery.pigId, function(mother) {
+		mother.motherStatus = '이유모돈?';
+		var collection = db.get('mother');
+		collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
+			cb(err);
+		});
+	});
+}
+
+var onRemoveDelivery = function(db, id, cb) {
+//	console.log(db, id, cb);
+	var collection = db.get('delivery');
+	collection.find({ _id : id }, {}, function(e,docs) {
+//		console.log(e, docs);
+		var delivery = docs[0];
+		getMother(db, delivery.pigId, function(mother) {
+			mother.motherStatus = delivery.motherStatus;
+			var collection = db.get('mother');
+			collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
+				cb(err);
+			});
+		});
+	});
+}
+
+task.handlerFactory(router, 'delivery', onInsertDelivery, null, onRemoveDelivery);
+
+
+
 var onInsertRelocation = function(db, relocation, cb) {
 	console.log(relocation.pigId, relocation.newHouse);
 	getMother(db, relocation.pigId, function(mother) {
