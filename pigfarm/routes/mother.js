@@ -105,7 +105,7 @@ var onRemoveDelivery = function(db, id, cb) {
 //		console.log(e, docs);
 		var delivery = docs[0];
 		getMother(db, delivery.pigId, function(mother) {
-			mother.motherStatus = delivery.motherStatus;
+			mother.motherStatus = '임신돈';
 			var collection = db.get('mother');
 			collection.update({ _id : mother._id }, { $set: getCopyForUpdate(mother) }, function(err, result) {
 				cb(err);
