@@ -1,13 +1,41 @@
 <!DOCTYPE html> 
 <html> 
-    <head> 
+<head> 
     <title>My Page</title> 
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/font.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/plugin.css"/>
+    <link rel="stylesheet" href="js/select2/select2.css"/>
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/> -->
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"/> -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
-</head> 
-<body> 
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
+    <!-- Bootstrap-->
+    <script src="js/bootstrap.js"></script>
+    <!-- app-->
+    <script src="js/app.js"></script>
+    <script src="js/datepicker/bootstrap-datepicker.js"></script>
+    <script src="js/app.plugin.js"></script>
+    <script src="js/app.data.js"></script>
+    <!-- Sparkline Chart-->
+    <script src="js/charts/sparkline/jquery.sparkline.min.js"></script>
+    <!-- Easy Pie Chart-->
+    <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
+    <!-- fuelux-->
+    <script src="js/fuelux/fuelux.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <!-- datatables-->
+    <script src="js/datatables/jquery.dataTables.min.js"></script>
+    <script src="js/select2/select2.min.js"></script>
+</head>
+<body>
 
 <div data-role="page">
 
@@ -15,14 +43,19 @@
         <h1>My Title</h1>
     </div><!-- /header -->
 
-    <div data-role="content">    
-        <ul data-role="listview" data-inset="true">
+    <div data-role="content">
+        <ul data-role="listview" data-filter="true" data-filter-placeholder="모돈 검색">
             <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
             <li><a href="index.html">
             <h2>Stephen Weber</h2>
             <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
             <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
                 <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+                <div class="progress m-t-small">
+                    <div class="progress-bar progress-bar-success" data-toggle="tooltip" data-original-title="40%" style="width: 40%"></div>
+                    <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="10%" style="width: 10%"></div>
+                    <div class="progress-bar progress-bar-danger" data-toggle="tooltip" data-original-title="15%" style="width: 15%"></div>
+                </div>
             </a></li>
             <li><a href="index.html">
             <h2>jQuery Team</h2>
