@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+    <style>
+            .ui-listview>.ui-li-divider {
+                padding-left: 0.5em;
+            }
+            .inlineIcon {
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                margin-right: 6px;
+            }
+        </style>
+</head>
+<body>
+    <div data-role="page" id="page1">
+            <div data-role="header" ><h1>Collapsible Autodivider List</h1>   </div>
+            <div class="ui-content" role="main">
+                <div class="ui-grid-solo ui-mini" >
+                    <div class="ui-block-a">
+                        <label>
+                            <input type="checkbox" name="chkAnim" id="chkAnim" />Use animated transition on collapse/expand</label>
+                    </div>
+                </div>
+                <div class="ui-grid-a ui-mini">
+                    <div class="ui-block-a"><a id="btnExpand" class="ui-btn ui-corner-all collapseExpand">Expand All</a>
+        
+                    </div>
+                    <div class="ui-block-b"><a id="btnCollapse" class="ui-btn ui-corner-all collapseExpand">Collapse All</a>
+        
+                    </div>
+                </div>
+                <ul data-role="listview" id="ScheduleList" data-autodividers="true" data-divider-theme="a" data-filter="true" data-filter-placeholder="모돈 검색">
+                    <li time="오늘 종부"><a href="#">
+                    <h2>M-2017-32-09</h2>
+                    <p><strong>6차 / 215 kg</strong></p>
+                    <p>45 돈사</p>
+                        <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+                    </a></li>
+                    <li time="이번주 종부"><a href="#">Event 2</a></li>
+                    <li time="다음주 종부"><a href="#">Event 2</a></li>
+                    <li time="휴양돈"><a href="#">Event 3</a></li>
+                    <li time="나머지"><a href="#">Event 3</a></li>
+                </ul>
+
+                <!-- /listview -->
+                
+                <!-- <ul data-role="listview" data-inset="true" data-divider-theme="a">
+                    <li data-role="list-divider">Mail</li>
+                    <li><a href="#">Inbox</a></li>
+                    <li><a href="#">Outbox</a></li>
+                    <li data-role="list-divider">Contacts</li>
+                    <li><a href="#">Friends</a></li>
+                    <li><a href="#">Work</a></li>
+                </ul> -->
+            </div>
+        </div>
+    <script>
+$(document).on("pagecreate", "#page1", function () {
+    $("#ScheduleList").listview({
+		    // autodividers: true,
+		    autodividersSelector: function (li) {
+		        var out = li.attr('time');
+		        return out;
+		    }
+        }).listview('refresh');
+    var ic = '<span class="ui-icon-minus ui-btn-icon-notext inlineIcon"></span>';
+    $(".ui-li-divider").prepend(ic);
+});
+$(document).on("click", ".collapseExpand", function () {
+    var collapseAll = this.id == "btnCollapse";
+    if (collapseAll) {
+        $(".ui-li-divider .ui-icon-minus").click();
+    } else {
+        $(".ui-li-divider .ui-icon-plus").click();
+    }
+});
+
+$(document).on("click", '.ui-li-divider', function (e) {
+    var IsCollapsed = false;
+    var TheDivider = $(this);
+    var li = TheDivider.next(':not(.ui-li-divider)');
+    while (li.length > 0) {
+        IsCollapsed = li.css('display') == 'none';
+        var UseAnimation = $("#chkAnim").prop("checked");
+        if (UseAnimation) {
+            ApplyTransition(li, IsCollapsed);
+        } else {
+            li.slideToggle(300);
+        }
+
+        li = li.next(':not(.ui-li-divider)');
+    }
+
+    var $icon = TheDivider.find('.inlineIcon');
+    if (!IsCollapsed) {
+        $icon.removeClass('ui-icon-minus').addClass('ui-icon-plus');
+    } else {
+        $icon.removeClass('ui-icon-plus').addClass('ui-icon-minus');
+    }
+    e.stopPropagation();
+    return false;
+});
+
+function ApplyTransition(li, IsCollapsed) {
+    if (IsCollapsed) {
+        li.show(0, function () {
+            $(this).addClass('flow in').one('webkitAnimationEnd oanimationend msAnimationEnd mozAnimationEnd animationend', function (e) {
+                $(this).removeClass('flow in');
+            });
+        });
+    } else {
+        li.addClass('flow out').one('webkitAnimationEnd oanimationend msAnimationEnd mozAnimationEnd animationend', function (e) {
+            $(this).hide();
+            $(this).removeClass('flow out');
+        });
+    }
+}
+	</script>
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head>
+<body>
+	<div data-role="page" id="ScheduleDay">
+		<div data-role="header">
+			<a href="#HomePage" data-icon="home" data-direction="reverse">Home</a>		
+	        <h1 id="ScheduleDayText">모돈 관리</h1>
+		</div>
+		<div data-role="content">
+	        <ul data-role="listview" id="ScheduleList" data-autodividers="true" data-filter="true" data-filter-placeholder="모돈 검색">
+	            <li time="오늘 종부"><a href="#">Event 1</a></li>
+	            <li time="이번주 종부"><a href="#">Event 2</a></li>
+	            <li time="다음주 종부"><a href="#">Event 2</a></li>
+	            <li time="휴양돈"><a href="#">Event 3</a></li>
+	            <li time="나머지"><a href="#">Event 3</a></li>
+	        </ul>
+	    </div>
+    </div>
+    <script>
+	$(document).on("pageinit", "#ScheduleDay", function(){
+		$("#ScheduleList").listview({
+		    autodividers: true,
+		    autodividersSelector: function (li) {
+		        var out = li.attr('time');
+		        return out;
+		    }
+		}).listview('refresh');
+	});
+	</script>
+</body>
+</html>
+
